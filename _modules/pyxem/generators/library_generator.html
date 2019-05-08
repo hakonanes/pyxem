@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.generators.library_generator &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.generators.library_generator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;Diffraction pattern library generator and associated tools.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">transforms3d.euler</span> <span class="k">import</span> <span class="n">euler2mat</span>
+<span class="kn">import</span> <span class="nn">diffpy.structure</span>
+
+<span class="kn">from</span> <span class="nn">pyxem.libraries.diffraction_library</span> <span class="k">import</span> <span class="n">DiffractionLibrary</span>
+<span class="kn">from</span> <span class="nn">pyxem.libraries.vector_library</span> <span class="k">import</span> <span class="n">DiffractionVectorLibrary</span>
+
+<span class="kn">from</span> <span class="nn">pyxem.utils.sim_utils</span> <span class="k">import</span> <span class="n">get_points_in_sphere</span>
+<span class="kn">from</span> <span class="nn">pyxem.utils.sim_utils</span> <span class="k">import</span> <span class="n">simulate_rotated_structure</span>
+<span class="kn">from</span> <span class="nn">pyxem.utils.vector_utils</span> <span class="k">import</span> <span class="n">get_angle_cartesian</span>
+
+
+<div class="viewcode-block" id="DiffractionLibraryGenerator"><a class="viewcode-back" href="../../../pyxem.generators.html#pyxem.generators.library_generator.DiffractionLibraryGenerator">[docs]</a><span class="k">class</span> <span class="nc">DiffractionLibraryGenerator</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Computes a library of electron diffraction patterns for specified atomic</span>
+<span class="sd">    structures and orientations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">electron_diffraction_calculator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialises the generator with a diffraction calculator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        electron_diffraction_calculator : :class:`DiffractionGenerator`</span>
+<span class="sd">            The calculator used to simulate diffraction patterns.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">electron_diffraction_calculator</span> <span class="o">=</span> <span class="n">electron_diffraction_calculator</span>
+
+<div class="viewcode-block" id="DiffractionLibraryGenerator.get_diffraction_library"><a class="viewcode-back" href="../../../pyxem.generators.html#pyxem.generators.library_generator.DiffractionLibraryGenerator.get_diffraction_library">[docs]</a>    <span class="k">def</span> <span class="nf">get_diffraction_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                <span class="n">structure_library</span><span class="p">,</span>
+                                <span class="n">calibration</span><span class="p">,</span>
+                                <span class="n">reciprocal_radius</span><span class="p">,</span>
+                                <span class="n">half_shape</span><span class="p">,</span>
+                                <span class="n">with_direct_beam</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates a dictionary of diffraction data for a library of crystal</span>
+<span class="sd">        structures and orientations.</span>
+
+<span class="sd">        Each structure in the structure library is rotated to each associated</span>
+<span class="sd">        orientation and the diffraction pattern is calculated each time.</span>
+
+<span class="sd">        Angles must be in the Euler representation (Z,X,Z) and in degrees</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        structure_library : pyxem:StructureLibrary Object</span>
+<span class="sd">            Dictionary of structures and associated orientations for which</span>
+<span class="sd">            electron diffraction is to be simulated.</span>
+<span class="sd">        calibration : float</span>
+<span class="sd">            The calibration of experimental data to be correlated with the</span>
+<span class="sd">            library, in reciprocal Angstroms per pixel.</span>
+<span class="sd">        reciprocal_radius : float</span>
+<span class="sd">            The maximum g-vector magnitude to be included in the simulations.</span>
+<span class="sd">        half_shape : tuple</span>
+<span class="sd">            The half shape of the target patterns, for 144x144 use (72,72) etc</span>
+<span class="sd">        with_direct_beam : bool</span>
+<span class="sd">            Include the direct beam in the library.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        diffraction_library : :class:`DiffractionLibrary`</span>
+<span class="sd">            Mapping of crystal structure and orientation to diffraction data</span>
+<span class="sd">            objects.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Define DiffractionLibrary object to contain results</span>
+        <span class="n">diffraction_library</span> <span class="o">=</span> <span class="n">DiffractionLibrary</span><span class="p">()</span>
+        <span class="c1"># The electron diffraction calculator to do simulations</span>
+        <span class="n">diffractor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">electron_diffraction_calculator</span>
+        <span class="c1"># Iterate through phases in library.</span>
+        <span class="k">for</span> <span class="n">phase_name</span> <span class="ow">in</span> <span class="n">structure_library</span><span class="o">.</span><span class="n">struct_lib</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">phase_diffraction_library</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">structure</span> <span class="o">=</span> <span class="n">structure_library</span><span class="o">.</span><span class="n">struct_lib</span><span class="p">[</span><span class="n">phase_name</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">orientations</span> <span class="o">=</span> <span class="n">structure_library</span><span class="o">.</span><span class="n">struct_lib</span><span class="p">[</span><span class="n">phase_name</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">num_orientations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">orientations</span><span class="p">)</span>
+            <span class="n">simulations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_orientations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+            <span class="n">pixel_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_orientations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+            <span class="n">intensities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_orientations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+            <span class="c1"># Iterate through orientations of each phase.</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">orientation</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tqdm</span><span class="p">(</span><span class="n">orientations</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">)):</span>
+                <span class="n">matrix</span> <span class="o">=</span> <span class="n">euler2mat</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">orientation</span><span class="p">),</span> <span class="s1">&#39;rzxz&#39;</span><span class="p">)</span>
+                <span class="n">simulation</span> <span class="o">=</span> <span class="n">simulate_rotated_structure</span><span class="p">(</span><span class="n">diffractor</span><span class="p">,</span> <span class="n">structure</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">reciprocal_radius</span><span class="p">,</span> <span class="n">with_direct_beam</span><span class="p">)</span>
+
+                <span class="c1"># Calibrate simulation</span>
+                <span class="n">simulation</span><span class="o">.</span><span class="n">calibration</span> <span class="o">=</span> <span class="n">calibration</span>
+                <span class="n">pixel_coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span>
+                    <span class="n">simulation</span><span class="o">.</span><span class="n">calibrated_coordinates</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">half_shape</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+                <span class="c1"># Construct diffraction simulation library</span>
+                <span class="n">simulations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulation</span>
+                <span class="n">pixel_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pixel_coordinates</span>
+                <span class="n">intensities</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">intensities</span>
+
+            <span class="n">diffraction_library</span><span class="p">[</span><span class="n">phase_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;simulations&#39;</span><span class="p">:</span> <span class="n">simulations</span><span class="p">,</span>
+                <span class="s1">&#39;orientations&#39;</span><span class="p">:</span> <span class="n">orientations</span><span class="p">,</span>
+                <span class="s1">&#39;pixel_coords&#39;</span><span class="p">:</span> <span class="n">pixel_coords</span><span class="p">,</span>
+                <span class="s1">&#39;intensities&#39;</span><span class="p">:</span> <span class="n">intensities</span><span class="p">,</span>
+            <span class="p">}</span>
+
+        <span class="c1"># Pass attributes to diffraction library from structure library.</span>
+        <span class="n">diffraction_library</span><span class="o">.</span><span class="n">identifiers</span> <span class="o">=</span> <span class="n">structure_library</span><span class="o">.</span><span class="n">identifiers</span>
+        <span class="n">diffraction_library</span><span class="o">.</span><span class="n">structures</span> <span class="o">=</span> <span class="n">structure_library</span><span class="o">.</span><span class="n">structures</span>
+        <span class="n">diffraction_library</span><span class="o">.</span><span class="n">diffraction_generator</span> <span class="o">=</span> <span class="n">diffractor</span>
+        <span class="n">diffraction_library</span><span class="o">.</span><span class="n">reciprocal_radius</span> <span class="o">=</span> <span class="n">reciprocal_radius</span>
+        <span class="n">diffraction_library</span><span class="o">.</span><span class="n">with_direct_beam</span> <span class="o">=</span> <span class="n">with_direct_beam</span>
+
+        <span class="k">return</span> <span class="n">diffraction_library</span></div></div>
+
+
+<div class="viewcode-block" id="VectorLibraryGenerator"><a class="viewcode-back" href="../../../pyxem.generators.html#pyxem.generators.library_generator.VectorLibraryGenerator">[docs]</a><span class="k">class</span> <span class="nc">VectorLibraryGenerator</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Computes a library of diffraction vectors and pairwise inter-vector</span>
+<span class="sd">    angles for a specified StructureLibrary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure_library</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialises the library with a diffraction calculator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        structure_library : :class:`StructureLibrary`</span>
+<span class="sd">            The StructureLibrary defining structures to be</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structures</span> <span class="o">=</span> <span class="n">structure_library</span>
+
+<div class="viewcode-block" id="VectorLibraryGenerator.get_vector_library"><a class="viewcode-back" href="../../../pyxem.generators.html#pyxem.generators.library_generator.VectorLibraryGenerator.get_vector_library">[docs]</a>    <span class="k">def</span> <span class="nf">get_vector_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">reciprocal_radius</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates a library of diffraction vectors and pairwise inter-vector</span>
+<span class="sd">        angles for a library of crystal structures.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reciprocal_radius : float</span>
+<span class="sd">            The maximum g-vector magnitude to be included in the library.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        vector_library : :class:`DiffractionVectorLibrary`</span>
+<span class="sd">            Mapping of phase identifier to phase information in dictionary</span>
+<span class="sd">            format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Define DiffractionVectorLibrary object to contain results</span>
+        <span class="n">vector_library</span> <span class="o">=</span> <span class="n">DiffractionVectorLibrary</span><span class="p">()</span>
+        <span class="c1"># Get structures from structure library</span>
+        <span class="n">structure_library</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">struct_lib</span>
+        <span class="c1"># Iterate through phases in library.</span>
+        <span class="k">for</span> <span class="n">phase_name</span> <span class="ow">in</span> <span class="n">structure_library</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># Get diffpy.structure object associated with phase</span>
+            <span class="n">structure</span> <span class="o">=</span> <span class="n">structure_library</span><span class="p">[</span><span class="n">phase_name</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Get reciprocal lattice points within reciprocal_radius</span>
+            <span class="n">recip_latt</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">()</span>
+            <span class="n">indices</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">distances</span> <span class="o">=</span> <span class="n">get_points_in_sphere</span><span class="p">(</span>
+                <span class="n">recip_latt</span><span class="p">,</span>
+                <span class="n">reciprocal_radius</span><span class="p">)</span>
+
+            <span class="c1"># Iterate through all pairs calculating interplanar angle</span>
+            <span class="n">phase_index_pairs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">phase_measurements</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)),</span> <span class="mi">2</span><span class="p">):</span>
+                <span class="c1"># Specify hkls and lengths associated with the crystal structure.</span>
+                <span class="c1"># TODO: This should be updated to reflect systematic absences</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">continue</span>  <span class="c1"># Ignore combinations including [000]</span>
+                <span class="n">hkl1</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">hkl2</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">len1</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">len2</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">len1</span> <span class="o">&lt;</span> <span class="n">len2</span><span class="p">:</span>  <span class="c1"># Keep the longest first</span>
+                    <span class="n">hkl1</span><span class="p">,</span> <span class="n">hkl2</span> <span class="o">=</span> <span class="n">hkl2</span><span class="p">,</span> <span class="n">hkl1</span>
+                    <span class="n">len1</span><span class="p">,</span> <span class="n">len2</span> <span class="o">=</span> <span class="n">len1</span><span class="p">,</span> <span class="n">len2</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">get_angle_cartesian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                <span class="n">phase_index_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">hkl1</span><span class="p">,</span> <span class="n">hkl2</span><span class="p">])</span>
+                <span class="n">phase_measurements</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">len1</span><span class="p">,</span> <span class="n">len2</span><span class="p">,</span> <span class="n">angle</span><span class="p">])</span>
+            <span class="n">phase_measurements</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">phase_measurements</span><span class="p">)</span>
+            <span class="n">unique_measurements</span><span class="p">,</span> <span class="n">unique_measurement_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">phase_measurements</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">vector_library</span><span class="p">[</span><span class="n">phase_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;indices&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">phase_index_pairs</span><span class="p">)[</span><span class="n">unique_measurement_indices</span><span class="p">],</span>
+                <span class="s1">&#39;measurements&#39;</span><span class="p">:</span> <span class="n">unique_measurements</span>
+            <span class="p">}</span>
+
+        <span class="c1"># Pass attributes to diffraction library from structure library.</span>
+        <span class="n">vector_library</span><span class="o">.</span><span class="n">identifiers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">identifiers</span>
+        <span class="n">vector_library</span><span class="o">.</span><span class="n">structures</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">structures</span>
+        <span class="n">vector_library</span><span class="o">.</span><span class="n">reciprocal_radius</span> <span class="o">=</span> <span class="n">reciprocal_radius</span>
+
+        <span class="k">return</span> <span class="n">vector_library</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

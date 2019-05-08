@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.tests.test_signals package &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyxem.tests.test_utils package" href="pyxem.tests.test_utils.html" />
+    <link rel="prev" title="pyxem.tests.test_physical package" href="pyxem.tests.test_physical.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Contents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">pyxem.tests.test_signals package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_signals.test_crystallographic_map">pyxem.tests.test_signals.test_crystallographic_map module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_signals.test_diffraction_profile">pyxem.tests.test_signals.test_diffraction_profile module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_signals.test_diffraction_simulation">pyxem.tests.test_signals.test_diffraction_simulation module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_signals.test_diffraction_vectors">pyxem.tests.test_signals.test_diffraction_vectors module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_signals.test_electron_diffraction">pyxem.tests.test_signals.test_electron_diffraction module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_signals.test_indexation_results">pyxem.tests.test_signals.test_indexation_results module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_signals.test_tensor_field">pyxem.tests.test_signals.test_tensor_field module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_signals">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pyxem.tests.test_physical.html" title="Previous Chapter: pyxem.tests.test_physical package"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; pyxem.tests.t...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pyxem.tests.test_utils.html" title="Next Chapter: pyxem.tests.test_utils package"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pyxem.tests.t... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="pyxem-tests-test-signals-package">
+<h1>pyxem.tests.test_signals package<a class="headerlink" href="#pyxem-tests-test-signals-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyxem.tests.test_signals.test_crystallographic_map">
+<span id="pyxem-tests-test-signals-test-crystallographic-map-module"></span><h2>pyxem.tests.test_signals.test_crystallographic_map module<a class="headerlink" href="#module-pyxem.tests.test_signals.test_crystallographic_map" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMTEXIO">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_crystallographic_map.</code><code class="descname">TestMTEXIO</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMTEXIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMTEXIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMTEXIO.test_Crystallographic_Map_io_dp">
+<code class="descname">test_Crystallographic_Map_io_dp</code><span class="sig-paren">(</span><em>dp_cryst_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMTEXIO.test_Crystallographic_Map_io_dp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMTEXIO.test_Crystallographic_Map_io_dp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMTEXIO.test_Crystallographic_Map_io_sp">
+<code class="descname">test_Crystallographic_Map_io_sp</code><span class="sig-paren">(</span><em>sp_cryst_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMTEXIO.test_Crystallographic_Map_io_sp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMTEXIO.test_Crystallographic_Map_io_sp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_crystallographic_map.</code><code class="descname">TestMapCreation</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMapCreation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_no_method">
+<code class="descname">test_get_metric_map_no_method</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMapCreation.test_get_metric_map_no_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_no_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_template_match">
+<code class="descname">test_get_metric_map_template_match</code><span class="sig-paren">(</span><em>dp_cryst_map</em>, <em>metric</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMapCreation.test_get_metric_map_template_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_template_match" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_template_match_bad_metric">
+<code class="descname">test_get_metric_map_template_match_bad_metric</code><span class="sig-paren">(</span><em>sp_cryst_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMapCreation.test_get_metric_map_template_match_bad_metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_template_match_bad_metric" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_vector_match">
+<code class="descname">test_get_metric_map_vector_match</code><span class="sig-paren">(</span><em>dp_cryst_map_vector</em>, <em>metric</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMapCreation.test_get_metric_map_vector_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_vector_match" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_vector_match_bad_metric">
+<code class="descname">test_get_metric_map_vector_match_bad_metric</code><span class="sig-paren">(</span><em>dp_cryst_map_vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMapCreation.test_get_metric_map_vector_match_bad_metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_vector_match_bad_metric" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_orientation_map">
+<code class="descname">test_get_orientation_map</code><span class="sig-paren">(</span><em>sp_cryst_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMapCreation.test_get_orientation_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_orientation_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_phase_map">
+<code class="descname">test_get_phase_map</code><span class="sig-paren">(</span><em>sp_cryst_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestMapCreation.test_get_phase_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_phase_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_crystallographic_map.</code><code class="descname">TestModalAngularFunctionality</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestModalAngularFunctionality"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality.test_get_distance_from_fixed_angle">
+<code class="descname">test_get_distance_from_fixed_angle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestModalAngularFunctionality.test_get_distance_from_fixed_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality.test_get_distance_from_fixed_angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality.test_get_distance_from_modal">
+<code class="descname">test_get_distance_from_modal</code><span class="sig-paren">(</span><em>mod_cryst_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestModalAngularFunctionality.test_get_distance_from_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality.test_get_distance_from_modal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality.test_get_modal_angles">
+<code class="descname">test_get_modal_angles</code><span class="sig-paren">(</span><em>mod_cryst_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#TestModalAngularFunctionality.test_get_modal_angles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality.test_get_modal_angles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.dp_cryst_map">
+<code class="descclassname">pyxem.tests.test_signals.test_crystallographic_map.</code><code class="descname">dp_cryst_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#dp_cryst_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.dp_cryst_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Crystallographic Map with two phases</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.dp_cryst_map_vector">
+<code class="descclassname">pyxem.tests.test_signals.test_crystallographic_map.</code><code class="descname">dp_cryst_map_vector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#dp_cryst_map_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.dp_cryst_map_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Crystallographic Map with two phases from vector matching</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.get_distance_between_two_angles_longform">
+<code class="descclassname">pyxem.tests.test_signals.test_crystallographic_map.</code><code class="descname">get_distance_between_two_angles_longform</code><span class="sig-paren">(</span><em>angle_1</em>, <em>angle_2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#get_distance_between_two_angles_longform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.get_distance_between_two_angles_longform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using the long form to find the distance between two angles in euler form</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.mod_cryst_map">
+<code class="descclassname">pyxem.tests.test_signals.test_crystallographic_map.</code><code class="descname">mod_cryst_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#mod_cryst_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.mod_cryst_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Crystallographic Map with (5,17,6) as the modal angle</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.sp_cryst_map">
+<code class="descclassname">pyxem.tests.test_signals.test_crystallographic_map.</code><code class="descname">sp_cryst_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#sp_cryst_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.sp_cryst_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a single phase Crystallographic Map</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_crystallographic_map.worker_for_test_CrystallographicMap_io">
+<code class="descclassname">pyxem.tests.test_signals.test_crystallographic_map.</code><code class="descname">worker_for_test_CrystallographicMap_io</code><span class="sig-paren">(</span><em>mapp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_crystallographic_map.html#worker_for_test_CrystallographicMap_io"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_crystallographic_map.worker_for_test_CrystallographicMap_io" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_signals.test_diffraction_profile">
+<span id="pyxem-tests-test-signals-test-diffraction-profile-module"></span><h2>pyxem.tests.test_signals.test_diffraction_profile module<a class="headerlink" href="#module-pyxem.tests.test_signals.test_diffraction_profile" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_diffraction_profile.TestSimpleHyperspy">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_diffraction_profile.</code><code class="descname">TestSimpleHyperspy</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_profile.html#TestSimpleHyperspy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_profile.TestSimpleHyperspy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_profile.TestSimpleHyperspy.test_set_diffraction_calibration">
+<code class="descname">test_set_diffraction_calibration</code><span class="sig-paren">(</span><em>diffraction_profile</em>, <em>calibration</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_profile.html#TestSimpleHyperspy.test_set_diffraction_calibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_profile.TestSimpleHyperspy.test_set_diffraction_calibration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_profile.TestSimpleHyperspy.test_set_experimental_parameters">
+<code class="descname">test_set_experimental_parameters</code><span class="sig-paren">(</span><em>diffraction_profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_profile.html#TestSimpleHyperspy.test_set_experimental_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_profile.TestSimpleHyperspy.test_set_experimental_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_profile.TestSimpleHyperspy.test_set_scan_calibration">
+<code class="descname">test_set_scan_calibration</code><span class="sig-paren">(</span><em>diffraction_profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_profile.html#TestSimpleHyperspy.test_set_scan_calibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_profile.TestSimpleHyperspy.test_set_scan_calibration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_diffraction_profile.TestVirtualImaging">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_diffraction_profile.</code><code class="descname">TestVirtualImaging</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_profile.html#TestVirtualImaging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_profile.TestVirtualImaging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_profile.TestVirtualImaging.test_get_virtual_image">
+<code class="descname">test_get_virtual_image</code><span class="sig-paren">(</span><em>diffraction_profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_profile.html#TestVirtualImaging.test_get_virtual_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_profile.TestVirtualImaging.test_get_virtual_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_profile.TestVirtualImaging.test_plot_interactive_virtual_image">
+<code class="descname">test_plot_interactive_virtual_image</code><span class="sig-paren">(</span><em>diffraction_profile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_profile.html#TestVirtualImaging.test_plot_interactive_virtual_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_profile.TestVirtualImaging.test_plot_interactive_virtual_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_signals.test_diffraction_simulation">
+<span id="pyxem-tests-test-signals-test-diffraction-simulation-module"></span><h2>pyxem.tests.test_signals.test_diffraction_simulation module<a class="headerlink" href="#module-pyxem.tests.test_signals.test_diffraction_simulation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_diffraction_simulation.</code><code class="descname">TestDiffractionSimulation</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#TestDiffractionSimulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.diffraction_simulation">
+<code class="descname">diffraction_simulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#TestDiffractionSimulation.diffraction_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.diffraction_simulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_calibrated_coordinates">
+<code class="descname">test_calibrated_coordinates</code><span class="sig-paren">(</span><em>diffraction_simulation: pyxem.signals.diffraction_simulation.DiffractionSimulation</em>, <em>coordinates</em>, <em>calibration</em>, <em>offset</em>, <em>expected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#TestDiffractionSimulation.test_calibrated_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_calibrated_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_calibration">
+<code class="descname">test_calibration</code><span class="sig-paren">(</span><em>diffraction_simulation</em>, <em>calibration</em>, <em>expected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#TestDiffractionSimulation.test_calibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_calibration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_direct_beam_mask">
+<code class="descname">test_direct_beam_mask</code><span class="sig-paren">(</span><em>diffraction_simulation</em>, <em>coordinates</em>, <em>with_direct_beam</em>, <em>expected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#TestDiffractionSimulation.test_direct_beam_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_direct_beam_mask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_init">
+<code class="descname">test_init</code><span class="sig-paren">(</span><em>diffraction_simulation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#TestDiffractionSimulation.test_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.coords_intensity_simulation">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_simulation.</code><code class="descname">coords_intensity_simulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#coords_intensity_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.coords_intensity_simulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.get_signal">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_simulation.</code><code class="descname">get_signal</code><span class="sig-paren">(</span><em>coords_intensity_simulation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#get_signal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.get_signal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.profile_simulation">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_simulation.</code><code class="descname">profile_simulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#profile_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.profile_simulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.test_correct_quadrant_hs">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_simulation.</code><code class="descname">test_correct_quadrant_hs</code><span class="sig-paren">(</span><em>get_signal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#test_correct_quadrant_hs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.test_correct_quadrant_hs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.test_correct_quadrant_np">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_simulation.</code><code class="descname">test_correct_quadrant_np</code><span class="sig-paren">(</span><em>get_signal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#test_correct_quadrant_np"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.test_correct_quadrant_np" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.test_plot_profile_simulation">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_simulation.</code><code class="descname">test_plot_profile_simulation</code><span class="sig-paren">(</span><em>profile_simulation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#test_plot_profile_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.test_plot_profile_simulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.test_typing">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_simulation.</code><code class="descname">test_typing</code><span class="sig-paren">(</span><em>get_signal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#test_typing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.test_typing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_simulation.test_wrong_calibration_setting">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_simulation.</code><code class="descname">test_wrong_calibration_setting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_simulation.html#test_wrong_calibration_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_simulation.test_wrong_calibration_setting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_signals.test_diffraction_vectors">
+<span id="pyxem-tests-test-signals-test-diffraction-vectors-module"></span><h2>pyxem.tests.test_signals.test_diffraction_vectors module<a class="headerlink" href="#module-pyxem.tests.test_signals.test_diffraction_vectors" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestDiffractingPixelMaps">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_diffraction_vectors.</code><code class="descname">TestDiffractingPixelMaps</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestDiffractingPixelMaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestDiffractingPixelMaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestDiffractingPixelMaps.test_get_dpm_map">
+<code class="descname">test_get_dpm_map</code><span class="sig-paren">(</span><em>diffraction_vectors_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestDiffractingPixelMaps.test_get_dpm_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestDiffractingPixelMaps.test_get_dpm_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestDiffractingPixelMaps.test_get_dpm_map_binary">
+<code class="descname">test_get_dpm_map_binary</code><span class="sig-paren">(</span><em>diffraction_vectors_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestDiffractingPixelMaps.test_get_dpm_map_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestDiffractingPixelMaps.test_get_dpm_map_binary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestMagnitudes">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_diffraction_vectors.</code><code class="descname">TestMagnitudes</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestMagnitudes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestMagnitudes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestMagnitudes.test_get_magnitude_histogram_map">
+<code class="descname">test_get_magnitude_histogram_map</code><span class="sig-paren">(</span><em>diffraction_vectors_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestMagnitudes.test_get_magnitude_histogram_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestMagnitudes.test_get_magnitude_histogram_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestMagnitudes.test_get_magnitude_histogram_single">
+<code class="descname">test_get_magnitude_histogram_single</code><span class="sig-paren">(</span><em>diffraction_vectors_single</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestMagnitudes.test_get_magnitude_histogram_single"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestMagnitudes.test_get_magnitude_histogram_single" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestMagnitudes.test_get_magnitudes_map">
+<code class="descname">test_get_magnitudes_map</code><span class="sig-paren">(</span><em>diffraction_vectors_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestMagnitudes.test_get_magnitudes_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestMagnitudes.test_get_magnitudes_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestMagnitudes.test_get_magnitudes_single">
+<code class="descname">test_get_magnitudes_single</code><span class="sig-paren">(</span><em>diffraction_vectors_single</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestMagnitudes.test_get_magnitudes_single"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestMagnitudes.test_get_magnitudes_single" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestUniqueVectors">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_diffraction_vectors.</code><code class="descname">TestUniqueVectors</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestUniqueVectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestUniqueVectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestUniqueVectors.test_get_unique_vectors_map_type">
+<code class="descname">test_get_unique_vectors_map_type</code><span class="sig-paren">(</span><em>diffraction_vectors_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestUniqueVectors.test_get_unique_vectors_map_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestUniqueVectors.test_get_unique_vectors_map_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestUniqueVectors.test_get_unique_vectors_map_values">
+<code class="descname">test_get_unique_vectors_map_values</code><span class="sig-paren">(</span><em>diffraction_vectors_map</em>, <em>distance_threshold</em>, <em>answer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestUniqueVectors.test_get_unique_vectors_map_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestUniqueVectors.test_get_unique_vectors_map_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.TestUniqueVectors.test_get_unique_vectors_single">
+<code class="descname">test_get_unique_vectors_single</code><span class="sig-paren">(</span><em>diffraction_vectors_single</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#TestUniqueVectors.test_get_unique_vectors_single"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.TestUniqueVectors.test_get_unique_vectors_single" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.diffraction_vectors_map">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_vectors.</code><code class="descname">diffraction_vectors_map</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#diffraction_vectors_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.diffraction_vectors_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.diffraction_vectors_single">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_vectors.</code><code class="descname">diffraction_vectors_single</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#diffraction_vectors_single"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.diffraction_vectors_single" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.test_get_cartesian_coordinates">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_vectors.</code><code class="descname">test_get_cartesian_coordinates</code><span class="sig-paren">(</span><em>diffraction_vectors_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#test_get_cartesian_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.test_get_cartesian_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.test_plot_diffraction_vectors">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_vectors.</code><code class="descname">test_plot_diffraction_vectors</code><span class="sig-paren">(</span><em>diffraction_vectors_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#test_plot_diffraction_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.test_plot_diffraction_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_diffraction_vectors.test_plot_diffraction_vectors_on_signal">
+<code class="descclassname">pyxem.tests.test_signals.test_diffraction_vectors.</code><code class="descname">test_plot_diffraction_vectors_on_signal</code><span class="sig-paren">(</span><em>diffraction_vectors_map</em>, <em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_diffraction_vectors.html#test_plot_diffraction_vectors_on_signal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_diffraction_vectors.test_plot_diffraction_vectors_on_signal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_signals.test_electron_diffraction">
+<span id="pyxem-tests-test-signals-test-electron-diffraction-module"></span><h2>pyxem.tests.test_signals.test_electron_diffraction module<a class="headerlink" href="#module-pyxem.tests.test_signals.test_electron_diffraction" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestBackgroundMethods">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">TestBackgroundMethods</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestBackgroundMethods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestBackgroundMethods" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestBackgroundMethods.test_remove_background">
+<code class="descname">test_remove_background</code><span class="sig-paren">(</span><em>diffraction_pattern</em>, <em>method</em>, <em>kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestBackgroundMethods.test_remove_background"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestBackgroundMethods.test_remove_background" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestDirectBeamMethods">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">TestDirectBeamMethods</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestDirectBeamMethods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestDirectBeamMethods" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestDirectBeamMethods.test_get_direct_beam_mask">
+<code class="descname">test_get_direct_beam_mask</code><span class="sig-paren">(</span><em>diffraction_pattern</em>, <em>mask_expected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestDirectBeamMethods.test_get_direct_beam_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestDirectBeamMethods.test_get_direct_beam_mask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestGainNormalisation">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">TestGainNormalisation</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestGainNormalisation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestGainNormalisation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestGainNormalisation.test_apply_gain_normalisation">
+<code class="descname">test_apply_gain_normalisation</code><span class="sig-paren">(</span><em>diffraction_pattern</em>, <em>dark_reference</em>, <em>bright_reference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestGainNormalisation.test_apply_gain_normalisation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestGainNormalisation.test_apply_gain_normalisation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">TestNotImplemented</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestNotImplemented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented.pytestmark">
+<code class="descname">pytestmark</code><em class="property"> = [Mark(name='xfail', args=(), kwargs={'raises': &lt;class 'NotImplementedError'&gt;})]</em><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented.pytestmark" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented.test_failing_run">
+<code class="descname">test_failing_run</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestNotImplemented.test_failing_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented.test_failing_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented.test_remove_background_fake_implementation">
+<code class="descname">test_remove_background_fake_implementation</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestNotImplemented.test_remove_background_fake_implementation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented.test_remove_background_fake_implementation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented.test_remove_background_fake_method">
+<code class="descname">test_remove_background_fake_method</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestNotImplemented.test_remove_background_fake_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented.test_remove_background_fake_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented.test_remove_dead_pixels_failing">
+<code class="descname">test_remove_dead_pixels_failing</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestNotImplemented.test_remove_dead_pixels_failing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestNotImplemented.test_remove_dead_pixels_failing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestPeakFinding">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">TestPeakFinding</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestPeakFinding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestPeakFinding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestPeakFinding.methods">
+<code class="descname">methods</code><em class="property"> = ['zaefferer', 'laplacian_of_gaussians', 'difference_of_gaussians', 'stat', 'xc']</em><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestPeakFinding.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestPeakFinding.ragged_peak">
+<code class="descname">ragged_peak</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestPeakFinding.ragged_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestPeakFinding.ragged_peak" title="Permalink to this definition">¶</a></dt>
+<dd><p>A small selection of peaks in an ElectronDiffraction, to allow flexibilty
+of test building here.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestPeakFinding.test_findpeaks_ragged">
+<code class="descname">test_findpeaks_ragged</code><span class="sig-paren">(</span><em>ragged_peak</em>, <em>method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestPeakFinding.test_findpeaks_ragged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestPeakFinding.test_findpeaks_ragged" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">TestRadialProfile</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestRadialProfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.axes_test_dp">
+<code class="descname">axes_test_dp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestRadialProfile.axes_test_dp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.axes_test_dp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.diffraction_pattern_for_radial">
+<code class="descname">diffraction_pattern_for_radial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestRadialProfile.diffraction_pattern_for_radial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.diffraction_pattern_for_radial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Two diffraction patterns with easy to see radial profiles, wrapped
+in ElectronDiffraction  &lt;2|8,8&gt;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.mask_for_radial">
+<code class="descname">mask_for_radial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestRadialProfile.mask_for_radial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.mask_for_radial" title="Permalink to this definition">¶</a></dt>
+<dd><p>An 8x8 mask array, to test that part of the radial average code.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.test_radial_profile">
+<code class="descname">test_radial_profile</code><span class="sig-paren">(</span><em>diffraction_pattern_for_radial</em>, <em>expected</em>, <em>mask_for_radial</em>, <em>expected_mask</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestRadialProfile.test_radial_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.test_radial_profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.test_radial_profile_axes">
+<code class="descname">test_radial_profile_axes</code><span class="sig-paren">(</span><em>axes_test_dp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestRadialProfile.test_radial_profile_axes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.test_radial_profile_axes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.test_radial_profile_signal_type">
+<code class="descname">test_radial_profile_signal_type</code><span class="sig-paren">(</span><em>diffraction_pattern_for_radial</em>, <em>mask_for_radial</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestRadialProfile.test_radial_profile_signal_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestRadialProfile.test_radial_profile_signal_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleHyperspy">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">TestSimpleHyperspy</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestSimpleHyperspy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleHyperspy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleHyperspy.test_set_diffraction_calibration">
+<code class="descname">test_set_diffraction_calibration</code><span class="sig-paren">(</span><em>diffraction_pattern</em>, <em>calibration</em>, <em>center</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestSimpleHyperspy.test_set_diffraction_calibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleHyperspy.test_set_diffraction_calibration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleHyperspy.test_set_experimental_parameters">
+<code class="descname">test_set_experimental_parameters</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestSimpleHyperspy.test_set_experimental_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleHyperspy.test_set_experimental_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleHyperspy.test_set_scan_calibration">
+<code class="descname">test_set_scan_calibration</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestSimpleHyperspy.test_set_scan_calibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleHyperspy.test_set_scan_calibration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">TestSimpleMaps</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestSimpleMaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.methods">
+<code class="descname">methods</code><em class="property"> = ['average', 'nan']</em><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.test_apply_affine_transformation">
+<code class="descname">test_apply_affine_transformation</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestSimpleMaps.test_apply_affine_transformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.test_apply_affine_transformation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.test_center_direct_beam">
+<code class="descname">test_center_direct_beam</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestSimpleMaps.test_center_direct_beam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.test_center_direct_beam" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.test_center_direct_beam_in_small_region">
+<code class="descname">test_center_direct_beam_in_small_region</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestSimpleMaps.test_center_direct_beam_in_small_region"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.test_center_direct_beam_in_small_region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.test_get_direct_beam_postion">
+<code class="descname">test_get_direct_beam_postion</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestSimpleMaps.test_get_direct_beam_postion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.test_get_direct_beam_postion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.test_remove_dead_pixels">
+<code class="descname">test_remove_dead_pixels</code><span class="sig-paren">(</span><em>diffraction_pattern</em>, <em>method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestSimpleMaps.test_remove_dead_pixels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestSimpleMaps.test_remove_dead_pixels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestVirtualImaging">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">TestVirtualImaging</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestVirtualImaging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestVirtualImaging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestVirtualImaging.test_get_virtual_image">
+<code class="descname">test_get_virtual_image</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestVirtualImaging.test_get_virtual_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestVirtualImaging.test_get_virtual_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestVirtualImaging.test_plot_interactive_virtual_image">
+<code class="descname">test_plot_interactive_virtual_image</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestVirtualImaging.test_plot_interactive_virtual_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestVirtualImaging.test_plot_interactive_virtual_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestsAssertionless">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">TestsAssertionless</code><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestsAssertionless"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestsAssertionless" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestsAssertionless.test_decomposition">
+<code class="descname">test_decomposition</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestsAssertionless.test_decomposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestsAssertionless.test_decomposition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.TestsAssertionless.test_find_peaks_interactive">
+<code class="descname">test_find_peaks_interactive</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#TestsAssertionless.test_find_peaks_interactive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.TestsAssertionless.test_find_peaks_interactive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_electron_diffraction.test_init">
+<code class="descclassname">pyxem.tests.test_signals.test_electron_diffraction.</code><code class="descname">test_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_electron_diffraction.html#test_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_electron_diffraction.test_init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_signals.test_indexation_results">
+<span id="pyxem-tests-test-signals-test-indexation-results-module"></span><h2>pyxem.tests.test_signals.test_indexation_results module<a class="headerlink" href="#module-pyxem.tests.test_signals.test_indexation_results" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_indexation_results.test_template_get_crystallographic_map">
+<code class="descclassname">pyxem.tests.test_signals.test_indexation_results.</code><code class="descname">test_template_get_crystallographic_map</code><span class="sig-paren">(</span><em>dp_template_match_result</em>, <em>sp_template_match_result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_indexation_results.html#test_template_get_crystallographic_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_indexation_results.test_template_get_crystallographic_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_indexation_results.test_vector_get_crystallographic_map">
+<code class="descclassname">pyxem.tests.test_signals.test_indexation_results.</code><code class="descname">test_vector_get_crystallographic_map</code><span class="sig-paren">(</span><em>dp_vector_match_result</em>, <em>sp_vector_match_result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_indexation_results.html#test_vector_get_crystallographic_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_indexation_results.test_vector_get_crystallographic_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_indexation_results.test_vector_get_indexed_diffraction_vectors">
+<code class="descclassname">pyxem.tests.test_signals.test_indexation_results.</code><code class="descname">test_vector_get_indexed_diffraction_vectors</code><span class="sig-paren">(</span><em>overwrite</em>, <em>result_hkl</em>, <em>current_hkl</em>, <em>expected_hkl</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_indexation_results.html#test_vector_get_indexed_diffraction_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_indexation_results.test_vector_get_indexed_diffraction_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_indexation_results.test_vector_get_indexed_diffraction_vectors_warn">
+<code class="descclassname">pyxem.tests.test_signals.test_indexation_results.</code><code class="descname">test_vector_get_indexed_diffraction_vectors_warn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_indexation_results.html#test_vector_get_indexed_diffraction_vectors_warn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_indexation_results.test_vector_get_indexed_diffraction_vectors_warn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_signals.test_tensor_field">
+<span id="pyxem-tests-test-signals-test-tensor-field-module"></span><h2>pyxem.tests.test_signals.test_tensor_field module<a class="headerlink" href="#module-pyxem.tests.test_signals.test_tensor_field" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_tensor_field.test_get_rotation_angle">
+<code class="descclassname">pyxem.tests.test_signals.test_tensor_field.</code><code class="descname">test_get_rotation_angle</code><span class="sig-paren">(</span><em>R</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_tensor_field.html#test_get_rotation_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_tensor_field.test_get_rotation_angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_tensor_field.test_get_strain_maps">
+<code class="descclassname">pyxem.tests.test_signals.test_tensor_field.</code><code class="descname">test_get_strain_maps</code><span class="sig-paren">(</span><em>dgm</em>, <em>strain_answers</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_tensor_field.html#test_get_strain_maps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_tensor_field.test_get_strain_maps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_tensor_field.test_map_polar_decomposition">
+<code class="descclassname">pyxem.tests.test_signals.test_tensor_field.</code><code class="descname">test_map_polar_decomposition</code><span class="sig-paren">(</span><em>dgm</em>, <em>rotation_map</em>, <em>distortion_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_tensor_field.html#test_map_polar_decomposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_tensor_field.test_map_polar_decomposition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_signals.test_tensor_field.test_polar_decomposition">
+<code class="descclassname">pyxem.tests.test_signals.test_tensor_field.</code><code class="descname">test_polar_decomposition</code><span class="sig-paren">(</span><em>D</em>, <em>side</em>, <em>R</em>, <em>U</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_signals/test_tensor_field.html#test_polar_decomposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_signals.test_tensor_field.test_polar_decomposition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_signals">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyxem.tests.test_signals" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.tests.test_physical.test_orientation_mapping_phys &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.tests.test_physical.test_orientation_mapping_phys</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2018 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">pyxem</span> <span class="k">as</span> <span class="nn">pxm</span>
+<span class="kn">import</span> <span class="nn">hyperspy.api</span> <span class="k">as</span> <span class="nn">hs</span>
+<span class="kn">import</span> <span class="nn">diffpy.structure</span>
+
+<span class="kn">from</span> <span class="nn">transforms3d.euler</span> <span class="k">import</span> <span class="n">euler2mat</span>
+
+<span class="kn">from</span> <span class="nn">pyxem.generators.indexation_generator</span> <span class="k">import</span> <span class="n">IndexationGenerator</span><span class="p">,</span> <span class="n">VectorIndexationGenerator</span>
+<span class="kn">from</span> <span class="nn">pyxem.generators.library_generator</span> <span class="k">import</span> <span class="n">VectorLibraryGenerator</span>
+<span class="kn">from</span> <span class="nn">pyxem.libraries.structure_library</span> <span class="k">import</span> <span class="n">StructureLibrary</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.electron_diffraction</span> <span class="k">import</span> <span class="n">ElectronDiffraction</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.diffraction_vectors</span> <span class="k">import</span> <span class="n">DiffractionVectors</span>
+<span class="kn">from</span> <span class="nn">pyxem.utils.sim_utils</span> <span class="k">import</span> <span class="p">(</span><span class="n">peaks_from_best_template</span><span class="p">,</span>
+                                   <span class="n">peaks_from_best_vector_match</span><span class="p">,</span>
+                                   <span class="n">get_kinematical_intensities</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The test are designed to make sure orientation mapping works when actual</span>
+<span class="sd">rotation are considered.</span>
+
+<span class="sd">Specifically we test (for both an orthorhombic and hexagonal samples) that:</span>
+
+<span class="sd">- The algorithm can tell the difference between down a, down b and down c axes</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">half_side_length</span> <span class="o">=</span> <span class="mi">72</span>
+
+
+<div class="viewcode-block" id="create_Ortho"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.create_Ortho">[docs]</a><span class="k">def</span> <span class="nf">create_Ortho</span><span class="p">():</span>
+    <span class="n">latt</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+    <span class="n">atom</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">atom</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">atype</span><span class="o">=</span><span class="s1">&#39;Zn&#39;</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">lattice</span><span class="o">=</span><span class="n">latt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">Structure</span><span class="p">(</span><span class="n">atoms</span><span class="o">=</span><span class="p">[</span><span class="n">atom</span><span class="p">],</span> <span class="n">lattice</span><span class="o">=</span><span class="n">latt</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_Hex"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.create_Hex">[docs]</a><span class="k">def</span> <span class="nf">create_Hex</span><span class="p">():</span>
+    <span class="n">latt</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+    <span class="n">atom</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">atom</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">atype</span><span class="o">=</span><span class="s1">&#39;Ni&#39;</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">lattice</span><span class="o">=</span><span class="n">latt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">Structure</span><span class="p">(</span><span class="n">atoms</span><span class="o">=</span><span class="p">[</span><span class="n">atom</span><span class="p">],</span> <span class="n">lattice</span><span class="o">=</span><span class="n">latt</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_wurtzite"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.create_wurtzite">[docs]</a><span class="k">def</span> <span class="nf">create_wurtzite</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct a hexagonal P63mc GaAs Wurtzite structure. &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">rotation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">rotation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">4.053</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mf">6.680</span>
+    <span class="n">lattice</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+    <span class="n">atom_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]:</span>
+        <span class="n">atom_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">atom</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span>
+                <span class="n">atype</span><span class="o">=</span><span class="s1">&#39;Ga&#39;</span><span class="p">,</span>
+                <span class="n">xyz</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span>
+                <span class="n">lattice</span><span class="o">=</span><span class="n">lattice</span><span class="p">))</span>
+        <span class="n">atom_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">atom</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span>
+                <span class="n">atype</span><span class="o">=</span><span class="s1">&#39;As&#39;</span><span class="p">,</span>
+                <span class="n">xyz</span><span class="o">=</span><span class="p">[</span><span class="n">x</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span> <span class="n">z</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">8</span><span class="p">],</span>
+                <span class="n">lattice</span><span class="o">=</span><span class="n">lattice</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">Structure</span><span class="p">(</span><span class="n">atoms</span><span class="o">=</span><span class="n">atom_list</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="n">lattice</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="edc"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.edc">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">edc</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">pxm</span><span class="o">.</span><span class="n">DiffractionGenerator</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mf">5e-2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="rot_list"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.rot_list">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">rot_list</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">product</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">rot_list_temp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>  <span class="c1"># rotations around A</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">90</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">rot_list_temp</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>  <span class="c1"># rotations around B</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">],</span> <span class="p">[</span><span class="mi">90</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">rot_list_temp</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>  <span class="c1"># rotations around C</span>
+    <span class="k">return</span> <span class="n">rot_list_temp</span></div>
+
+
+<div class="viewcode-block" id="pattern_list"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.pattern_list">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">pattern_list</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="get_template_library"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.get_template_library">[docs]</a><span class="k">def</span> <span class="nf">get_template_library</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">):</span>
+    <span class="n">diff_gen</span> <span class="o">=</span> <span class="n">pxm</span><span class="o">.</span><span class="n">DiffractionLibraryGenerator</span><span class="p">(</span><span class="n">edc</span><span class="p">)</span>
+    <span class="n">struc_lib</span> <span class="o">=</span> <span class="n">StructureLibrary</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="p">[</span><span class="n">structure</span><span class="p">],</span> <span class="p">[</span><span class="n">rot_list</span><span class="p">])</span>
+    <span class="n">library</span> <span class="o">=</span> <span class="n">diff_gen</span><span class="o">.</span><span class="n">get_diffraction_library</span><span class="p">(</span><span class="n">struc_lib</span><span class="p">,</span>
+                                               <span class="n">calibration</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">half_side_length</span><span class="p">,</span>
+                                               <span class="n">reciprocal_radius</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+                                               <span class="n">half_shape</span><span class="o">=</span><span class="p">(</span><span class="n">half_side_length</span><span class="p">,</span>
+                                                           <span class="n">half_side_length</span><span class="p">),</span>
+                                               <span class="n">with_direct_beam</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">diffraction_generator</span> <span class="o">=</span> <span class="n">edc</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">reciprocal_radius</span> <span class="o">=</span> <span class="mf">0.8</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">with_direct_beam</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">library</span></div>
+
+
+<div class="viewcode-block" id="get_template_match_results"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.get_template_match_results">[docs]</a><span class="k">def</span> <span class="nf">get_template_match_results</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplane_rotations</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">dp_library</span> <span class="o">=</span> <span class="n">get_template_library</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sim</span> <span class="ow">in</span> <span class="n">dp_library</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="s1">&#39;simulations&#39;</span><span class="p">]:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">as_signal</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">half_side_length</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">dp</span> <span class="o">=</span> <span class="n">pxm</span><span class="o">.</span><span class="n">ElectronDiffraction</span><span class="p">([[</span><span class="n">pattern</span><span class="p">,</span> <span class="n">pattern</span><span class="p">],</span> <span class="p">[</span><span class="n">pattern</span><span class="p">,</span> <span class="n">pattern</span><span class="p">]])</span>
+    <span class="n">library</span> <span class="o">=</span> <span class="n">get_template_library</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">)</span>
+    <span class="n">indexer</span> <span class="o">=</span> <span class="n">IndexationGenerator</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">library</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">indexer</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">inplane_rotations</span><span class="o">=</span><span class="n">inplane_rotations</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_vector_match_results"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.get_vector_match_results">[docs]</a><span class="k">def</span> <span class="nf">get_vector_match_results</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">):</span>
+    <span class="n">diffraction_library</span> <span class="o">=</span> <span class="n">get_template_library</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">)</span>
+    <span class="n">peak_lists</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">pixel_coords</span> <span class="ow">in</span> <span class="n">diffraction_library</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="s1">&#39;pixel_coords&#39;</span><span class="p">]:</span>
+        <span class="n">peak_lists</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pixel_coords</span><span class="p">)</span>
+    <span class="n">peaks</span> <span class="o">=</span> <span class="n">DiffractionVectors</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">peak_lists</span><span class="p">,</span> <span class="n">peak_lists</span><span class="p">])</span> <span class="o">-</span> <span class="n">half_side_length</span><span class="p">)</span> <span class="o">/</span> <span class="n">half_side_length</span><span class="p">)</span>
+    <span class="n">peaks</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">set_signal_dimension</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">peaks</span><span class="o">.</span><span class="n">calculate_cartesian_coordinates</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">peaks</span><span class="o">.</span><span class="n">cartesian</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">set_signal_dimension</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">structure_library</span> <span class="o">=</span> <span class="n">StructureLibrary</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="p">[</span><span class="n">structure</span><span class="p">],</span> <span class="p">[[]])</span>
+    <span class="n">library_generator</span> <span class="o">=</span> <span class="n">VectorLibraryGenerator</span><span class="p">(</span><span class="n">structure_library</span><span class="p">)</span>
+    <span class="n">vector_library</span> <span class="o">=</span> <span class="n">library_generator</span><span class="o">.</span><span class="n">get_vector_library</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">indexation_generator</span> <span class="o">=</span> <span class="n">VectorIndexationGenerator</span><span class="p">(</span><span class="n">peaks</span><span class="p">,</span> <span class="n">vector_library</span><span class="p">)</span>
+    <span class="n">indexation</span> <span class="o">=</span> <span class="n">indexation_generator</span><span class="o">.</span><span class="n">index_vectors</span><span class="p">(</span>
+        <span class="n">mag_tol</span><span class="o">=</span><span class="mf">1.5</span> <span class="o">/</span> <span class="n">half_side_length</span><span class="p">,</span>
+        <span class="n">angle_tol</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">index_error_tol</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">n_peaks_to_index</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">n_best</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">diffraction_library</span><span class="p">,</span> <span class="n">indexation</span></div>
+
+
+<div class="viewcode-block" id="test_orientation_mapping_physical"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.test_orientation_mapping_physical">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;structure&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">create_Ortho</span><span class="p">(),</span> <span class="n">create_Hex</span><span class="p">()])</span>
+<span class="k">def</span> <span class="nf">test_orientation_mapping_physical</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">):</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">get_template_match_results</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">inav</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">M</span><span class="o">.</span><span class="n">inav</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">match_data</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">inav</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isig</span><span class="p">[:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">assert</span> <span class="n">match_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">match_data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="test_masked_OM"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.test_masked_OM">[docs]</a><span class="k">def</span> <span class="nf">test_masked_OM</span><span class="p">(</span><span class="n">default_structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">):</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">hs</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">Signal1D</span><span class="p">(([[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]]))</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">get_template_match_results</span><span class="p">(</span><span class="n">default_structure</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">inav</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="expected_best_peaks_pattern_list"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.expected_best_peaks_pattern_list">[docs]</a><span class="k">def</span> <span class="nf">expected_best_peaks_pattern_list</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">library</span><span class="o">.</span><span class="n">get_library_entry</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))[</span><span class="s1">&#39;Sim&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="expected_best_peaks_rotated"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.expected_best_peaks_rotated">[docs]</a><span class="k">def</span> <span class="nf">expected_best_peaks_rotated</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="n">rotation_euler</span><span class="p">):</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">rotation_euler</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">rotation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)],</span>
+        <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)]])</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_library_entry</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))[</span><span class="s1">&#39;Sim&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">rotation</span> <span class="o">@</span> <span class="n">coords</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="test_generate_peaks_from_best_template"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.test_generate_peaks_from_best_template">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;pattern_list, inplane_rotations, get_expected_peaks&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">expected_best_peaks_pattern_list</span><span class="p">),</span>
+    <span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">45</span><span class="p">)],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">expected_best_peaks_rotated</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_generate_peaks_from_best_template</span><span class="p">(</span><span class="n">default_structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">,</span> <span class="n">get_expected_peaks</span><span class="p">,</span> <span class="n">inplane_rotations</span><span class="p">):</span>
+    <span class="n">library</span> <span class="o">=</span> <span class="n">get_template_library</span><span class="p">(</span><span class="n">default_structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">get_template_match_results</span><span class="p">(</span><span class="n">default_structure</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">inplane_rotations</span><span class="o">=</span><span class="n">inplane_rotations</span><span class="p">)</span>
+    <span class="n">peaks</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">peaks_from_best_template</span><span class="p">,</span>
+                  <span class="n">library</span><span class="o">=</span><span class="n">library</span><span class="p">,</span>
+                  <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">expected_peaks</span> <span class="o">=</span> <span class="n">get_expected_peaks</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">expected_peak</span> <span class="ow">in</span> <span class="n">expected_peaks</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">peaks</span><span class="o">.</span><span class="n">inav</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">expected_peak</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">0.03</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="test_vector_matching_physical"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.test_vector_matching_physical">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;structure, rot_list&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="n">create_Hex</span><span class="p">(),</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])])</span>
+<span class="k">def</span> <span class="nf">test_vector_matching_physical</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">):</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">match_results</span> <span class="o">=</span> <span class="n">get_vector_match_results</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">match_results</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1"># 2x2 rotations, 2 best peaks, 5 values</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">match_results</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># match rate for best orientation</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">match_results</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># match rate for best orientation</span></div>
+
+
+<div class="viewcode-block" id="test_peaks_from_best_vector_match"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.test_peaks_from_best_vector_match">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;structure, rot_list&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="n">create_Hex</span><span class="p">(),</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])])</span>
+<span class="k">def</span> <span class="nf">test_peaks_from_best_vector_match</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">):</span>
+    <span class="n">library</span><span class="p">,</span> <span class="n">match_results</span> <span class="o">=</span> <span class="n">get_vector_match_results</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">)</span>
+    <span class="n">peaks</span> <span class="o">=</span> <span class="n">match_results</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">peaks_from_best_vector_match</span><span class="p">,</span>
+                              <span class="n">library</span><span class="o">=</span><span class="n">library</span><span class="p">,</span>
+                              <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># Unordered compare within absolute tolerance</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">lib</span> <span class="o">=</span> <span class="n">library</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="s1">&#39;simulations&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">peaks</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]:</span>
+            <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lib</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lib</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="test_plot_best_matching_results_on_signal_vector"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.test_plot_best_matching_results_on_signal_vector">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;structure, rot_list&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="n">create_Hex</span><span class="p">(),</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])])</span>
+<span class="k">def</span> <span class="nf">test_plot_best_matching_results_on_signal_vector</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">):</span>
+    <span class="c1"># Just test that the code runs</span>
+    <span class="n">library</span><span class="p">,</span> <span class="n">match_results</span> <span class="o">=</span> <span class="n">get_vector_match_results</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rot_list</span><span class="p">,</span> <span class="n">edc</span><span class="p">)</span>
+    <span class="c1"># Hyperspy can only add markers to square signals</span>
+    <span class="n">match_results</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">match_results</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">match_results</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+    <span class="n">dp</span> <span class="o">=</span> <span class="n">ElectronDiffraction</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">144</span><span class="p">,</span> <span class="mi">144</span><span class="p">))]])</span>
+    <span class="n">match_results</span><span class="o">.</span><span class="n">plot_best_matching_results_on_signal</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span>
+                                                       <span class="n">library</span><span class="o">=</span><span class="n">library</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_kinematic_intensities_rotation"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.test_kinematic_intensities_rotation">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;structure, rotation&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="n">create_wurtzite</span><span class="p">(),</span> <span class="n">euler2mat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;rzxz&#39;</span><span class="p">))])</span>
+<span class="k">def</span> <span class="nf">test_kinematic_intensities_rotation</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rotation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test that kinematically forbidden diffraction spots gets zero intensity also after rotation.&quot;&quot;&quot;</span>
+    <span class="n">rotated_lattice</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="p">)</span>
+    <span class="n">rotated_lattice</span><span class="o">.</span><span class="n">setLatPar</span><span class="p">(</span><span class="n">baserot</span><span class="o">=</span><span class="n">rotation</span><span class="p">)</span>
+    <span class="n">structure</span><span class="o">.</span><span class="n">placeInLattice</span><span class="p">(</span><span class="n">rotated_lattice</span><span class="p">)</span>
+    <span class="n">reciprocal_lattice</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">()</span>
+    <span class="n">g_indices</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">g_hkls</span> <span class="o">=</span> <span class="n">reciprocal_lattice</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">g_indices</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">scattering_params_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lobato&#39;</span><span class="p">,</span> <span class="s1">&#39;xtables&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">scattering_params</span> <span class="ow">in</span> <span class="n">scattering_params_list</span><span class="p">:</span>
+        <span class="n">intensities</span> <span class="o">=</span> <span class="n">get_kinematical_intensities</span><span class="p">(</span>
+            <span class="n">structure</span><span class="p">,</span>
+            <span class="n">g_indices</span><span class="p">,</span>
+            <span class="n">g_hkls</span><span class="p">,</span>
+            <span class="n">excitation_error</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">maximum_excitation_error</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">debye_waller_factors</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">scattering_params</span><span class="o">=</span><span class="n">scattering_params</span><span class="p">)</span>
+
+        <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">intensities</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="test_kinematic_intensities_error_raise"><a class="viewcode-back" href="../../../../pyxem.tests.test_physical.html#pyxem.tests.test_physical.test_orientation_mapping_phys.test_kinematic_intensities_error_raise">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;structure, rotation&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="n">create_wurtzite</span><span class="p">(),</span> <span class="n">euler2mat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;rzxz&#39;</span><span class="p">))])</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">NotImplementedError</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_kinematic_intensities_error_raise</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">rotation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test that kinematically forbidden diffraction spots gets zero intensity also after rotation.&quot;&quot;&quot;</span>
+    <span class="n">rotated_lattice</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="p">)</span>
+    <span class="n">rotated_lattice</span><span class="o">.</span><span class="n">setLatPar</span><span class="p">(</span><span class="n">baserot</span><span class="o">=</span><span class="n">rotation</span><span class="p">)</span>
+    <span class="n">structure</span><span class="o">.</span><span class="n">placeInLattice</span><span class="p">(</span><span class="n">rotated_lattice</span><span class="p">)</span>
+    <span class="n">reciprocal_lattice</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">()</span>
+    <span class="n">g_indices</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">g_hkls</span> <span class="o">=</span> <span class="n">reciprocal_lattice</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">g_indices</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">intensities</span> <span class="o">=</span> <span class="n">get_kinematical_intensities</span><span class="p">(</span>
+        <span class="n">structure</span><span class="p">,</span>
+        <span class="n">g_indices</span><span class="p">,</span>
+        <span class="n">g_hkls</span><span class="p">,</span>
+        <span class="n">excitation_error</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">maximum_excitation_error</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">debye_waller_factors</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">scattering_params</span><span class="o">=</span><span class="s1">&#39;_empty&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

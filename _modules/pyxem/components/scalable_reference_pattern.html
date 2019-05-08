@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.components.scalable_reference_pattern &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.components.scalable_reference_pattern</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">hyperspy.component</span> <span class="k">import</span> <span class="n">Component</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.tensor_field</span> <span class="k">import</span> <span class="n">DisplacementGradientMap</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">transform</span> <span class="k">as</span> <span class="n">tf</span>
+
+
+<div class="viewcode-block" id="ScalableReferencePattern"><a class="viewcode-back" href="../../../pyxem.components.html#pyxem.components.scalable_reference_pattern.ScalableReferencePattern">[docs]</a><span class="k">class</span> <span class="nc">ScalableReferencePattern</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fixed diffraction pattern component which is scaled by a 2D affine</span>
+<span class="sd">    transformation of the form:</span>
+
+<span class="sd">        X = d11*x + d12*y</span>
+<span class="sd">        Y = d21*x + d21*y</span>
+
+<span class="sd">    The fixed two-dimensional pattern is defined by a single image which must</span>
+<span class="sd">    be passed to the ScalableReferencePattern2D constructor, e.g.:</span>
+
+<span class="sd">    .. code-block:: ipython</span>
+
+<span class="sd">        In [1]: im = load(&#39;my_image_data.hdf5&#39;)</span>
+<span class="sd">        In [2] : ref = components.ScalableFixedPattern(im.inav[11,30]))</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    D : list</span>
+<span class="sd">        List containing matrix components for affine matrix</span>
+
+<span class="sd">    order : 1, 3</span>
+<span class="sd">        Interpolation order used when applying image transformation</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal2D</span><span class="p">,</span>
+                 <span class="n">d11</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">d12</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span>
+                 <span class="n">d21</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">d22</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span>
+                 <span class="n">t1</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">t2</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span>
+                 <span class="n">order</span><span class="o">=</span><span class="mi">3</span>
+                 <span class="p">):</span>
+
+        <span class="n">Component</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;d11&#39;</span><span class="p">,</span> <span class="s1">&#39;d12&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;d21&#39;</span><span class="p">,</span> <span class="s1">&#39;d22&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;t1&#39;</span><span class="p">,</span> <span class="s1">&#39;t2&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_whitelist</span><span class="p">[</span><span class="s1">&#39;signal2D&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;init,sig&#39;</span><span class="p">,</span> <span class="n">signal2D</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="o">=</span> <span class="n">signal2D</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d11</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">d11</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d12</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">d12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d21</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">d21</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d22</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">d22</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t1</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">t1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t2</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">t2</span>
+
+<div class="viewcode-block" id="ScalableReferencePattern.function"><a class="viewcode-back" href="../../../pyxem.components.html#pyxem.components.scalable_reference_pattern.ScalableReferencePattern.function">[docs]</a>    <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+
+        <span class="n">signal2D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span>
+        <span class="n">d11</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d11</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">d12</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d12</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">d21</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d21</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">d22</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d22</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t1</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t2</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">d11</span><span class="p">,</span> <span class="n">d12</span><span class="p">,</span> <span class="n">t1</span><span class="p">],</span>
+                      <span class="p">[</span><span class="n">d21</span><span class="p">,</span> <span class="n">d22</span><span class="p">,</span> <span class="n">t2</span><span class="p">],</span>
+                      <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
+
+        <span class="n">shifty</span><span class="p">,</span> <span class="n">shiftx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">signal2D</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="n">shift</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">SimilarityTransform</span><span class="p">(</span><span class="n">translation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">shiftx</span><span class="p">,</span> <span class="o">-</span><span class="n">shifty</span><span class="p">])</span>
+        <span class="n">tform</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">AffineTransform</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">D</span><span class="p">)</span>
+        <span class="n">shift_inv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">SimilarityTransform</span><span class="p">(</span><span class="n">translation</span><span class="o">=</span><span class="p">[</span><span class="n">shiftx</span><span class="p">,</span> <span class="n">shifty</span><span class="p">])</span>
+
+        <span class="n">transformed</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">warp</span><span class="p">(</span><span class="n">signal2D</span><span class="p">,</span> <span class="p">(</span><span class="n">shift</span> <span class="o">+</span> <span class="p">(</span><span class="n">tform</span> <span class="o">+</span> <span class="n">shift_inv</span><span class="p">))</span><span class="o">.</span><span class="n">inverse</span><span class="p">,</span>
+                              <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">transformed</span></div>
+
+<div class="viewcode-block" id="ScalableReferencePattern.construct_displacement_gradient"><a class="viewcode-back" href="../../../pyxem.components.html#pyxem.components.scalable_reference_pattern.ScalableReferencePattern.construct_displacement_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">construct_displacement_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a map of the displacement gradient tensor at each</span>
+<span class="sd">        navigation position as determined by fitting an affine transformed</span>
+<span class="sd">        reference pattern.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        D : DisplacementGradientMap</span>
+<span class="sd">            Signal containing the displacement gradient tensor at each</span>
+<span class="sd">            navigation postion.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">DisplacementGradientMap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d11</span><span class="o">.</span><span class="n">map</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                                                      <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))))</span>
+
+        <span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d11</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span>
+        <span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d12</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span>
+        <span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d21</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span>
+        <span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d22</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span>
+        <span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+
+        <span class="k">return</span> <span class="n">D</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

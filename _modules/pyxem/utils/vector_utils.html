@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.utils.vector_utils &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.utils.vector_utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">transforms3d.axangles</span> <span class="k">import</span> <span class="n">axangle2mat</span>
+
+
+<div class="viewcode-block" id="detector_to_fourier"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.vector_utils.detector_to_fourier">[docs]</a><span class="k">def</span> <span class="nf">detector_to_fourier</span><span class="p">(</span><span class="n">k_xy</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">camera_length</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Maps two-dimensional Cartesian coordinates in the detector plane to</span>
+<span class="sd">    three-dimensional coordinates in reciprocal space, with origo in [000].</span>
+
+<span class="sd">    The detector uses a left-handed coordinate system, while the reciprocal</span>
+<span class="sd">    space uses a right-handed coordinate system.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k_xy : np.array()</span>
+<span class="sd">        Cartesian coordinates in detector plane, in reciprocal Ångström.</span>
+<span class="sd">    wavelength : float</span>
+<span class="sd">        Electron wavelength in Ångström.</span>
+<span class="sd">    camera_length : float</span>
+<span class="sd">        Camera length in metres.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    k : np.array()</span>
+<span class="sd">        Array of Cartesian coordinates in reciprocal space relative to [000].</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">k_xy</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="ow">and</span> <span class="n">k_xy</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span>
+        <span class="c1"># From ragged array</span>
+        <span class="n">k_xy</span> <span class="o">=</span> <span class="n">k_xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># The calibrated positions of the diffraction spots are already the x and y</span>
+    <span class="c1"># coordinates of the k vector on the Ewald sphere. The radius is given by</span>
+    <span class="c1"># the wavelength. k_z is calculated courtesy of Pythagoras, then offset by</span>
+    <span class="c1"># the Ewald sphere radius.</span>
+
+    <span class="n">k_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">wavelength</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">k_xy</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">wavelength</span>
+
+    <span class="c1"># Stack the xy-vector and the z vector to get the full k</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">k_xy</span><span class="p">,</span> <span class="n">k_z</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">k</span></div>
+
+
+<div class="viewcode-block" id="calculate_norms"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.vector_utils.calculate_norms">[docs]</a><span class="k">def</span> <span class="nf">calculate_norms</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the norm of an array of cartesian vectors. For use with map().</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : np.array()</span>
+<span class="sd">        Array of cartesian vectors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    norms : np.array()</span>
+<span class="sd">        Array of vector norms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="calculate_norms_ragged"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.vector_utils.calculate_norms_ragged">[docs]</a><span class="k">def</span> <span class="nf">calculate_norms_ragged</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the norm of an array of cartesian vectors. For use with map()</span>
+<span class="sd">    when applied to a ragged array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : np.array()</span>
+<span class="sd">        Array of cartesian vectors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    norms : np.array()</span>
+<span class="sd">        Array of vector norms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">norms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">norms</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_rotation_matrix_between_vectors"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.vector_utils.get_rotation_matrix_between_vectors">[docs]</a><span class="k">def</span> <span class="nf">get_rotation_matrix_between_vectors</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">ref_k1</span><span class="p">,</span> <span class="n">ref_k2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the rotation matrix to two experimentally measured</span>
+<span class="sd">    diffraction vectors from the corresponding vectors in a reference structure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    k1 : np.array()</span>
+<span class="sd">        Experimentally measured scattering vector 1.</span>
+<span class="sd">    k2 : np.array()</span>
+<span class="sd">        Experimentally measured scattering vector 2.</span>
+<span class="sd">    ref_k1 : np.array()</span>
+<span class="sd">        Reference scattering vector 1.</span>
+<span class="sd">    ref_k2 : np.array()</span>
+<span class="sd">        Reference scattering vector 2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    R : np.array()</span>
+<span class="sd">        Rotation matrix describing transformation from experimentally measured</span>
+<span class="sd">        scattering vectors to equivalent reference vectors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ref_plane_normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ref_k1</span><span class="p">,</span> <span class="n">ref_k2</span><span class="p">)</span>
+    <span class="n">k_plane_normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">)</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ref_plane_normal</span><span class="p">,</span> <span class="n">k_plane_normal</span><span class="p">)</span>
+    <span class="c1"># Avoid 0 degree including angle</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Rotate ref plane into k plane</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">get_angle_cartesian</span><span class="p">(</span><span class="n">ref_plane_normal</span><span class="p">,</span> <span class="n">k_plane_normal</span><span class="p">)</span>
+        <span class="n">R1</span> <span class="o">=</span> <span class="n">axangle2mat</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+        <span class="n">rot_ref_k1</span><span class="p">,</span> <span class="n">rot_ref_k2</span> <span class="o">=</span> <span class="n">R1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ref_k1</span><span class="p">),</span> <span class="n">R1</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ref_k2</span><span class="p">)</span>
+
+        <span class="c1"># Rotate ref vectors in plane</span>
+        <span class="n">angle1</span> <span class="o">=</span> <span class="n">get_angle_cartesian</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span> <span class="n">rot_ref_k1</span><span class="p">)</span>
+        <span class="n">angle2</span> <span class="o">=</span> <span class="n">get_angle_cartesian</span><span class="p">(</span><span class="n">k2</span><span class="p">,</span> <span class="n">rot_ref_k2</span><span class="p">)</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">angle1</span> <span class="o">+</span> <span class="n">angle2</span><span class="p">)</span>
+        <span class="c1"># k plane normal still the same</span>
+        <span class="n">R2</span> <span class="o">=</span> <span class="n">axangle2mat</span><span class="p">(</span><span class="n">k_plane_normal</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+
+        <span class="c1"># Total rotation is the combination of to plane R1 and in plane R2</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">R2</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">R</span></div>
+
+
+<div class="viewcode-block" id="get_indices_from_distance_matrix"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.vector_utils.get_indices_from_distance_matrix">[docs]</a><span class="k">def</span> <span class="nf">get_indices_from_distance_matrix</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <span class="n">distance_threshold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks if the distances from one vector in vlist to all other vectors in</span>
+<span class="sd">    vlist are larger than distance_threshold.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    distances : np.array()</span>
+<span class="sd">        Array of distances between vectors.</span>
+<span class="sd">    distance_threshold : float</span>
+<span class="sd">        The distance threshold for a vector to be retained.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    new_indices : np.array()</span>
+<span class="sd">        Array of vectors with distances greater than the threshold.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_indices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">distances</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">distances</span><span class="p">)[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">distances</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">distance_threshold</span><span class="p">)</span> <span class="o">==</span> <span class="n">l</span><span class="p">):</span>
+            <span class="n">new_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_indices</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_indices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_npeaks"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.vector_utils.get_npeaks">[docs]</a><span class="k">def</span> <span class="nf">get_npeaks</span><span class="p">(</span><span class="n">found_peaks</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the number of entries in a list. For use with map().</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    found_peaks : np.array()</span>
+<span class="sd">        Array of found peaks.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    len : int</span>
+<span class="sd">        The number of peaks in the array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_peaks</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="get_angle_cartesian"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.vector_utils.get_angle_cartesian">[docs]</a><span class="k">def</span> <span class="nf">get_angle_cartesian</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the angle between two vectors in a cartesian coordinate system.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a, b : array-like with 3 floats</span>
+<span class="sd">        The two directions to compute the angle between.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    angle : float</span>
+<span class="sd">        Angle between `a` and `b` in radians.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">determinant</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">determinant</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">determinant</span><span class="p">)))</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

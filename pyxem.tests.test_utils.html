@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.tests.test_utils package &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyxem.utils package" href="pyxem.utils.html" />
+    <link rel="prev" title="pyxem.tests.test_signals package" href="pyxem.tests.test_signals.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Contents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">pyxem.tests.test_utils package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_utils.test_expt_utils">pyxem.tests.test_utils.test_expt_utils module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_utils.test_indexation_utils">pyxem.tests.test_utils.test_indexation_utils module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_utils.test_peakfinders2D">pyxem.tests.test_utils.test_peakfinders2D module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_utils.test_sim_utils">pyxem.tests.test_utils.test_sim_utils module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_utils.test_subpixel_utils">pyxem.tests.test_utils.test_subpixel_utils module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_utils.test_vector_utils">pyxem.tests.test_utils.test_vector_utils module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pyxem.tests.test_signals.html" title="Previous Chapter: pyxem.tests.test_signals package"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; pyxem.tests.t...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pyxem.utils.html" title="Next Chapter: pyxem.utils package"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pyxem.utils package &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="pyxem-tests-test-utils-package">
+<h1>pyxem.tests.test_utils package<a class="headerlink" href="#pyxem-tests-test-utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyxem.tests.test_utils.test_expt_utils">
+<span id="pyxem-tests-test-utils-test-expt-utils-module"></span><h2>pyxem.tests.test_utils.test_expt_utils module<a class="headerlink" href="#module-pyxem.tests.test_utils.test_expt_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.tests.test_utils.test_expt_utils.TestCenteringAlgorithm">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_utils.test_expt_utils.</code><code class="descname">TestCenteringAlgorithm</code><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#TestCenteringAlgorithm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.TestCenteringAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_utils.test_expt_utils.TestCenteringAlgorithm.test_broader_starting_square_spot">
+<code class="descname">test_broader_starting_square_spot</code><span class="sig-paren">(</span><em>shifts_expected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#TestCenteringAlgorithm.test_broader_starting_square_spot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.TestCenteringAlgorithm.test_broader_starting_square_spot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_utils.test_expt_utils.TestCenteringAlgorithm.test_perfectly_centered_spot">
+<code class="descname">test_perfectly_centered_spot</code><span class="sig-paren">(</span><em>shifts_expected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#TestCenteringAlgorithm.test_perfectly_centered_spot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.TestCenteringAlgorithm.test_perfectly_centered_spot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_utils.test_expt_utils.TestCenteringAlgorithm.test_single_pixel_spot">
+<code class="descname">test_single_pixel_spot</code><span class="sig-paren">(</span><em>shifts_expected</em>, <em>sigma</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#TestCenteringAlgorithm.test_single_pixel_spot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.TestCenteringAlgorithm.test_single_pixel_spot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_expt_utils.diffraction_pattern_one_dimension">
+<code class="descclassname">pyxem.tests.test_utils.test_expt_utils.</code><code class="descname">diffraction_pattern_one_dimension</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#diffraction_pattern_one_dimension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.diffraction_pattern_one_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D (in navigation space) diffraction pattern &lt;1|8,8&gt;</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_expt_utils.test_cart2polar">
+<code class="descclassname">pyxem.tests.test_utils.test_expt_utils.</code><code class="descname">test_cart2polar</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>r</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#test_cart2polar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.test_cart2polar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_expt_utils.test_index_coords">
+<code class="descclassname">pyxem.tests.test_utils.test_expt_utils.</code><code class="descname">test_index_coords</code><span class="sig-paren">(</span><em>diffraction_pattern_one_dimension</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#test_index_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.test_index_coords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_expt_utils.test_index_coords_non_centeral">
+<code class="descclassname">pyxem.tests.test_utils.test_expt_utils.</code><code class="descname">test_index_coords_non_centeral</code><span class="sig-paren">(</span><em>diffraction_pattern_one_dimension</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#test_index_coords_non_centeral"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.test_index_coords_non_centeral" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_expt_utils.test_peaks_as_gvectors">
+<code class="descclassname">pyxem.tests.test_utils.test_expt_utils.</code><code class="descname">test_peaks_as_gvectors</code><span class="sig-paren">(</span><em>z</em>, <em>center</em>, <em>calibration</em>, <em>g</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#test_peaks_as_gvectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.test_peaks_as_gvectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_expt_utils.test_polar2cart">
+<code class="descclassname">pyxem.tests.test_utils.test_expt_utils.</code><code class="descname">test_polar2cart</code><span class="sig-paren">(</span><em>r</em>, <em>theta</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#test_polar2cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.test_polar2cart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_expt_utils.test_remove_dead_pixels">
+<code class="descclassname">pyxem.tests.test_utils.test_expt_utils.</code><code class="descname">test_remove_dead_pixels</code><span class="sig-paren">(</span><em>diffraction_pattern_one_dimension</em>, <em>method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_expt_utils.html#test_remove_dead_pixels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_expt_utils.test_remove_dead_pixels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_utils.test_indexation_utils">
+<span id="pyxem-tests-test-utils-test-indexation-utils-module"></span><h2>pyxem.tests.test_utils.test_indexation_utils module<a class="headerlink" href="#module-pyxem.tests.test_utils.test_indexation_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_indexation_utils.test_crystal_from_template_matching_dp">
+<code class="descclassname">pyxem.tests.test_utils.test_indexation_utils.</code><code class="descname">test_crystal_from_template_matching_dp</code><span class="sig-paren">(</span><em>dp_template_match_result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_indexation_utils.html#test_crystal_from_template_matching_dp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_indexation_utils.test_crystal_from_template_matching_dp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_indexation_utils.test_crystal_from_template_matching_sp">
+<code class="descclassname">pyxem.tests.test_utils.test_indexation_utils.</code><code class="descname">test_crystal_from_template_matching_sp</code><span class="sig-paren">(</span><em>sp_template_match_result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_indexation_utils.html#test_crystal_from_template_matching_sp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_indexation_utils.test_crystal_from_template_matching_sp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_indexation_utils.test_crystal_from_vector_matching_dp">
+<code class="descclassname">pyxem.tests.test_utils.test_indexation_utils.</code><code class="descname">test_crystal_from_vector_matching_dp</code><span class="sig-paren">(</span><em>dp_vector_match_result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_indexation_utils.html#test_crystal_from_vector_matching_dp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_indexation_utils.test_crystal_from_vector_matching_dp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_indexation_utils.test_crystal_from_vector_matching_sp">
+<code class="descclassname">pyxem.tests.test_utils.test_indexation_utils.</code><code class="descname">test_crystal_from_vector_matching_sp</code><span class="sig-paren">(</span><em>sp_vector_match_result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_indexation_utils.html#test_crystal_from_vector_matching_sp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_indexation_utils.test_crystal_from_vector_matching_sp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_indexation_utils.test_match_vector_total_error_default">
+<code class="descclassname">pyxem.tests.test_utils.test_indexation_utils.</code><code class="descname">test_match_vector_total_error_default</code><span class="sig-paren">(</span><em>vector_match_peaks</em>, <em>vector_library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_indexation_utils.html#test_match_vector_total_error_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_indexation_utils.test_match_vector_total_error_default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_indexation_utils.test_match_vectors">
+<code class="descclassname">pyxem.tests.test_utils.test_indexation_utils.</code><code class="descname">test_match_vectors</code><span class="sig-paren">(</span><em>vector_match_peaks</em>, <em>vector_library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_indexation_utils.html#test_match_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_indexation_utils.test_match_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_utils.test_peakfinders2D">
+<span id="pyxem-tests-test-utils-test-peakfinders2d-module"></span><h2>pyxem.tests.test_utils.test_peakfinders2D module<a class="headerlink" href="#module-pyxem.tests.test_utils.test_peakfinders2D" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.TestUncoveredCodePaths">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_utils.test_peakfinders2D.</code><code class="descname">TestUncoveredCodePaths</code><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#TestUncoveredCodePaths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.TestUncoveredCodePaths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.TestUncoveredCodePaths.test_zaf_continue">
+<code class="descname">test_zaf_continue</code><span class="sig-paren">(</span><em>many_peak</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#TestUncoveredCodePaths.test_zaf_continue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.TestUncoveredCodePaths.test_zaf_continue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.TestXCmethods">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_utils.test_peakfinders2D.</code><code class="descname">TestXCmethods</code><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#TestXCmethods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.TestXCmethods" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.TestXCmethods.peaks">
+<code class="descname">peaks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#TestXCmethods.peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.TestXCmethods.peaks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.TestXCmethods.test_peaks_xc">
+<code class="descname">test_peaks_xc</code><span class="sig-paren">(</span><em>peaks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#TestXCmethods.test_peaks_xc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.TestXCmethods.test_peaks_xc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.many_peak">
+<code class="descclassname">pyxem.tests.test_utils.test_peakfinders2D.</code><code class="descname">many_peak</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#many_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.many_peak" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.no_peak">
+<code class="descclassname">pyxem.tests.test_utils.test_peakfinders2D.</code><code class="descname">no_peak</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#no_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.no_peak" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.single_peak">
+<code class="descclassname">pyxem.tests.test_utils.test_peakfinders2D.</code><code class="descname">single_peak</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#single_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.single_peak" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.test_many_peak_case">
+<code class="descclassname">pyxem.tests.test_utils.test_peakfinders2D.</code><code class="descname">test_many_peak_case</code><span class="sig-paren">(</span><em>many_peak</em>, <em>method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#test_many_peak_case"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.test_many_peak_case" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.test_no_peak_case">
+<code class="descclassname">pyxem.tests.test_utils.test_peakfinders2D.</code><code class="descname">test_no_peak_case</code><span class="sig-paren">(</span><em>no_peak</em>, <em>method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#test_no_peak_case"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.test_no_peak_case" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_peakfinders2D.test_one_peak_case">
+<code class="descclassname">pyxem.tests.test_utils.test_peakfinders2D.</code><code class="descname">test_one_peak_case</code><span class="sig-paren">(</span><em>single_peak</em>, <em>method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_peakfinders2D.html#test_one_peak_case"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_peakfinders2D.test_one_peak_case" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_utils.test_sim_utils">
+<span id="pyxem-tests-test-utils-test-sim-utils-module"></span><h2>pyxem.tests.test_utils.test_sim_utils module<a class="headerlink" href="#module-pyxem.tests.test_utils.test_sim_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.create_lattice_structure">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">create_lattice_structure</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>c</em>, <em>alpha</em>, <em>beta</em>, <em>gamma</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#create_lattice_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.create_lattice_structure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.create_structure_cubic">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">create_structure_cubic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#create_structure_cubic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.create_structure_cubic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.create_structure_hexagonal">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">create_structure_hexagonal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#create_structure_hexagonal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.create_structure_hexagonal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.create_structure_monoclinic">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">create_structure_monoclinic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#create_structure_monoclinic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.create_structure_monoclinic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.create_structure_orthorombic">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">create_structure_orthorombic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#create_structure_orthorombic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.create_structure_orthorombic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.create_structure_tetragonal">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">create_structure_tetragonal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#create_structure_tetragonal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.create_structure_tetragonal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.create_structure_trigonal">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">create_structure_trigonal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#create_structure_trigonal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.create_structure_trigonal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_get_electron_wavelength">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_get_electron_wavelength</code><span class="sig-paren">(</span><em>accelerating_voltage</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_get_electron_wavelength"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_get_electron_wavelength" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_get_interaction_constant">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_get_interaction_constant</code><span class="sig-paren">(</span><em>accelerating_voltage</em>, <em>interaction_constant</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_get_interaction_constant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_get_interaction_constant" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_get_points_in_sphere">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_get_points_in_sphere</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_get_points_in_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_get_points_in_sphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_get_unique_families">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_get_unique_families</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_get_unique_families"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_get_unique_families" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_kinematic_simulator_gaussian_probe">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_kinematic_simulator_gaussian_probe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_kinematic_simulator_gaussian_probe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_kinematic_simulator_gaussian_probe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_kinematic_simulator_invalid_illumination">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_kinematic_simulator_invalid_illumination</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_kinematic_simulator_invalid_illumination"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_kinematic_simulator_invalid_illumination" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_kinematic_simulator_invalid_scattering_params">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_kinematic_simulator_invalid_scattering_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_kinematic_simulator_invalid_scattering_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_kinematic_simulator_invalid_scattering_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_kinematic_simulator_plane_wave">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_kinematic_simulator_plane_wave</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_kinematic_simulator_plane_wave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_kinematic_simulator_plane_wave" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_kinematic_simulator_xtables_scattering_params">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_kinematic_simulator_xtables_scattering_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_kinematic_simulator_xtables_scattering_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_kinematic_simulator_xtables_scattering_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_rotation_list_stereographic">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_rotation_list_stereographic</code><span class="sig-paren">(</span><em>structure</em>, <em>corner_a</em>, <em>corner_b</em>, <em>corner_c</em>, <em>rotation_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_rotation_list_stereographic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_rotation_list_stereographic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_rotation_list_stereographic_raises_invalid_corners">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_rotation_list_stereographic_raises_invalid_corners</code><span class="sig-paren">(</span><em>structure</em>, <em>corner_a</em>, <em>corner_b</em>, <em>corner_c</em>, <em>inplane_rotations</em>, <em>resolution</em>, <em>rotation_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_rotation_list_stereographic_raises_invalid_corners"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_rotation_list_stereographic_raises_invalid_corners" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_sim_utils.test_uvtw_to_uvw">
+<code class="descclassname">pyxem.tests.test_utils.test_sim_utils.</code><code class="descname">test_uvtw_to_uvw</code><span class="sig-paren">(</span><em>uvtw</em>, <em>uvw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_sim_utils.html#test_uvtw_to_uvw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_sim_utils.test_uvtw_to_uvw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_utils.test_subpixel_utils">
+<span id="pyxem-tests-test-utils-test-subpixel-utils-module"></span><h2>pyxem.tests.test_utils.test_subpixel_utils module<a class="headerlink" href="#module-pyxem.tests.test_utils.test_subpixel_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_subpixel_utils.exp_disc">
+<code class="descclassname">pyxem.tests.test_utils.test_subpixel_utils.</code><code class="descname">exp_disc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_subpixel_utils.html#exp_disc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_subpixel_utils.exp_disc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_subpixel_utils.sim_disc">
+<code class="descclassname">pyxem.tests.test_utils.test_subpixel_utils.</code><code class="descname">sim_disc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_subpixel_utils.html#sim_disc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_subpixel_utils.sim_disc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_subpixel_utils.test___conventional_xc">
+<code class="descclassname">pyxem.tests.test_utils.test_subpixel_utils.</code><code class="descname">test___conventional_xc</code><span class="sig-paren">(</span><em>exp_disc</em>, <em>sim_disc</em>, <em>upsample_factor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_subpixel_utils.html#test___conventional_xc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_subpixel_utils.test___conventional_xc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_subpixel_utils.test_get_experimental_square">
+<code class="descclassname">pyxem.tests.test_utils.test_subpixel_utils.</code><code class="descname">test_get_experimental_square</code><span class="sig-paren">(</span><em>exp_disc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_subpixel_utils.html#test_get_experimental_square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_subpixel_utils.test_get_experimental_square" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_subpixel_utils.test_non_even_errors_get_experimental_errors">
+<code class="descclassname">pyxem.tests.test_utils.test_subpixel_utils.</code><code class="descname">test_non_even_errors_get_experimental_errors</code><span class="sig-paren">(</span><em>exp_disc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_subpixel_utils.html#test_non_even_errors_get_experimental_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_subpixel_utils.test_non_even_errors_get_experimental_errors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_subpixel_utils.test_non_even_errors_get_simulated_disc">
+<code class="descclassname">pyxem.tests.test_utils.test_subpixel_utils.</code><code class="descname">test_non_even_errors_get_simulated_disc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_subpixel_utils.html#test_non_even_errors_get_simulated_disc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_subpixel_utils.test_non_even_errors_get_simulated_disc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_subpixel_utils.upsample_factor">
+<code class="descclassname">pyxem.tests.test_utils.test_subpixel_utils.</code><code class="descname">upsample_factor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_subpixel_utils.html#upsample_factor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_subpixel_utils.upsample_factor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_utils.test_vector_utils">
+<span id="pyxem-tests-test-utils-test-vector-utils-module"></span><h2>pyxem.tests.test_utils.test_vector_utils module<a class="headerlink" href="#module-pyxem.tests.test_utils.test_vector_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_vector_utils.test_calculate_norms">
+<code class="descclassname">pyxem.tests.test_utils.test_vector_utils.</code><code class="descname">test_calculate_norms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_vector_utils.html#test_calculate_norms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_vector_utils.test_calculate_norms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_vector_utils.test_calculate_norms_ragged">
+<code class="descclassname">pyxem.tests.test_utils.test_vector_utils.</code><code class="descname">test_calculate_norms_ragged</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_vector_utils.html#test_calculate_norms_ragged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_vector_utils.test_calculate_norms_ragged" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_vector_utils.test_detector_to_fourier">
+<code class="descclassname">pyxem.tests.test_utils.test_vector_utils.</code><code class="descname">test_detector_to_fourier</code><span class="sig-paren">(</span><em>wavelength</em>, <em>camera_length</em>, <em>detector_coords</em>, <em>k_expected</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_vector_utils.html#test_detector_to_fourier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_vector_utils.test_detector_to_fourier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_vector_utils.test_get_angle_cartesian">
+<code class="descclassname">pyxem.tests.test_utils.test_vector_utils.</code><code class="descname">test_get_angle_cartesian</code><span class="sig-paren">(</span><em>vec_a</em>, <em>vec_b</em>, <em>expected_angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_vector_utils.html#test_get_angle_cartesian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_vector_utils.test_get_angle_cartesian" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_utils.test_vector_utils.test_get_rotation_matrix_between_vectors">
+<code class="descclassname">pyxem.tests.test_utils.test_vector_utils.</code><code class="descname">test_get_rotation_matrix_between_vectors</code><span class="sig-paren">(</span><em>k1</em>, <em>k2</em>, <em>ref_k1</em>, <em>ref_k2</em>, <em>expected_rotation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_utils/test_vector_utils.html#test_get_rotation_matrix_between_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_utils.test_vector_utils.test_get_rotation_matrix_between_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyxem.tests.test_utils" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.tests.test_physical package &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyxem.tests.test_signals package" href="pyxem.tests.test_signals.html" />
+    <link rel="prev" title="pyxem.tests.test_library package" href="pyxem.tests.test_library.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Contents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">pyxem.tests.test_physical package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_physical.test_marker_plotting">pyxem.tests.test_physical.test_marker_plotting module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_physical.test_orientation_mapping_nonphys">pyxem.tests.test_physical.test_orientation_mapping_nonphys module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_physical.test_orientation_mapping_phys">pyxem.tests.test_physical.test_orientation_mapping_phys module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_physical.test_strain_mapping">pyxem.tests.test_physical.test_strain_mapping module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_physical">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pyxem.tests.test_library.html" title="Previous Chapter: pyxem.tests.test_library package"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; pyxem.tests.t...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pyxem.tests.test_signals.html" title="Next Chapter: pyxem.tests.test_signals package"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pyxem.tests.t... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="pyxem-tests-test-physical-package">
+<h1>pyxem.tests.test_physical package<a class="headerlink" href="#pyxem-tests-test-physical-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyxem.tests.test_physical.test_marker_plotting">
+<span id="pyxem-tests-test-physical-test-marker-plotting-module"></span><h2>pyxem.tests.test_physical.test_marker_plotting module<a class="headerlink" href="#module-pyxem.tests.test_physical.test_marker_plotting" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_marker_plotting.generate_dp_cord_list">
+<code class="descclassname">pyxem.tests.test_physical.test_marker_plotting.</code><code class="descname">generate_dp_cord_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_marker_plotting.html#generate_dp_cord_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_marker_plotting.generate_dp_cord_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_marker_plotting.local_plotter">
+<code class="descclassname">pyxem.tests.test_physical.test_marker_plotting.</code><code class="descname">local_plotter</code><span class="sig-paren">(</span><em>dp</em>, <em>dp_cord_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_marker_plotting.html#local_plotter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_marker_plotting.local_plotter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_marker_plotting.test_marker_placement_correct_alpha">
+<code class="descclassname">pyxem.tests.test_physical.test_marker_plotting.</code><code class="descname">test_marker_placement_correct_alpha</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_marker_plotting.html#test_marker_placement_correct_alpha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_marker_plotting.test_marker_placement_correct_alpha" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_marker_plotting.test_marker_placement_correct_beta">
+<code class="descclassname">pyxem.tests.test_physical.test_marker_plotting.</code><code class="descname">test_marker_placement_correct_beta</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_marker_plotting.html#test_marker_placement_correct_beta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_marker_plotting.test_marker_placement_correct_beta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_physical.test_orientation_mapping_nonphys">
+<span id="pyxem-tests-test-physical-test-orientation-mapping-nonphys-module"></span><h2>pyxem.tests.test_physical.test_orientation_mapping_nonphys module<a class="headerlink" href="#module-pyxem.tests.test_physical.test_orientation_mapping_nonphys" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_nonphys.create_library">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_nonphys.</code><code class="descname">create_library</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_nonphys.html#create_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_nonphys.create_library" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_nonphys.test_match_results">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_nonphys.</code><code class="descname">test_match_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_nonphys.html#test_match_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_nonphys.test_match_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_nonphys.test_plot_best_matching_results_on_signal">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_nonphys.</code><code class="descname">test_plot_best_matching_results_on_signal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_nonphys.html#test_plot_best_matching_results_on_signal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_nonphys.test_plot_best_matching_results_on_signal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_nonphys.test_visuals">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_nonphys.</code><code class="descname">test_visuals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_nonphys.html#test_visuals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_nonphys.test_visuals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_physical.test_orientation_mapping_phys">
+<span id="pyxem-tests-test-physical-test-orientation-mapping-phys-module"></span><h2>pyxem.tests.test_physical.test_orientation_mapping_phys module<a class="headerlink" href="#module-pyxem.tests.test_physical.test_orientation_mapping_phys" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.create_Hex">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">create_Hex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#create_Hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.create_Hex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.create_Ortho">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">create_Ortho</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#create_Ortho"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.create_Ortho" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.create_wurtzite">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">create_wurtzite</code><span class="sig-paren">(</span><em>rotation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#create_wurtzite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.create_wurtzite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a hexagonal P63mc GaAs Wurtzite structure.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.edc">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">edc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#edc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.edc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.expected_best_peaks_pattern_list">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">expected_best_peaks_pattern_list</code><span class="sig-paren">(</span><em>library</em>, <em>_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#expected_best_peaks_pattern_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.expected_best_peaks_pattern_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.expected_best_peaks_rotated">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">expected_best_peaks_rotated</code><span class="sig-paren">(</span><em>library</em>, <em>rotation_euler</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#expected_best_peaks_rotated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.expected_best_peaks_rotated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.get_template_library">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">get_template_library</code><span class="sig-paren">(</span><em>structure</em>, <em>rot_list</em>, <em>edc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#get_template_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.get_template_library" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.get_template_match_results">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">get_template_match_results</code><span class="sig-paren">(</span><em>structure, pattern_list, edc, rot_list, mask=None, inplane_rotations=[0]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#get_template_match_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.get_template_match_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.get_vector_match_results">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">get_vector_match_results</code><span class="sig-paren">(</span><em>structure</em>, <em>rot_list</em>, <em>edc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#get_vector_match_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.get_vector_match_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.pattern_list">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">pattern_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#pattern_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.pattern_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.rot_list">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">rot_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#rot_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.rot_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.test_generate_peaks_from_best_template">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">test_generate_peaks_from_best_template</code><span class="sig-paren">(</span><em>default_structure</em>, <em>rot_list</em>, <em>pattern_list</em>, <em>edc</em>, <em>get_expected_peaks</em>, <em>inplane_rotations</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#test_generate_peaks_from_best_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.test_generate_peaks_from_best_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.test_kinematic_intensities_error_raise">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">test_kinematic_intensities_error_raise</code><span class="sig-paren">(</span><em>structure</em>, <em>rotation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#test_kinematic_intensities_error_raise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.test_kinematic_intensities_error_raise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that kinematically forbidden diffraction spots gets zero intensity also after rotation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.test_kinematic_intensities_rotation">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">test_kinematic_intensities_rotation</code><span class="sig-paren">(</span><em>structure</em>, <em>rotation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#test_kinematic_intensities_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.test_kinematic_intensities_rotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that kinematically forbidden diffraction spots gets zero intensity also after rotation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.test_masked_OM">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">test_masked_OM</code><span class="sig-paren">(</span><em>default_structure</em>, <em>rot_list</em>, <em>pattern_list</em>, <em>edc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#test_masked_OM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.test_masked_OM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.test_orientation_mapping_physical">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">test_orientation_mapping_physical</code><span class="sig-paren">(</span><em>structure</em>, <em>rot_list</em>, <em>pattern_list</em>, <em>edc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#test_orientation_mapping_physical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.test_orientation_mapping_physical" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.test_peaks_from_best_vector_match">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">test_peaks_from_best_vector_match</code><span class="sig-paren">(</span><em>structure</em>, <em>rot_list</em>, <em>edc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#test_peaks_from_best_vector_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.test_peaks_from_best_vector_match" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.test_plot_best_matching_results_on_signal_vector">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">test_plot_best_matching_results_on_signal_vector</code><span class="sig-paren">(</span><em>structure</em>, <em>rot_list</em>, <em>edc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#test_plot_best_matching_results_on_signal_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.test_plot_best_matching_results_on_signal_vector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_orientation_mapping_phys.test_vector_matching_physical">
+<code class="descclassname">pyxem.tests.test_physical.test_orientation_mapping_phys.</code><code class="descname">test_vector_matching_physical</code><span class="sig-paren">(</span><em>structure</em>, <em>rot_list</em>, <em>edc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_orientation_mapping_phys.html#test_vector_matching_physical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_orientation_mapping_phys.test_vector_matching_physical" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_physical.test_strain_mapping">
+<span id="pyxem-tests-test-physical-test-strain-mapping-module"></span><h2>pyxem.tests.test_physical.test_strain_mapping module<a class="headerlink" href="#module-pyxem.tests.test_physical.test_strain_mapping" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_physical.test_strain_mapping.test_strain_mapping_affine_transform">
+<code class="descclassname">pyxem.tests.test_physical.test_strain_mapping.</code><code class="descname">test_strain_mapping_affine_transform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_physical/test_strain_mapping.html#test_strain_mapping_affine_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_physical.test_strain_mapping.test_strain_mapping_affine_transform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_physical">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyxem.tests.test_physical" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

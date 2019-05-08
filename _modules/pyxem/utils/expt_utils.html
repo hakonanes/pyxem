@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.utils.expt_utils &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.utils.expt_utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="k">as</span> <span class="nn">ndi</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage.interpolation</span> <span class="k">import</span> <span class="n">shift</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">curve_fit</span><span class="p">,</span> <span class="n">minimize</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">transform</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">morphology</span><span class="p">,</span> <span class="n">filters</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">square</span><span class="p">,</span> <span class="n">opening</span>
+<span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="p">(</span><span class="n">threshold_sauvola</span><span class="p">,</span> <span class="n">threshold_otsu</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">skimage.draw</span> <span class="k">import</span> <span class="n">ellipse_perimeter</span>
+<span class="kn">from</span> <span class="nn">skimage.feature</span> <span class="k">import</span> <span class="n">register_translation</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">curve_fit</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains utility functions for processing electron diffraction</span>
+<span class="sd">patterns.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_index_coords</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates x &amp; y coords for the indicies in a numpy array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : np.array()</span>
+<span class="sd">        Two-dimensional data array containing signal.</span>
+<span class="sd">    origin : tuple</span>
+<span class="sd">        (x,y) defaults to the center of the image. Specify origin=(0,0) to set</span>
+<span class="sd">        the origin to the *top-left* corner of the image.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x, y : arrays</span>
+<span class="sd">        Corrdinates for the indices of a numpy array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ny</span><span class="p">,</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">origin_x</span><span class="p">,</span> <span class="n">origin_y</span> <span class="o">=</span> <span class="n">nx</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ny</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">origin_x</span><span class="p">,</span> <span class="n">origin_y</span> <span class="o">=</span> <span class="n">origin</span>
+
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">nx</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">ny</span><span class="p">)))</span>
+
+    <span class="n">x</span> <span class="o">-=</span> <span class="n">origin_x</span>
+    <span class="n">y</span> <span class="o">-=</span> <span class="n">origin_y</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+
+<span class="k">def</span> <span class="nf">_cart2polar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform Cartesian coordinates to polar coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x, y : floats or arrays</span>
+<span class="sd">        Cartesian coordinates</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    r, theta : floats or arrays</span>
+<span class="sd">        Polar coordinates</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># θ = 0 horizontal, +ve = anticlockwise</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">,</span> <span class="n">theta</span>
+
+
+<span class="k">def</span> <span class="nf">_polar2cart</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform polar coordinates to Cartesian coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r, theta : floats or arrays</span>
+<span class="sd">        Polar coordinates</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x, y : floats or arrays</span>
+<span class="sd">        Cartesian coordinates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># +ve quadrant in bottom right corner when plotted</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+
+<div class="viewcode-block" id="radial_average"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.radial_average">[docs]</a><span class="k">def</span> <span class="nf">radial_average</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the radial profile by azimuthal averaging about a specified</span>
+<span class="sd">    center.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : np.array()</span>
+<span class="sd">        Two-dimensional data array containing signal.</span>
+<span class="sd">    mask : np.array()</span>
+<span class="sd">        Array with the same dimensions as z comprizing 0s for excluded pixels</span>
+<span class="sd">        and 1s for non-excluded pixels.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    radial_profile : np.array()</span>
+<span class="sd">        One-dimensional radial profile of z.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># geometric shape work, not 0 indexing</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="p">((</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="c1"># the subtraction of 0.5 gets the 0 in the correct place</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tbin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">z</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+        <span class="n">nr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># the mask is applied on the z array.</span>
+        <span class="n">masked_array</span> <span class="o">=</span> <span class="n">z</span> <span class="o">*</span> <span class="n">mask</span>
+        <span class="n">tbin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">masked_array</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+        <span class="n">nr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">mask</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+
+    <span class="n">averaged</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">tbin</span> <span class="o">/</span> <span class="n">nr</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">averaged</span></div>
+
+
+<div class="viewcode-block" id="gain_normalise"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.gain_normalise">[docs]</a><span class="k">def</span> <span class="nf">gain_normalise</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">dref</span><span class="p">,</span> <span class="n">bref</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Apply gain normalization to experimentally acquired electron</span>
+<span class="sd">    diffraction pattern.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : np.array()</span>
+<span class="sd">        Two-dimensional data array containing signal.</span>
+<span class="sd">    dref : ElectronDiffraction</span>
+<span class="sd">        Two-dimensional data array containing dark reference.</span>
+<span class="sd">    bref : ElectronDiffraction</span>
+<span class="sd">        Two-dimensional data array containing bright reference.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    z1 : np.array()</span>
+<span class="sd">        Two dimensional data array of gain normalized z.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">z</span> <span class="o">-</span> <span class="n">dref</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">bref</span> <span class="o">-</span> <span class="n">dref</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">bref</span> <span class="o">-</span> <span class="n">dref</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="remove_dead"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.remove_dead">[docs]</a><span class="k">def</span> <span class="nf">remove_dead</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">deadpixels</span><span class="p">,</span> <span class="n">deadvalue</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove dead pixels from experimental electron diffraction patterns.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : np.array()</span>
+<span class="sd">        Two-dimensional data array containing signal.</span>
+<span class="sd">    deadpixels : np.array()</span>
+<span class="sd">        Array containing the array indices of dead pixels in the diffraction</span>
+<span class="sd">        pattern.</span>
+<span class="sd">    deadvalue : string</span>
+<span class="sd">        Specify how deadpixels should be treated, options are;</span>
+<span class="sd">            &#39;average&#39;: takes the average of adjacent pixels</span>
+<span class="sd">            &#39;nan&#39;:  sets the dead pixel to nan</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img : array</span>
+<span class="sd">        Two-dimensional data array containing z with dead pixels removed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">z_bar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">deadvalue</span> <span class="o">==</span> <span class="s1">&#39;average&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">deadpixels</span><span class="p">:</span>
+            <span class="n">neighbours</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">d</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">d</span><span class="p">:</span><span class="n">j</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">z_bar</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">neighbours</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">deadvalue</span> <span class="o">==</span> <span class="s1">&#39;nan&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">deadpixels</span><span class="p">:</span>
+            <span class="n">z_bar</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;The method specified is not implemented. &quot;</span>
+                                  <span class="s2">&quot;See documentation for available &quot;</span>
+                                  <span class="s2">&quot;implementations.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">z_bar</span></div>
+
+
+<div class="viewcode-block" id="affine_transformation"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.affine_transformation">[docs]</a><span class="k">def</span> <span class="nf">affine_transformation</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">transformation</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Apply an affine transformation to a 2-dimensional array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : np.array</span>
+<span class="sd">        Array to be transformed</span>
+<span class="sd">    matrix : np.array</span>
+<span class="sd">        3x3 numpy array specifying the affine transformation to be applied.</span>
+<span class="sd">    order : int</span>
+<span class="sd">        Interpolation order.</span>
+<span class="sd">    *args :</span>
+<span class="sd">        To be passed to skimage.warp</span>
+<span class="sd">    **kwargs :</span>
+<span class="sd">        To be passed to skimage.warp</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    trans : array</span>
+<span class="sd">        Affine transformed diffraction pattern.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">trans</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">warp</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">transformation</span><span class="p">,</span>
+                    <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">trans</span></div>
+
+
+<div class="viewcode-block" id="regional_filter"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.regional_filter">[docs]</a><span class="k">def</span> <span class="nf">regional_filter</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform a h-dome regional filtering of the an image for background</span>
+<span class="sd">    subtraction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h : float</span>
+<span class="sd">        h-dome cutoff value.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        h-dome subtracted image as np.array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">z</span> <span class="o">-</span> <span class="n">h</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">z</span>
+    <span class="n">dilated</span> <span class="o">=</span> <span class="n">morphology</span><span class="o">.</span><span class="n">reconstruction</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;dilation&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">z</span> <span class="o">-</span> <span class="n">dilated</span></div>
+
+
+<div class="viewcode-block" id="subtract_background_dog"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.subtract_background_dog">[docs]</a><span class="k">def</span> <span class="nf">subtract_background_dog</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">sigma_min</span><span class="p">,</span> <span class="n">sigma_max</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Difference of gaussians method for background removal.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sigma_max : float</span>
+<span class="sd">        Large gaussian blur sigma.</span>
+<span class="sd">    sigma_min : float</span>
+<span class="sd">        Small gaussian blur sigma.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Denoised diffraction pattern as np.array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">blur_max</span> <span class="o">=</span> <span class="n">ndi</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">sigma_max</span><span class="p">)</span>
+    <span class="n">blur_min</span> <span class="o">=</span> <span class="n">ndi</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">sigma_min</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">blur_min</span> <span class="o">&gt;</span> <span class="n">blur_max</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">blur_max</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="subtract_background_median"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.subtract_background_median">[docs]</a><span class="k">def</span> <span class="nf">subtract_background_median</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">footprint</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span> <span class="n">implementation</span><span class="o">=</span><span class="s1">&#39;scipy&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove background using a median filter.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    footprint : int</span>
+<span class="sd">        size of the window that is convoluted with the array to determine</span>
+<span class="sd">        the median. Should be large enough that it is about 3x as big as the</span>
+<span class="sd">        size of the peaks.</span>
+<span class="sd">    implementation: str</span>
+<span class="sd">        One of &#39;scipy&#39;, &#39;skimage&#39;. Skimage is much faster, but it messes with</span>
+<span class="sd">        the data format. The scipy implementation is safer, but slower.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Pattern with background subtracted as np.array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s1">&#39;scipy&#39;</span><span class="p">:</span>
+        <span class="n">bg_subtracted</span> <span class="o">=</span> <span class="n">z</span> <span class="o">-</span> <span class="n">ndi</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">footprint</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">implementation</span> <span class="o">==</span> <span class="s1">&#39;skimage&#39;</span><span class="p">:</span>
+        <span class="n">selem</span> <span class="o">=</span> <span class="n">morphology</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">footprint</span><span class="p">)</span>
+        <span class="c1"># skimage only accepts input image as uint16</span>
+        <span class="n">bg_subtracted</span> <span class="o">=</span> <span class="n">z</span> <span class="o">-</span> <span class="n">filters</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">),</span> <span class="n">selem</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">bg_subtracted</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="subtract_reference"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.subtract_reference">[docs]</a><span class="k">def</span> <span class="nf">subtract_reference</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">bg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subtracts background using a user-defined background pattern.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : np.array()</span>
+<span class="sd">        Two-dimensional data array containing signal.</span>
+<span class="sd">    bg: array()</span>
+<span class="sd">        User-defined diffraction pattern to be subtracted as background.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    im : np.array()</span>
+<span class="sd">        Two-dimensional data array containing signal with background removed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">-</span> <span class="n">bg</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">im</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">im</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">im</span></div>
+
+
+<div class="viewcode-block" id="circular_mask"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.circular_mask">[docs]</a><span class="k">def</span> <span class="nf">circular_mask</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Produces a mask of radius &#39;r&#39; centered on &#39;center&#39; of shape &#39;shape&#39;.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shape : tuple</span>
+<span class="sd">        The shape of the signal to be masked.</span>
+<span class="sd">    radius : int</span>
+<span class="sd">        The radius of the circular mask.</span>
+<span class="sd">    center : tuple (optional)</span>
+<span class="sd">        The center of the circular mask. Default: (0, 0)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mask : np.array()</span>
+<span class="sd">        The circular mask.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">l_x</span><span class="p">,</span> <span class="n">l_y</span> <span class="o">=</span> <span class="n">shape</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">center</span> <span class="k">if</span> <span class="n">center</span> <span class="k">else</span> <span class="p">(</span><span class="n">l_x</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">l_y</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ogrid</span><span class="p">[:</span><span class="n">l_x</span><span class="p">,</span> <span class="p">:</span><span class="n">l_y</span><span class="p">]</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">Y</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">mask</span></div>
+
+
+<div class="viewcode-block" id="reference_circle"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.reference_circle">[docs]</a><span class="k">def</span> <span class="nf">reference_circle</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">dimX</span><span class="p">,</span> <span class="n">dimY</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Draw the perimeter of an circle at a given position in the diffraction</span>
+<span class="sd">    pattern (e.g. to provide a reference for finding the direct beam center).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coords : np.array size n,2</span>
+<span class="sd">        size n,2 array of coordinates to draw the circle.</span>
+<span class="sd">    dimX : int</span>
+<span class="sd">        first dimension of the diffraction pattern (size)</span>
+<span class="sd">    dimY : int</span>
+<span class="sd">        second dimension of the diffraction pattern (size)</span>
+<span class="sd">    radius : int</span>
+<span class="sd">        radius of the circle to be drawn</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    img: np.array</span>
+<span class="sd">        Array containing the circle at the position given in the coordinates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dimX</span><span class="p">,</span> <span class="n">dimY</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+        <span class="n">rr</span><span class="p">,</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">ellipse_perimeter</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">coords</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">radius</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="n">img</span><span class="p">[</span><span class="n">rr</span><span class="p">,</span> <span class="n">cc</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">img</span></div>
+
+
+<div class="viewcode-block" id="find_beam_offset_cross_correlation"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.find_beam_offset_cross_correlation">[docs]</a><span class="k">def</span> <span class="nf">find_beam_offset_cross_correlation</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">radius_start</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">radius_finish</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Method to center the direct beam center by a cross-correlation algorithm.</span>
+<span class="sd">    The shift is calculated relative to an circle perimeter. The circle can be</span>
+<span class="sd">    refined across a range of radii during the centring procedure to improve</span>
+<span class="sd">    performance in regions where the direct beam size changes,</span>
+<span class="sd">    e.g. during sample thickness variation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    radius_start : int</span>
+<span class="sd">        The lower bound for the radius of the central disc to be used in the</span>
+<span class="sd">        alignment.</span>
+<span class="sd">    radius_finish : int</span>
+<span class="sd">        The upper bounds for the radius of the central disc to be used in the</span>
+<span class="sd">        alignment.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    shift: np.array</span>
+<span class="sd">        np.array containing offset (from center) of the direct beam positon.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">radiusList</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">radius_start</span><span class="p">,</span> <span class="n">radius_finish</span><span class="p">)</span>
+    <span class="n">errRecord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">radiusList</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;single&#39;</span><span class="p">)</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]])</span>
+
+    <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">radiusList</span><span class="p">)):</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">radiusList</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">reference_circle</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">h1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">hann2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">h1</span><span class="p">))</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">hann2d</span> <span class="o">*</span> <span class="n">ref</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">hann2d</span> <span class="o">*</span> <span class="n">z</span>
+        <span class="n">shift</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">diffphase</span> <span class="o">=</span> <span class="n">register_translation</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">errRecord</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">error</span>
+        <span class="n">index_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">errRecord</span><span class="p">)</span>
+
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">reference_circle</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">radiusList</span><span class="p">[</span><span class="n">index_min</span><span class="p">])</span>
+    <span class="n">h0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">h1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">hann2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="n">h1</span><span class="p">))</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">hann2d</span> <span class="o">*</span> <span class="n">ref</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">hann2d</span> <span class="o">*</span> <span class="n">z</span>
+    <span class="n">shift</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">diffphase</span> <span class="o">=</span> <span class="n">register_translation</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">shift</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="peaks_as_gvectors"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.expt_utils.peaks_as_gvectors">[docs]</a><span class="k">def</span> <span class="nf">peaks_as_gvectors</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">calibration</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts peaks found as array indices to calibrated units, for use in a</span>
+<span class="sd">    hyperspy map function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : numpy array</span>
+<span class="sd">        peak postitions as array indices.</span>
+<span class="sd">    center : numpy array</span>
+<span class="sd">        diffraction pattern center in array indices.</span>
+<span class="sd">    calibration : float</span>
+<span class="sd">        calibration in reciprocal Angstroms per pixels.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    g : numpy array</span>
+<span class="sd">        peak positions in calibrated units.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="n">center</span><span class="p">)</span> <span class="o">*</span> <span class="n">calibration</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

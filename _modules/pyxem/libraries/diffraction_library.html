@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.libraries.diffraction_library &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.libraries.diffraction_library</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="load_DiffractionLibrary"><a class="viewcode-back" href="../../../pyxem.libraries.html#pyxem.libraries.diffraction_library.load_DiffractionLibrary">[docs]</a><span class="k">def</span> <span class="nf">load_DiffractionLibrary</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">safety</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Loads a previously saved diffraction library.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        The location of the file to be loaded</span>
+<span class="sd">    safety : bool (defaults to False)</span>
+<span class="sd">        Unpickling is risky, this variable requires you to acknowledge this.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    DiffractionLibrary</span>
+<span class="sd">        Previously saved Library</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    DiffractionLibrary.pickle_library()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">safety</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Unpickling is risky, turn safety to True if </span><span class="se">\</span>
+<span class="s1">        trust the author of this content&#39;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_library_entry_from_angles</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">angles</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Finds an element that is orientation within 1e-5 of that specified.</span>
+
+<span class="sd">    This is necessary because of floating point round off / hashability. If</span>
+<span class="sd">    multiple entries satisfy the above criterion a random (the first hit)</span>
+<span class="sd">    selection is made.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    library : DiffractionLibrary</span>
+<span class="sd">        The library to be searched</span>
+<span class="sd">    phase : str</span>
+<span class="sd">        The phase of interest.</span>
+<span class="sd">    angles : tuple</span>
+<span class="sd">        The orientation of interest as a tuple of Euler angles following the</span>
+<span class="sd">        Bunge convention [z, x, z] in degrees.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    orientation_index : int</span>
+<span class="sd">        Index of the given orientation</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">phase_entry</span> <span class="o">=</span> <span class="n">library</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">orientation_index</span><span class="p">,</span> <span class="n">orientation</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">phase_entry</span><span class="p">[</span><span class="s1">&#39;orientations&#39;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">orientation</span><span class="p">,</span> <span class="n">angles</span><span class="p">)))</span> <span class="o">&lt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">orientation_index</span>
+
+    <span class="c1"># We haven&#39;t found a suitable key</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;It appears that no library entry lies with 1e-5 of the target angle&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DiffractionLibrary"><a class="viewcode-back" href="../../../pyxem.libraries.html#pyxem.libraries.diffraction_library.DiffractionLibrary">[docs]</a><span class="k">class</span> <span class="nc">DiffractionLibrary</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Maps crystal structure (phase) and orientation to simulated diffraction</span>
+<span class="sd">    data.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    identifiers : list of strings/ints</span>
+<span class="sd">        A list of phase identifiers referring to different atomic structures.</span>
+<span class="sd">    structures : list of diffpy.structure.Structure objects.</span>
+<span class="sd">        A list of diffpy.structure.Structure objects describing the atomic</span>
+<span class="sd">        structure associated with each phase in the library.</span>
+<span class="sd">    diffraction_generator : DiffractionGenerator</span>
+<span class="sd">        Diffraction generator used to generate this library.</span>
+<span class="sd">    reciprocal_radius : float</span>
+<span class="sd">        Maximum g-vector magnitude for peaks in the library.</span>
+<span class="sd">    with_direct_beam : bool</span>
+<span class="sd">        Whether the direct beam included in the library or not.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identifiers</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structures</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diffraction_generator</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reciprocal_radius</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">with_direct_beam</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="DiffractionLibrary.get_library_entry"><a class="viewcode-back" href="../../../pyxem.libraries.html#pyxem.libraries.diffraction_library.DiffractionLibrary.get_library_entry">[docs]</a>    <span class="k">def</span> <span class="nf">get_library_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extracts a single DiffractionLibrary entry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        phase : str</span>
+<span class="sd">            Key for the phase of interest. If unspecified the choice is random.</span>
+<span class="sd">        angle : tuple</span>
+<span class="sd">            The orientation of interest as a tuple of Euler angles following the</span>
+<span class="sd">            Bunge convention [z, x, z] in degrees. If unspecified the choise is</span>
+<span class="sd">            random (the first hit).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        library_entries : dict</span>
+<span class="sd">            Dictionary containing the simulation associated with the specified</span>
+<span class="sd">            phase and orientation with associated properties.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">phase</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">phase_entry</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">angle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">orientations</span> <span class="o">=</span> <span class="n">phase_entry</span><span class="p">[</span><span class="s1">&#39;orientations&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orientations</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                    <span class="n">orientations</span> <span class="o">=</span> <span class="n">orientations</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">angle</span> <span class="ow">in</span> <span class="n">orientations</span><span class="p">:</span>
+                    <span class="n">orientation_index</span> <span class="o">=</span> <span class="n">orientations</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">orientation_index</span> <span class="o">=</span> <span class="n">_get_library_entry_from_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">orientation_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">angle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;To select a certain angle you must first specify a phase&quot;</span><span class="p">)</span>
+            <span class="n">phase_entry</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+            <span class="n">orientation_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;Sim&#39;</span><span class="p">:</span> <span class="n">phase_entry</span><span class="p">[</span><span class="s1">&#39;simulations&#39;</span><span class="p">][</span><span class="n">orientation_index</span><span class="p">],</span>
+            <span class="s1">&#39;intensities&#39;</span><span class="p">:</span> <span class="n">phase_entry</span><span class="p">[</span><span class="s1">&#39;intensities&#39;</span><span class="p">][</span><span class="n">orientation_index</span><span class="p">],</span>
+            <span class="s1">&#39;pixel_coords&#39;</span><span class="p">:</span> <span class="n">phase_entry</span><span class="p">[</span><span class="s1">&#39;pixel_coords&#39;</span><span class="p">][</span><span class="n">orientation_index</span><span class="p">],</span>
+            <span class="s1">&#39;pattern_norm&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">phase_entry</span><span class="p">[</span><span class="s1">&#39;intensities&#39;</span><span class="p">][</span><span class="n">orientation_index</span><span class="p">])</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="DiffractionLibrary.pickle_library"><a class="viewcode-back" href="../../../pyxem.libraries.html#pyxem.libraries.diffraction_library.DiffractionLibrary.pickle_library">[docs]</a>    <span class="k">def</span> <span class="nf">pickle_library</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Saves a diffraction library in the pickle format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The location in which to save the file</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        load_DiffractionLibrary()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

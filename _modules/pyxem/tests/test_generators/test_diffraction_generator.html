@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.tests.test_generators.test_diffraction_generator &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.tests.test_generators.test_diffraction_generator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.diffraction_simulation</span> <span class="k">import</span> <span class="n">DiffractionSimulation</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.diffraction_simulation</span> <span class="k">import</span> <span class="n">ProfileSimulation</span>
+<span class="kn">from</span> <span class="nn">pyxem.generators.diffraction_generator</span> <span class="k">import</span> <span class="n">DiffractionGenerator</span>
+<span class="kn">import</span> <span class="nn">diffpy.structure</span>
+
+
+<div class="viewcode-block" id="diffraction_calculator"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.diffraction_calculator">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">[(</span><span class="mi">300</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">])</span>
+<span class="k">def</span> <span class="nf">diffraction_calculator</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">DiffractionGenerator</span><span class="p">(</span><span class="o">*</span><span class="n">request</span><span class="o">.</span><span class="n">param</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="make_structure"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.make_structure">[docs]</a><span class="k">def</span> <span class="nf">make_structure</span><span class="p">(</span><span class="n">lattice_parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    We construct an Fd-3m silicon (with lattice parameter 5.431 as a default)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">lattice_parameter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">lattice_parameter</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mf">5.431</span>
+    <span class="n">latt</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+    <span class="c1"># TODO - Make this construction with internal diffpy syntax</span>
+    <span class="n">atom_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">coords</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">atom_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">atom</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span>
+                <span class="n">atype</span><span class="o">=</span><span class="s1">&#39;Si&#39;</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">lattice</span><span class="o">=</span><span class="n">latt</span><span class="p">))</span>  <span class="c1"># Motif part A</span>
+        <span class="n">atom_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">atom</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span>
+                <span class="n">atype</span><span class="o">=</span><span class="s1">&#39;Si&#39;</span><span class="p">,</span>
+                <span class="n">xyz</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">x</span> <span class="o">+</span> <span class="mf">0.25</span><span class="p">,</span>
+                    <span class="n">y</span> <span class="o">+</span> <span class="mf">0.25</span><span class="p">,</span>
+                    <span class="n">z</span> <span class="o">+</span> <span class="mf">0.25</span><span class="p">],</span>
+                <span class="n">lattice</span><span class="o">=</span><span class="n">latt</span><span class="p">))</span>  <span class="c1"># Motif part B</span>
+    <span class="k">return</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">Structure</span><span class="p">(</span><span class="n">atoms</span><span class="o">=</span><span class="n">atom_list</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="n">latt</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="local_structure"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.local_structure">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">local_structure</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">make_structure</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TestDiffractionCalculator"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator">[docs]</a><span class="k">class</span> <span class="nc">TestDiffractionCalculator</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TestDiffractionCalculator.test_init"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_init">[docs]</a>    <span class="k">def</span> <span class="nf">test_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diffraction_calculator</span><span class="p">:</span> <span class="n">DiffractionGenerator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">diffraction_calculator</span><span class="o">.</span><span class="n">debye_waller_factors</span> <span class="o">==</span> <span class="p">{}</span></div>
+
+<div class="viewcode-block" id="TestDiffractionCalculator.test_matching_results"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_matching_results">[docs]</a>    <span class="k">def</span> <span class="nf">test_matching_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diffraction_calculator</span><span class="p">,</span> <span class="n">local_structure</span><span class="p">):</span>
+        <span class="n">diffraction</span> <span class="o">=</span> <span class="n">diffraction_calculator</span><span class="o">.</span><span class="n">calculate_ed_data</span><span class="p">(</span>
+            <span class="n">local_structure</span><span class="p">,</span> <span class="n">reciprocal_radius</span><span class="o">=</span><span class="mf">5.</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">diffraction</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">diffraction</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">diffraction</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">diffraction</span><span class="o">.</span><span class="n">intensities</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestDiffractionCalculator.test_appropriate_scaling"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_appropriate_scaling">[docs]</a>    <span class="k">def</span> <span class="nf">test_appropriate_scaling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diffraction_calculator</span><span class="p">:</span> <span class="n">DiffractionGenerator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tests that doubling the unit cell halves the pattern spacing.&quot;&quot;&quot;</span>
+        <span class="n">silicon</span> <span class="o">=</span> <span class="n">make_structure</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">big_silicon</span> <span class="o">=</span> <span class="n">make_structure</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">diffraction</span> <span class="o">=</span> <span class="n">diffraction_calculator</span><span class="o">.</span><span class="n">calculate_ed_data</span><span class="p">(</span>
+            <span class="n">structure</span><span class="o">=</span><span class="n">silicon</span><span class="p">,</span> <span class="n">reciprocal_radius</span><span class="o">=</span><span class="mf">5.</span><span class="p">)</span>
+        <span class="n">big_diffraction</span> <span class="o">=</span> <span class="n">diffraction_calculator</span><span class="o">.</span><span class="n">calculate_ed_data</span><span class="p">(</span>
+            <span class="n">structure</span><span class="o">=</span><span class="n">big_silicon</span><span class="p">,</span> <span class="n">reciprocal_radius</span><span class="o">=</span><span class="mf">5.</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">diffraction</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span>
+        <span class="n">big_indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">big_diffraction</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">in</span> <span class="n">indices</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">in</span> <span class="n">big_indices</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">diffraction</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">indices</span><span class="o">.</span><span class="n">index</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))]</span>
+        <span class="n">big_coordinates</span> <span class="o">=</span> <span class="n">big_diffraction</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="n">big_indices</span><span class="o">.</span><span class="n">index</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))]</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">big_coordinates</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestDiffractionCalculator.test_appropriate_intensities"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_appropriate_intensities">[docs]</a>    <span class="k">def</span> <span class="nf">test_appropriate_intensities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diffraction_calculator</span><span class="p">,</span> <span class="n">local_structure</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tests the central beam is strongest.&quot;&quot;&quot;</span>
+        <span class="n">diffraction</span> <span class="o">=</span> <span class="n">diffraction_calculator</span><span class="o">.</span><span class="n">calculate_ed_data</span><span class="p">(</span>
+            <span class="n">local_structure</span><span class="p">,</span> <span class="n">reciprocal_radius</span><span class="o">=</span><span class="mf">5.</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">diffraction</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span>
+        <span class="n">central_beam</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">index</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">smaller</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="n">diffraction</span><span class="o">.</span><span class="n">intensities</span><span class="p">[</span><span class="n">central_beam</span><span class="p">],</span> <span class="n">diffraction</span><span class="o">.</span><span class="n">intensities</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">smaller</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestDiffractionCalculator.test_calculate_profile_class"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_calculate_profile_class">[docs]</a>    <span class="k">def</span> <span class="nf">test_calculate_profile_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_structure</span><span class="p">,</span> <span class="n">diffraction_calculator</span><span class="p">):</span>
+        <span class="c1"># tests the non-hexagonal (cubic) case</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">diffraction_calculator</span><span class="o">.</span><span class="n">calculate_profile_data</span><span class="p">(</span><span class="n">local_structure</span><span class="p">,</span>
+                                                                <span class="n">reciprocal_radius</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">ProfileSimulation</span><span class="p">)</span>
+
+        <span class="n">latt</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">atom</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">atype</span><span class="o">=</span><span class="s1">&#39;Ni&#39;</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">lattice</span><span class="o">=</span><span class="n">latt</span><span class="p">)</span>
+        <span class="n">hexagonal_structure</span> <span class="o">=</span> <span class="n">diffpy</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">Structure</span><span class="p">(</span><span class="n">atoms</span><span class="o">=</span><span class="p">[</span><span class="n">atom</span><span class="p">],</span> <span class="n">lattice</span><span class="o">=</span><span class="n">latt</span><span class="p">)</span>
+        <span class="n">hexagonal_profile</span> <span class="o">=</span> <span class="n">diffraction_calculator</span><span class="o">.</span><span class="n">calculate_profile_data</span><span class="p">(</span><span class="n">structure</span><span class="o">=</span><span class="n">hexagonal_structure</span><span class="p">,</span>
+                                                                          <span class="n">reciprocal_radius</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hexagonal_profile</span><span class="p">,</span> <span class="n">ProfileSimulation</span><span class="p">)</span></div></div>
+
+
+<span class="n">scattering_params</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lobato&#39;</span><span class="p">,</span> <span class="s1">&#39;xtables&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="test_param_check"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.test_param_check">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;scattering_param&#39;</span><span class="p">,</span> <span class="n">scattering_params</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_param_check</span><span class="p">(</span><span class="n">scattering_param</span><span class="p">):</span>
+    <span class="n">generator</span> <span class="o">=</span> <span class="n">DiffractionGenerator</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+                                     <span class="n">scattering_params</span><span class="o">=</span><span class="n">scattering_param</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_invalid_scattering_params"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_diffraction_generator.test_invalid_scattering_params">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">NotImplementedError</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_invalid_scattering_params</span><span class="p">():</span>
+    <span class="n">scattering_param</span> <span class="o">=</span> <span class="s1">&#39;_empty&#39;</span>
+    <span class="n">generator</span> <span class="o">=</span> <span class="n">DiffractionGenerator</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+                                     <span class="n">scattering_params</span><span class="o">=</span><span class="n">scattering_param</span><span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

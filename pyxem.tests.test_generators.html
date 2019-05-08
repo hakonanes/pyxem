@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.tests.test_generators package &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyxem.tests.test_library package" href="pyxem.tests.test_library.html" />
+    <link rel="prev" title="pyxem.tests.test_components package" href="pyxem.tests.test_components.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Contents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">pyxem.tests.test_generators package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_generators.test_diffraction_generator">pyxem.tests.test_generators.test_diffraction_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_generators.test_displacement_gradient_tensor_generator">pyxem.tests.test_generators.test_displacement_gradient_tensor_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_generators.test_indexation_generator">pyxem.tests.test_generators.test_indexation_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_generators.test_library_generator">pyxem.tests.test_generators.test_library_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_generators.test_structure_library_generator">pyxem.tests.test_generators.test_structure_library_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_generators.test_subpixelrefinement_generator">pyxem.tests.test_generators.test_subpixelrefinement_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_generators.test_vdf_generator">pyxem.tests.test_generators.test_vdf_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.tests.test_generators">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pyxem.tests.test_components.html" title="Previous Chapter: pyxem.tests.test_components package"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; pyxem.tests.t...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pyxem.tests.test_library.html" title="Next Chapter: pyxem.tests.test_library package"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pyxem.tests.t... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="pyxem-tests-test-generators-package">
+<h1>pyxem.tests.test_generators package<a class="headerlink" href="#pyxem-tests-test-generators-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyxem.tests.test_generators.test_diffraction_generator">
+<span id="pyxem-tests-test-generators-test-diffraction-generator-module"></span><h2>pyxem.tests.test_generators.test_diffraction_generator module<a class="headerlink" href="#module-pyxem.tests.test_generators.test_diffraction_generator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_generators.test_diffraction_generator.</code><code class="descname">TestDiffractionCalculator</code><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#TestDiffractionCalculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_appropriate_intensities">
+<code class="descname">test_appropriate_intensities</code><span class="sig-paren">(</span><em>diffraction_calculator</em>, <em>local_structure</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#TestDiffractionCalculator.test_appropriate_intensities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_appropriate_intensities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the central beam is strongest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_appropriate_scaling">
+<code class="descname">test_appropriate_scaling</code><span class="sig-paren">(</span><em>diffraction_calculator: pyxem.generators.diffraction_generator.DiffractionGenerator</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#TestDiffractionCalculator.test_appropriate_scaling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_appropriate_scaling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that doubling the unit cell halves the pattern spacing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_calculate_profile_class">
+<code class="descname">test_calculate_profile_class</code><span class="sig-paren">(</span><em>local_structure</em>, <em>diffraction_calculator</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#TestDiffractionCalculator.test_calculate_profile_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_calculate_profile_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_init">
+<code class="descname">test_init</code><span class="sig-paren">(</span><em>diffraction_calculator: pyxem.generators.diffraction_generator.DiffractionGenerator</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#TestDiffractionCalculator.test_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_matching_results">
+<code class="descname">test_matching_results</code><span class="sig-paren">(</span><em>diffraction_calculator</em>, <em>local_structure</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#TestDiffractionCalculator.test_matching_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.TestDiffractionCalculator.test_matching_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.diffraction_calculator">
+<code class="descclassname">pyxem.tests.test_generators.test_diffraction_generator.</code><code class="descname">diffraction_calculator</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#diffraction_calculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.diffraction_calculator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.local_structure">
+<code class="descclassname">pyxem.tests.test_generators.test_diffraction_generator.</code><code class="descname">local_structure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#local_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.local_structure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.make_structure">
+<code class="descclassname">pyxem.tests.test_generators.test_diffraction_generator.</code><code class="descname">make_structure</code><span class="sig-paren">(</span><em>lattice_parameter=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#make_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.make_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>We construct an Fd-3m silicon (with lattice parameter 5.431 as a default)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.test_invalid_scattering_params">
+<code class="descclassname">pyxem.tests.test_generators.test_diffraction_generator.</code><code class="descname">test_invalid_scattering_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#test_invalid_scattering_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.test_invalid_scattering_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_diffraction_generator.test_param_check">
+<code class="descclassname">pyxem.tests.test_generators.test_diffraction_generator.</code><code class="descname">test_param_check</code><span class="sig-paren">(</span><em>scattering_param</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_diffraction_generator.html#test_param_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_diffraction_generator.test_param_check" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_generators.test_displacement_gradient_tensor_generator">
+<span id="pyxem-tests-test-generators-test-displacement-gradient-tensor-generator-module"></span><h2>pyxem.tests.test_generators.test_displacement_gradient_tensor_generator module<a class="headerlink" href="#module-pyxem.tests.test_generators.test_displacement_gradient_tensor_generator" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.generate_strain_map">
+<code class="descclassname">pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.</code><code class="descname">generate_strain_map</code><span class="sig-paren">(</span><em>vectors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_displacement_gradient_tensor_generator.html#generate_strain_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.generate_strain_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.generate_test_vectors">
+<code class="descclassname">pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.</code><code class="descname">generate_test_vectors</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_displacement_gradient_tensor_generator.html#generate_test_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.generate_test_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>We imagine we measured 4 sets of vectors, from 4 regions of sample, normal,
+rotated, uniform expansion and uniaxial expansion.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.get_arrays">
+<code class="descclassname">pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.</code><code class="descname">get_arrays</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_displacement_gradient_tensor_generator.html#get_arrays"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.get_arrays" title="Permalink to this definition">¶</a></dt>
+<dd><p>Our “sample” allows us to use a range of basis vectors, we try 3 sets:
+xy
+A pair at 45 degrees to xy, orthonormal
+A pair that are neither orthogonal to each other, nor normalised</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.rotation">
+<code class="descclassname">pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.</code><code class="descname">rotation</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_displacement_gradient_tensor_generator.html#rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.rotation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.stretch_in_x">
+<code class="descclassname">pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.</code><code class="descname">stretch_in_x</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_displacement_gradient_tensor_generator.html#stretch_in_x"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.stretch_in_x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.test_rotation">
+<code class="descclassname">pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.</code><code class="descname">test_rotation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_displacement_gradient_tensor_generator.html#test_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.test_rotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>We should always measure the same rotations, regardless of basis (note the tighter constraint
+avaliable for orthonormalised vectors)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.test_trace">
+<code class="descclassname">pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.</code><code class="descname">test_trace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_displacement_gradient_tensor_generator.html#test_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.test_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basis does effect strain measurement, but we can simply calculate suitable invarients.
+See <a class="reference external" href="https://en.wikipedia.org/wiki/Infinitesimal_strain_theory">https://en.wikipedia.org/wiki/Infinitesimal_strain_theory</a> for details.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.uniform_expansion">
+<code class="descclassname">pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.</code><code class="descname">uniform_expansion</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_displacement_gradient_tensor_generator.html#uniform_expansion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_displacement_gradient_tensor_generator.uniform_expansion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_generators.test_indexation_generator">
+<span id="pyxem-tests-test-generators-test-indexation-generator-module"></span><h2>pyxem.tests.test_generators.test_indexation_generator module<a class="headerlink" href="#module-pyxem.tests.test_generators.test_indexation_generator" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_indexation_generator.profile_simulation">
+<code class="descclassname">pyxem.tests.test_generators.test_indexation_generator.</code><code class="descname">profile_simulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_indexation_generator.html#profile_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_indexation_generator.profile_simulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_indexation_generator.test_profile_indexation_generator_init">
+<code class="descclassname">pyxem.tests.test_generators.test_indexation_generator.</code><code class="descname">test_profile_indexation_generator_init</code><span class="sig-paren">(</span><em>profile_simulation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_indexation_generator.html#test_profile_indexation_generator_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_indexation_generator.test_profile_indexation_generator_init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_indexation_generator.test_profile_indexation_generator_single_indexation">
+<code class="descclassname">pyxem.tests.test_generators.test_indexation_generator.</code><code class="descname">test_profile_indexation_generator_single_indexation</code><span class="sig-paren">(</span><em>profile_simulation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_indexation_generator.html#test_profile_indexation_generator_single_indexation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_indexation_generator.test_profile_indexation_generator_single_indexation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_indexation_generator.test_vector_indexation_generator_cartesian_check">
+<code class="descclassname">pyxem.tests.test_generators.test_indexation_generator.</code><code class="descname">test_vector_indexation_generator_cartesian_check</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_indexation_generator.html#test_vector_indexation_generator_cartesian_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_indexation_generator.test_vector_indexation_generator_cartesian_check" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_indexation_generator.test_vector_indexation_generator_index_vectors">
+<code class="descclassname">pyxem.tests.test_generators.test_indexation_generator.</code><code class="descname">test_vector_indexation_generator_index_vectors</code><span class="sig-paren">(</span><em>vector_match_peaks</em>, <em>vector_library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_indexation_generator.html#test_vector_indexation_generator_index_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_indexation_generator.test_vector_indexation_generator_index_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_indexation_generator.test_vector_indexation_generator_init">
+<code class="descclassname">pyxem.tests.test_generators.test_indexation_generator.</code><code class="descname">test_vector_indexation_generator_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_indexation_generator.html#test_vector_indexation_generator_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_indexation_generator.test_vector_indexation_generator_init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_generators.test_library_generator">
+<span id="pyxem-tests-test-generators-test-library-generator-module"></span><h2>pyxem.tests.test_generators.test_library_generator module<a class="headerlink" href="#module-pyxem.tests.test_generators.test_library_generator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.tests.test_generators.test_library_generator.TestDiffractionLibraryGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_generators.test_library_generator.</code><code class="descname">TestDiffractionLibraryGenerator</code><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_library_generator.html#TestDiffractionLibraryGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_library_generator.TestDiffractionLibraryGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_library_generator.TestDiffractionLibraryGenerator.test_get_diffraction_library">
+<code class="descname">test_get_diffraction_library</code><span class="sig-paren">(</span><em>library_generator: pyxem.generators.library_generator.DiffractionLibraryGenerator</em>, <em>structure_library</em>, <em>calibration</em>, <em>reciprocal_radius</em>, <em>half_shape</em>, <em>with_direct_beam</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_library_generator.html#TestDiffractionLibraryGenerator.test_get_diffraction_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_library_generator.TestDiffractionLibraryGenerator.test_get_diffraction_library" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_library_generator.diffraction_calculator">
+<code class="descclassname">pyxem.tests.test_generators.test_library_generator.</code><code class="descname">diffraction_calculator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_library_generator.html#diffraction_calculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_library_generator.diffraction_calculator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_library_generator.library_generator">
+<code class="descclassname">pyxem.tests.test_generators.test_library_generator.</code><code class="descname">library_generator</code><span class="sig-paren">(</span><em>diffraction_calculator</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_library_generator.html#library_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_library_generator.library_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_library_generator.structure_library">
+<code class="descclassname">pyxem.tests.test_generators.test_library_generator.</code><code class="descname">structure_library</code><span class="sig-paren">(</span><em>default_structure</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_library_generator.html#structure_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_library_generator.structure_library" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_generators.test_structure_library_generator">
+<span id="pyxem-tests-test-generators-test-structure-library-generator-module"></span><h2>pyxem.tests.test_generators.test_structure_library_generator module<a class="headerlink" href="#module-pyxem.tests.test_generators.test_structure_library_generator" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_structure_library_generator.test_orientations_from_list">
+<code class="descclassname">pyxem.tests.test_generators.test_structure_library_generator.</code><code class="descname">test_orientations_from_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_structure_library_generator.html#test_orientations_from_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_structure_library_generator.test_orientations_from_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_structure_library_generator.test_orientations_from_stereographic_triangle">
+<code class="descclassname">pyxem.tests.test_generators.test_structure_library_generator.</code><code class="descname">test_orientations_from_stereographic_triangle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_structure_library_generator.html#test_orientations_from_stereographic_triangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_structure_library_generator.test_orientations_from_stereographic_triangle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_generators.test_subpixelrefinement_generator">
+<span id="pyxem-tests-test-generators-test-subpixelrefinement-generator-module"></span><h2>pyxem.tests.test_generators.test_subpixelrefinement_generator module<a class="headerlink" href="#module-pyxem.tests.test_generators.test_subpixelrefinement_generator" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_subpixelrefinement_generator.create_spot">
+<code class="descclassname">pyxem.tests.test_generators.test_subpixelrefinement_generator.</code><code class="descname">create_spot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_subpixelrefinement_generator.html#create_spot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_subpixelrefinement_generator.create_spot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_subpixelrefinement_generator.create_vectors">
+<code class="descclassname">pyxem.tests.test_generators.test_subpixelrefinement_generator.</code><code class="descname">create_vectors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_subpixelrefinement_generator.html#create_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_subpixelrefinement_generator.create_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_subpixelrefinement_generator.test_assertioned_com">
+<code class="descclassname">pyxem.tests.test_generators.test_subpixelrefinement_generator.</code><code class="descname">test_assertioned_com</code><span class="sig-paren">(</span><em>dp</em>, <em>diffraction_vectors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_subpixelrefinement_generator.html#test_assertioned_com"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_assertioned_com" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_subpixelrefinement_generator.test_assertioned_xc">
+<code class="descclassname">pyxem.tests.test_generators.test_subpixelrefinement_generator.</code><code class="descname">test_assertioned_xc</code><span class="sig-paren">(</span><em>dp</em>, <em>diffraction_vectors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_subpixelrefinement_generator.html#test_assertioned_xc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_assertioned_xc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_subpixelrefinement_generator.test_bad_vectors_DiffractionVectors">
+<code class="descclassname">pyxem.tests.test_generators.test_subpixelrefinement_generator.</code><code class="descname">test_bad_vectors_DiffractionVectors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_subpixelrefinement_generator.html#test_bad_vectors_DiffractionVectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_bad_vectors_DiffractionVectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_subpixelrefinement_generator.test_bad_vectors_numpy">
+<code class="descclassname">pyxem.tests.test_generators.test_subpixelrefinement_generator.</code><code class="descname">test_bad_vectors_numpy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_subpixelrefinement_generator.html#test_bad_vectors_numpy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_bad_vectors_numpy" title="Permalink to this definition">¶</a></dt>
+<dd><p>tests that putting bad vectors in causes an error to be thrown when
+you initiate the geneartor</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_subpixelrefinement_generator.test_conventional_xc">
+<code class="descclassname">pyxem.tests.test_generators.test_subpixelrefinement_generator.</code><code class="descname">test_conventional_xc</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_subpixelrefinement_generator.html#test_conventional_xc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_conventional_xc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_subpixelrefinement_generator.test_local_gaussian_method_dull">
+<code class="descclassname">pyxem.tests.test_generators.test_subpixelrefinement_generator.</code><code class="descname">test_local_gaussian_method_dull</code><span class="sig-paren">(</span><em>dp</em>, <em>diffraction_vectors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_subpixelrefinement_generator.html#test_local_gaussian_method_dull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_local_gaussian_method_dull" title="Permalink to this definition">¶</a></dt>
+<dd><p>This aims to test that our x/y convention is correct. The peak shape for
+these tests is unsuitable for this method.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_subpixelrefinement_generator.test_local_gaussian_method_exciting">
+<code class="descclassname">pyxem.tests.test_generators.test_subpixelrefinement_generator.</code><code class="descname">test_local_gaussian_method_exciting</code><span class="sig-paren">(</span><em>dp</em>, <em>diffraction_vectors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_subpixelrefinement_generator.html#test_local_gaussian_method_exciting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_local_gaussian_method_exciting" title="Permalink to this definition">¶</a></dt>
+<dd><p>This aims to test that our x/y convention is correct. The peak shape for
+these tests is unsuitable for this method.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_subpixelrefinement_generator.test_wrong_navigation_dimensions">
+<code class="descclassname">pyxem.tests.test_generators.test_subpixelrefinement_generator.</code><code class="descname">test_wrong_navigation_dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_subpixelrefinement_generator.html#test_wrong_navigation_dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_wrong_navigation_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_generators.test_vdf_generator">
+<span id="pyxem-tests-test-generators-test-vdf-generator-module"></span><h2>pyxem.tests.test_generators.test_vdf_generator module<a class="headerlink" href="#module-pyxem.tests.test_generators.test_vdf_generator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.tests.test_generators.test_vdf_generator.</code><code class="descname">TestVDFGenerator</code><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_vdf_generator.html#TestVDFGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator.test_get_concentric_vdf_images">
+<code class="descname">test_get_concentric_vdf_images</code><span class="sig-paren">(</span><em>vdf_generator: pyxem.generators.vdf_generator.VDFGenerator</em>, <em>k_min</em>, <em>k_max</em>, <em>k_steps</em>, <em>normalize</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_vdf_generator.html#TestVDFGenerator.test_get_concentric_vdf_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator.test_get_concentric_vdf_images" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator.test_get_vector_vdf_images">
+<code class="descname">test_get_vector_vdf_images</code><span class="sig-paren">(</span><em>vdf_generator: pyxem.generators.vdf_generator.VDFGenerator</em>, <em>radius</em>, <em>normalize</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_vdf_generator.html#TestVDFGenerator.test_get_vector_vdf_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator.test_get_vector_vdf_images" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator.test_vdf_generator_init_with_vectors">
+<code class="descname">test_vdf_generator_init_with_vectors</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_vdf_generator.html#TestVDFGenerator.test_vdf_generator_init_with_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator.test_vdf_generator_init_with_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator.test_vdf_generator_init_without_vectors">
+<code class="descname">test_vdf_generator_init_without_vectors</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_vdf_generator.html#TestVDFGenerator.test_vdf_generator_init_without_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator.test_vdf_generator_init_without_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator.test_vector_vdfs_without_vectors">
+<code class="descname">test_vector_vdfs_without_vectors</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_vdf_generator.html#TestVDFGenerator.test_vector_vdfs_without_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_vdf_generator.TestVDFGenerator.test_vector_vdfs_without_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_vdf_generator.diffraction_vectors">
+<code class="descclassname">pyxem.tests.test_generators.test_vdf_generator.</code><code class="descname">diffraction_vectors</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_vdf_generator.html#diffraction_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_vdf_generator.diffraction_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_vdf_generator.test_vdf_generator_from_map">
+<code class="descclassname">pyxem.tests.test_generators.test_vdf_generator.</code><code class="descname">test_vdf_generator_from_map</code><span class="sig-paren">(</span><em>diffraction_pattern</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_vdf_generator.html#test_vdf_generator_from_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_vdf_generator.test_vdf_generator_from_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyxem.tests.test_generators.test_vdf_generator.vdf_generator">
+<code class="descclassname">pyxem.tests.test_generators.test_vdf_generator.</code><code class="descname">vdf_generator</code><span class="sig-paren">(</span><em>diffraction_pattern</em>, <em>diffraction_vectors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/tests/test_generators/test_vdf_generator.html#vdf_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.tests.test_generators.test_vdf_generator.vdf_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.tests.test_generators">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyxem.tests.test_generators" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

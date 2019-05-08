@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Conventions &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="Publications" href="literature.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="literature.html">Publications</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Conventions</a><ul>
+<li><a class="reference internal" href="#physical-units">Physical Units</a></li>
+<li><a class="reference internal" href="#diffraction-pattern-coordinates">Diffraction Pattern Coordinates</a></li>
+<li><a class="reference internal" href="#crystallographic-axes">Crystallographic Axes</a></li>
+<li><a class="reference internal" href="#rotations">Rotations</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="literature.html" title="Previous Chapter: Publications"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Publications</span>
+    </a>
+  </li>
+  <li>
+    <a href="contributing.html" title="Next Chapter: Contributing"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Contributing &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="conventions">
+<h1>Conventions<a class="headerlink" href="#conventions" title="Permalink to this headline">¶</a></h1>
+<p>The following conventions are adopted within pyXem.</p>
+<div class="section" id="physical-units">
+<h2>Physical Units<a class="headerlink" href="#physical-units" title="Permalink to this headline">¶</a></h2>
+<p>When physical units are used it is anticipated that we have:</p>
+<ol class="arabic simple">
+<li><p>Diffraction plane units of reciprocal Angstroms i.e. g = 1/d.</p></li>
+<li><p>Atomic structure coordinates in Angstroms.</p></li>
+<li><p>Scan coordinates in nanometres.</p></li>
+</ol>
+</div>
+<div class="section" id="diffraction-pattern-coordinates">
+<h2>Diffraction Pattern Coordinates<a class="headerlink" href="#diffraction-pattern-coordinates" title="Permalink to this headline">¶</a></h2>
+<p>Following alignment and calibration of two-dimensional diffraction data in the
+ElectronDiffraction class coordinates in the two-dimensional diffraction pattern
+are Cartesian coordinates referred to an origin at the center of the diffraction
+pattern with the lower right hand quadrant positive. Coordinates may also be expressed
+as polar coordinates with the positive rotation an anticlockwise rotation. These
+conventions are depicted below:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/axis_conventions_pyxem.png"><img alt="_images/axis_conventions_pyxem.png" src="_images/axis_conventions_pyxem.png" style="width: 600px;" /></a>
+</div>
+</div>
+<div class="section" id="crystallographic-axes">
+<h2>Crystallographic Axes<a class="headerlink" href="#crystallographic-axes" title="Permalink to this headline">¶</a></h2>
+<p>Atomic structures are manipulated in pyXem using the diffpy.Structure module and
+crystallographic conventions are therefore primarily inherited from there.
+Unless otherwise stated it will be assumed that a crystal structures is
+described in the standard setting as defined in the <a class="reference external" href="https://it.iucr.org/A/">International Tables for Crystallography</a></p>
+<p>Crystal orientations/rotations are typically described with respect to an
+orthonormal basis, which must be related to the crystallographic basis in a
+consistent manner. For further discussion see, for example, the following
+article by <a class="reference external" href="http://iopscience.iop.org/article/10.1088/0965-0393/23/8/083501/meta">Rowenhorst et al</a>. In pyXem it is assumed that these axes are related according to the metric tensor defined in a
+diffpy.structure.lattice object.</p>
+</div>
+<div class="section" id="rotations">
+<h2>Rotations<a class="headerlink" href="#rotations" title="Permalink to this headline">¶</a></h2>
+<p>These are in the rzxz convention, as defined in <a class="reference external" href="https://matthew-brett.github.io/transforms3d/reference/transforms3d.euler.html">transforms3d</a>. This means that we
+rotate about z (by alpha), then the new x (by beta), and finally the new z (by gamma),
+as illustrated below:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/euler_angles.png"><img alt="_images/euler_angles.png" src="_images/euler_angles.png" style="width: 600px;" /></a>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

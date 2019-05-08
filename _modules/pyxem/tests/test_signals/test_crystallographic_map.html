@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.tests.test_signals.test_crystallographic_map &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.tests.test_signals.test_crystallographic_map</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2018 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.crystallographic_map</span> <span class="k">import</span> <span class="n">CrystallographicMap</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.crystallographic_map</span> <span class="k">import</span> <span class="n">load_mtex_map</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.crystallographic_map</span> <span class="k">import</span> <span class="n">_distance_from_fixed_angle</span>
+<span class="kn">from</span> <span class="nn">transforms3d.euler</span> <span class="k">import</span> <span class="n">euler2quat</span><span class="p">,</span> <span class="n">quat2axangle</span>
+<span class="kn">from</span> <span class="nn">transforms3d.quaternions</span> <span class="k">import</span> <span class="n">qmult</span><span class="p">,</span> <span class="n">qinverse</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="worker_for_test_CrystallographicMap_io"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.worker_for_test_CrystallographicMap_io">[docs]</a><span class="k">def</span> <span class="nf">worker_for_test_CrystallographicMap_io</span><span class="p">(</span><span class="n">mapp</span><span class="p">):</span>
+    <span class="n">mapp</span><span class="o">.</span><span class="n">save_mtex_map</span><span class="p">(</span><span class="s1">&#39;file_01.txt&#39;</span><span class="p">)</span>
+    <span class="n">lmap</span> <span class="o">=</span> <span class="n">load_mtex_map</span><span class="p">(</span><span class="s1">&#39;file_01.txt&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;file_01.txt&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mapp</span><span class="p">,</span> <span class="n">lmap</span></div>
+
+
+<div class="viewcode-block" id="get_distance_between_two_angles_longform"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.get_distance_between_two_angles_longform">[docs]</a><span class="k">def</span> <span class="nf">get_distance_between_two_angles_longform</span><span class="p">(</span><span class="n">angle_1</span><span class="p">,</span> <span class="n">angle_2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Using the long form to find the distance between two angles in euler form</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="n">euler2quat</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angle_1</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;rzxz&#39;</span><span class="p">)</span>
+    <span class="n">q2</span> <span class="o">=</span> <span class="n">euler2quat</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angle_2</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;rzxz&#39;</span><span class="p">)</span>
+    <span class="c1"># now assume transform of the form MODAL then Something = TOTAL</span>
+    <span class="c1"># so we want to calculate MODAL^{-1} TOTAL</span>
+
+    <span class="n">q_from_mode</span> <span class="o">=</span> <span class="n">qmult</span><span class="p">(</span><span class="n">qinverse</span><span class="p">(</span><span class="n">q2</span><span class="p">),</span> <span class="n">q1</span><span class="p">)</span>
+    <span class="n">axis</span><span class="p">,</span> <span class="n">angle</span> <span class="o">=</span> <span class="n">quat2axangle</span><span class="p">(</span><span class="n">q_from_mode</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sp_cryst_map"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.sp_cryst_map">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">sp_cryst_map</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a single phase Crystallographic Map</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">3e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">2e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">4e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">8e-16</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">}]</span>
+    <span class="n">crystal_map</span> <span class="o">=</span> <span class="n">CrystallographicMap</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+    <span class="n">crystal_map</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;template_matching&#39;</span>
+    <span class="k">return</span> <span class="n">crystal_map</span></div>
+
+
+<div class="viewcode-block" id="dp_cryst_map"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.dp_cryst_map">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">dp_cryst_map</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a Crystallographic Map with two phases</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">3e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;phase_reliability&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">2e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;phase_reliability&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">4e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s1">&#39;phase_reliability&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">8e-16</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;phase_reliability&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">}]</span>
+    <span class="n">crystal_map</span> <span class="o">=</span> <span class="n">CrystallographicMap</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+    <span class="n">crystal_map</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;template_matching&#39;</span>
+    <span class="k">return</span> <span class="n">crystal_map</span></div>
+
+
+<div class="viewcode-block" id="mod_cryst_map"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.mod_cryst_map">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">mod_cryst_map</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a Crystallographic Map with (5,17,6) as the modal angle</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">5e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">5e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">5e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">5e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">5e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span><span class="s1">&#39;correlation&#39;</span><span class="p">:</span> <span class="mf">5e-17</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}]</span>
+    <span class="n">crystal_map</span> <span class="o">=</span> <span class="n">CrystallographicMap</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+    <span class="n">crystal_map</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;template_matching&#39;</span>
+    <span class="k">return</span> <span class="n">crystal_map</span></div>
+
+
+<div class="viewcode-block" id="dp_cryst_map_vector"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.dp_cryst_map_vector">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">dp_cryst_map_vector</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a Crystallographic Map with two phases from vector matching</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span>
+        <span class="s1">&#39;match_rate&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;ehkls&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]),</span>
+        <span class="s1">&#39;total_error&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">13.2</span><span class="p">,</span>
+        <span class="s1">&#39;phase_reliability&#39;</span><span class="p">:</span> <span class="mf">42.0</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span>
+        <span class="s1">&#39;match_rate&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;ehkls&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]),</span>
+        <span class="s1">&#39;total_error&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">13.2</span><span class="p">,</span>
+        <span class="s1">&#39;phase_reliability&#39;</span><span class="p">:</span> <span class="mf">42.0</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="p">{</span>
+        <span class="s1">&#39;match_rate&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;ehkls&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]),</span>
+        <span class="s1">&#39;total_error&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">13.2</span><span class="p">,</span>
+        <span class="s1">&#39;phase_reliability&#39;</span><span class="p">:</span> <span class="mf">42.0</span><span class="p">}]</span>
+    <span class="n">base</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="p">{</span>
+        <span class="s1">&#39;match_rate&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;ehkls&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]),</span>
+        <span class="s1">&#39;total_error&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;orientation_reliability&#39;</span><span class="p">:</span> <span class="mf">13.2</span><span class="p">,</span>
+        <span class="s1">&#39;phase_reliability&#39;</span><span class="p">:</span> <span class="mf">42.0</span><span class="p">}]</span>
+    <span class="n">crystal_map</span> <span class="o">=</span> <span class="n">CrystallographicMap</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+    <span class="n">crystal_map</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;vector_matching&#39;</span>
+    <span class="k">return</span> <span class="n">crystal_map</span></div>
+
+
+<div class="viewcode-block" id="TestMapCreation"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation">[docs]</a><span class="k">class</span> <span class="nc">TestMapCreation</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TestMapCreation.test_get_phase_map"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_phase_map">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_phase_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sp_cryst_map</span><span class="p">):</span>
+        <span class="n">phasemap</span> <span class="o">=</span> <span class="n">sp_cryst_map</span><span class="o">.</span><span class="n">get_phase_map</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">phasemap</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="TestMapCreation.test_get_orientation_map"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_orientation_map">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_orientation_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sp_cryst_map</span><span class="p">):</span>
+        <span class="n">orimap</span> <span class="o">=</span> <span class="n">sp_cryst_map</span><span class="o">.</span><span class="n">get_orientation_map</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">orimap</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="TestMapCreation.test_get_metric_map_template_match"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_template_match">[docs]</a>    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;metric, value&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s1">&#39;correlation&#39;</span><span class="p">,</span> <span class="mf">3e-17</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;orientation_reliability&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;phase_reliability&#39;</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="k">def</span> <span class="nf">test_get_metric_map_template_match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dp_cryst_map</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">metric_map</span> <span class="o">=</span> <span class="n">dp_cryst_map</span><span class="o">.</span><span class="n">get_metric_map</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">metric_map</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="TestMapCreation.test_get_metric_map_vector_match"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_vector_match">[docs]</a>    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;metric, value&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s1">&#39;match_rate&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;ehkls&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])),</span>
+        <span class="p">(</span><span class="s1">&#39;total_error&#39;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;orientation_reliability&#39;</span><span class="p">,</span> <span class="mf">13.2</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;phase_reliability&#39;</span><span class="p">,</span> <span class="mf">42.0</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="k">def</span> <span class="nf">test_get_metric_map_vector_match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dp_cryst_map_vector</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">metric_map</span> <span class="o">=</span> <span class="n">dp_cryst_map_vector</span><span class="o">.</span><span class="n">get_metric_map</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">metric_map</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestMapCreation.test_get_metric_map_template_match_bad_metric"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_template_match_bad_metric">[docs]</a>    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_get_metric_map_template_match_bad_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sp_cryst_map</span><span class="p">):</span>
+        <span class="n">metric_map</span> <span class="o">=</span> <span class="n">sp_cryst_map</span><span class="o">.</span><span class="n">get_metric_map</span><span class="p">(</span><span class="s1">&#39;no metric&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestMapCreation.test_get_metric_map_vector_match_bad_metric"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_vector_match_bad_metric">[docs]</a>    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_get_metric_map_vector_match_bad_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dp_cryst_map_vector</span><span class="p">):</span>
+        <span class="n">metric_map</span> <span class="o">=</span> <span class="n">dp_cryst_map_vector</span><span class="o">.</span><span class="n">get_metric_map</span><span class="p">(</span><span class="s1">&#39;no metric&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestMapCreation.test_get_metric_map_no_method"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMapCreation.test_get_metric_map_no_method">[docs]</a>    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_get_metric_map_no_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">crystal_map</span> <span class="o">=</span> <span class="n">CrystallographicMap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">]]))</span>
+        <span class="n">metric_map</span> <span class="o">=</span> <span class="n">crystal_map</span><span class="o">.</span><span class="n">get_metric_map</span><span class="p">(</span><span class="s1">&#39;no metric&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TestMTEXIO"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMTEXIO">[docs]</a><span class="k">class</span> <span class="nc">TestMTEXIO</span><span class="p">:</span>
+<div class="viewcode-block" id="TestMTEXIO.test_Crystallographic_Map_io_sp"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMTEXIO.test_Crystallographic_Map_io_sp">[docs]</a>    <span class="k">def</span> <span class="nf">test_Crystallographic_Map_io_sp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sp_cryst_map</span><span class="p">):</span>
+        <span class="n">saved</span><span class="p">,</span> <span class="n">loaded</span> <span class="o">=</span> <span class="n">worker_for_test_CrystallographicMap_io</span><span class="p">(</span><span class="n">sp_cryst_map</span><span class="p">)</span>
+        <span class="n">saved</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;template_matching&#39;</span>
+        <span class="n">loaded</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;template_matching&#39;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">saved</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">),</span> <span class="n">loaded</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">saved</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tolist</span><span class="p">()),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">loaded</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">saved</span><span class="o">.</span><span class="n">get_metric_map</span><span class="p">(</span><span class="s1">&#39;correlation&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">loaded</span><span class="o">.</span><span class="n">get_metric_map</span><span class="p">(</span><span class="s1">&#39;correlation&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestMTEXIO.test_Crystallographic_Map_io_dp"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestMTEXIO.test_Crystallographic_Map_io_dp">[docs]</a>    <span class="k">def</span> <span class="nf">test_Crystallographic_Map_io_dp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dp_cryst_map</span><span class="p">):</span>
+        <span class="n">saved</span><span class="p">,</span> <span class="n">loaded</span> <span class="o">=</span> <span class="n">worker_for_test_CrystallographicMap_io</span><span class="p">(</span><span class="n">dp_cryst_map</span><span class="p">)</span>
+        <span class="n">saved</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;template_matching&#39;</span>
+        <span class="n">loaded</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;template_matching&#39;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">saved</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">),</span> <span class="n">loaded</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">saved</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tolist</span><span class="p">()),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">loaded</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">saved</span><span class="o">.</span><span class="n">get_metric_map</span><span class="p">(</span><span class="s1">&#39;correlation&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">loaded</span><span class="o">.</span><span class="n">get_metric_map</span><span class="p">(</span><span class="s1">&#39;correlation&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TestModalAngularFunctionality"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality">[docs]</a><span class="k">class</span> <span class="nc">TestModalAngularFunctionality</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TestModalAngularFunctionality.test_get_distance_from_modal"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality.test_get_distance_from_modal">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_distance_from_modal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod_cryst_map</span><span class="p">):</span>
+        <span class="c1"># function runs without error</span>
+        <span class="n">formal</span> <span class="o">=</span> <span class="n">mod_cryst_map</span><span class="o">.</span><span class="n">get_distance_from_modal_angle</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="TestModalAngularFunctionality.test_get_modal_angles"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality.test_get_modal_angles">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_modal_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod_cryst_map</span><span class="p">):</span>
+        <span class="c1"># modal angle is found correctly</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">mod_cryst_map</span><span class="o">.</span><span class="n">get_modal_angles</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">6</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="TestModalAngularFunctionality.test_get_distance_from_fixed_angle"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_crystallographic_map.TestModalAngularFunctionality.test_get_distance_from_fixed_angle">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_distance_from_fixed_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># distance between two angles is found correctly</span>
+        <span class="n">angle_1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">angle_2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">implemented</span> <span class="o">=</span> <span class="n">_distance_from_fixed_angle</span><span class="p">([</span><span class="n">angle_1</span><span class="p">],</span> <span class="n">angle_2</span><span class="p">)</span>
+        <span class="n">testing</span> <span class="o">=</span> <span class="n">get_distance_between_two_angles_longform</span><span class="p">(</span><span class="n">angle_1</span><span class="p">,</span> <span class="n">angle_2</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">implemented</span><span class="p">,</span> <span class="n">testing</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">implemented</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

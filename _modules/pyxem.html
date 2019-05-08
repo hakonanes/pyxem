@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">hyperspy.drawing.marker</span> <span class="k">import</span> <span class="n">markers_metadata_dict_to_markers</span>
+<span class="kn">from</span> <span class="nn">hyperspy.exceptions</span> <span class="k">import</span> <span class="n">VisibleDeprecationWarning</span>
+<span class="kn">from</span> <span class="nn">hyperspy.io</span> <span class="k">import</span> <span class="n">load_with_reader</span>
+<span class="kn">from</span> <span class="nn">hyperspy.misc.io.tools</span> <span class="k">import</span> <span class="n">ensure_directory</span>
+<span class="kn">from</span> <span class="nn">hyperspy.misc.io.tools</span> <span class="k">import</span> <span class="n">overwrite</span> <span class="k">as</span> <span class="n">overwrite_method</span>
+<span class="kn">from</span> <span class="nn">hyperspy.misc.utils</span> <span class="k">import</span> <span class="n">stack</span> <span class="k">as</span> <span class="n">stack_method</span>
+<span class="kn">from</span> <span class="nn">hyperspy.misc.utils</span> <span class="k">import</span> <span class="p">(</span><span class="n">strlist2enumeration</span><span class="p">,</span> <span class="n">find_subclasses</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">hyperspy.ui_registry</span> <span class="k">import</span> <span class="n">get_gui</span>
+<span class="kn">from</span> <span class="nn">hyperspy.api</span> <span class="k">import</span> <span class="n">roi</span>
+<span class="kn">from</span> <span class="nn">natsort</span> <span class="k">import</span> <span class="n">natsorted</span>
+
+<span class="kn">from</span> <span class="nn">.components.diffraction_component</span> <span class="k">import</span> <span class="n">ElectronDiffractionForwardModel</span>
+
+<span class="kn">from</span> <span class="nn">.generators.diffraction_generator</span> <span class="k">import</span> <span class="n">DiffractionGenerator</span>
+<span class="kn">from</span> <span class="nn">.generators.library_generator</span> <span class="k">import</span> <span class="n">DiffractionLibraryGenerator</span>
+<span class="kn">from</span> <span class="nn">.generators.library_generator</span> <span class="k">import</span> <span class="n">VectorLibraryGenerator</span>
+
+<span class="kn">from</span> <span class="nn">.signals.crystallographic_map</span> <span class="k">import</span> <span class="n">CrystallographicMap</span>
+<span class="kn">from</span> <span class="nn">.signals.diffraction_profile</span> <span class="k">import</span> <span class="n">ElectronDiffractionProfile</span>
+<span class="kn">from</span> <span class="nn">.signals.electron_diffraction</span> <span class="k">import</span> <span class="n">ElectronDiffraction</span>
+<span class="kn">from</span> <span class="nn">.signals.diffraction_simulation</span> <span class="k">import</span> <span class="n">DiffractionSimulation</span>
+<span class="kn">from</span> <span class="nn">.signals.diffraction_vectors</span> <span class="k">import</span> <span class="n">DiffractionVectors</span>
+<span class="kn">from</span> <span class="nn">.signals.vdf_image</span> <span class="k">import</span> <span class="n">VDFImage</span>
+
+<span class="kn">from</span> <span class="nn">.io_plugins</span> <span class="k">import</span> <span class="n">io_plugins</span><span class="p">,</span> <span class="n">default_write_ext</span>
+<span class="kn">from</span> <span class="nn">.io_plugins</span> <span class="k">import</span> <span class="n">mib</span> <span class="k">as</span> <span class="n">mib_reader</span>
+
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1"># Utility string:</span>
+<span class="n">f_error_fmt</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">File </span><span class="si">%d</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;</span><span class="se">\t\t</span><span class="si">%d</span><span class="s2"> signals</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">Path: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../pyxem.html#pyxem.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filenames</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">signal_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">stack</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+         <span class="n">stack_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">new_axis_name</span><span class="o">=</span><span class="s2">&quot;stack_element&quot;</span><span class="p">,</span>
+         <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+         <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load supported files into a pyxem structure.</span>
+
+<span class="sd">    Supported formats: hspy (HDF5), Medipix (hdr + mib), blockfile, Gatan dm3,</span>
+<span class="sd">    tif, msa, Bruker bcf, FEI ser and emi, SEMPER unf, EMD, EDAX spd/spc, tif,</span>
+<span class="sd">    and a number of image formats.</span>
+
+<span class="sd">    Additional keyword arguments are passed to the corresponding reader. For</span>
+<span class="sd">    available options see their individual documentation, which may be found in</span>
+<span class="sd">    either pyxem or hyperspy.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filenames :  None, str or list of strings</span>
+<span class="sd">        The filename to be loaded. If None, a window will open to select</span>
+<span class="sd">        a file to load. If a valid filename is passed in that single</span>
+<span class="sd">        file is loaded. If multiple file names are passed in</span>
+<span class="sd">        a list, a list of objects or a single object containing the data</span>
+<span class="sd">        of the individual files stacked are returned. This behaviour is</span>
+<span class="sd">        controlled by the `stack` parameter (see bellow). Multiple</span>
+<span class="sd">        files can be loaded by using simple shell-style wildcards,</span>
+<span class="sd">        e.g. &#39;my_file*.msa&#39; loads all the files that starts</span>
+<span class="sd">        by &#39;my_file&#39; and has the &#39;.msa&#39; extension.</span>
+<span class="sd">    signal_type : {None, &quot;electron_diffraction&quot;, &quot;diffraction_profile&quot;,</span>
+<span class="sd">                   &quot;diffraction_vectors&quot;, &quot;crystallographic_map&quot;, str}</span>
+<span class="sd">        The acronym that identifies the signal type.</span>
+<span class="sd">        The value provided may determine the Signal subclass assigned to the</span>
+<span class="sd">        data.</span>
+<span class="sd">        If None the value is read/guessed from the file. Any other value</span>
+<span class="sd">        overrides the value stored in the file if any.</span>
+<span class="sd">        For electron energy-loss spectroscopy use &quot;EELS&quot;.</span>
+<span class="sd">        For energy dispersive x-rays use &quot;EDS_TEM&quot;</span>
+<span class="sd">        if acquired from an electron-transparent sample — as it is usually</span>
+<span class="sd">        the case in a transmission electron  microscope (TEM) —,</span>
+<span class="sd">        &quot;EDS_SEM&quot; if acquired from a non electron-transparent sample</span>
+<span class="sd">        — as it is usually the case in a scanning electron  microscope (SEM) —.</span>
+<span class="sd">        If &quot;&quot; (empty string) the value is not read from the file and is</span>
+<span class="sd">        considered undefined.</span>
+<span class="sd">    stack : bool</span>
+<span class="sd">        If True and multiple filenames are passed in, stacking all</span>
+<span class="sd">        the data into a single object is attempted. All files must match</span>
+<span class="sd">        in shape. If each file contains multiple (N) signals, N stacks will be</span>
+<span class="sd">        created, with the requirement that each file contains the same number</span>
+<span class="sd">        of signals.</span>
+<span class="sd">    stack_axis : {None, int, str}</span>
+<span class="sd">        If None, the signals are stacked over a new axis. The data must</span>
+<span class="sd">        have the same dimensions. Otherwise the</span>
+<span class="sd">        signals are stacked over the axis given by its integer index or</span>
+<span class="sd">        its name. The data must have the same shape, except in the dimension</span>
+<span class="sd">        corresponding to `axis`.</span>
+<span class="sd">    new_axis_name : string</span>
+<span class="sd">        The name of the new axis when `axis` is None.</span>
+<span class="sd">        If an axis with this name already</span>
+<span class="sd">        exists it automatically append &#39;-i&#39;, where `i` are integers,</span>
+<span class="sd">        until it finds a name that is not yet in use.</span>
+<span class="sd">    lazy : {None, bool}</span>
+<span class="sd">        Open the data lazily - i.e. without actually reading the data from the</span>
+<span class="sd">        disk until required. Allows opening arbitrary-sized datasets. default</span>
+<span class="sd">        is `False`.</span>
+<span class="sd">    print_info: bool</span>
+<span class="sd">        For SEMPER unf- and EMD (Berkley)-files, if True (default is False)</span>
+<span class="sd">        additional information read during loading is printed for a quick</span>
+<span class="sd">        overview.</span>
+
+<span class="sd">    downsample : int (1–4095)</span>
+<span class="sd">        For Bruker bcf files, if set to integer (&gt;=2) (default 1)</span>
+<span class="sd">        bcf is parsed into down-sampled size array by given integer factor,</span>
+<span class="sd">        multiple values from original bcf pixels are summed forming downsampled</span>
+<span class="sd">        pixel. This allows to improve signal and conserve the memory with the</span>
+<span class="sd">        cost of lower resolution.</span>
+<span class="sd">    cutoff_at_kV : {None, int, float}</span>
+<span class="sd">       For Bruker bcf files, if set to numerical (default is None)</span>
+<span class="sd">       bcf is parsed into array with depth cutoff at coresponding given energy.</span>
+<span class="sd">       This allows to conserve the memory, with cutting-off unused spectra&#39;s</span>
+<span class="sd">       tail, or force enlargement of the spectra size.</span>
+<span class="sd">    select_type: {&#39;spectrum&#39;, &#39;image&#39;, None}</span>
+<span class="sd">       For Bruker bcf files, if one of &#39;spectrum&#39; or &#39;image&#39; (default is None)</span>
+<span class="sd">       the loader returns either only hypermap or only SEM/TEM electron images.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Signal instance or list of signal instances</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Loading a single file providing the signal type:</span>
+<span class="sd">    &gt;&gt;&gt; d = hs.load(&#39;file.dm3&#39;, signal_type=&quot;EDS_TEM&quot;)</span>
+
+<span class="sd">    Loading multiple files:</span>
+
+<span class="sd">    &gt;&gt;&gt; d = hs.load(&#39;file1.dm3&#39;,&#39;file2.dm3&#39;)</span>
+
+<span class="sd">    Loading multiple files matching the pattern:</span>
+
+<span class="sd">    &gt;&gt;&gt; d = hs.load(&#39;file*.dm3&#39;)</span>
+
+<span class="sd">    Loading (potentially larger than the available memory) files lazily and</span>
+<span class="sd">    stacking:</span>
+
+<span class="sd">    &gt;&gt;&gt; s = hs.load(&#39;file*.blo&#39;, lazy=True, stack=True)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">deprecated</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mmap_dir&#39;</span><span class="p">,</span> <span class="s1">&#39;load_to_memory&#39;</span><span class="p">]</span>
+    <span class="n">warn_str</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; argument is deprecated, please use &#39;lazy&#39; instead&quot;</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">deprecated</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwds</span><span class="p">:</span>
+            <span class="n">lazy</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">warn_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">VisibleDeprecationWarning</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">kwds</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="n">kwds</span><span class="p">[</span><span class="s1">&#39;signal_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">signal_type</span>
+
+    <span class="k">if</span> <span class="n">filenames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">hyperspy.signal_tools</span> <span class="k">import</span> <span class="n">Load</span>
+        <span class="n">load_ui</span> <span class="o">=</span> <span class="n">Load</span><span class="p">()</span>
+        <span class="n">get_gui</span><span class="p">(</span><span class="n">load_ui</span><span class="p">,</span> <span class="n">toolkey</span><span class="o">=</span><span class="s2">&quot;load&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">load_ui</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+            <span class="n">filenames</span> <span class="o">=</span> <span class="n">load_ui</span><span class="o">.</span><span class="n">filename</span>
+            <span class="n">lazy</span> <span class="o">=</span> <span class="n">load_ui</span><span class="o">.</span><span class="n">lazy</span>
+        <span class="k">if</span> <span class="n">filenames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No file provided to reader&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">filenames</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">([</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
+                               <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">f</span><span class="p">)])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filenames</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No file name matches this pattern&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filenames</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;The filenames parameter must be a list, tuple, string or None&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">filenames</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No file provided to reader.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading individual files&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">stack</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># We are loading a stack!</span>
+            <span class="c1"># Note that while each file might contain several signals, all</span>
+            <span class="c1"># files are required to contain the same number of signals. We</span>
+            <span class="c1"># therefore use the first file to determine the number of signals.</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">filenames</span><span class="p">):</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">load_single_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">,</span>
+                                       <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># First iteration, determine number of signals, if several:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="c1"># Initialize signal 2D list:</span>
+                    <span class="n">signals</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Check that number of signals per file doesn&#39;t change</span>
+                    <span class="c1"># for other files:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                                <span class="s2">&quot;The number of sub-signals per file does not &quot;</span>
+                                <span class="s2">&quot;match:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                                <span class="p">(</span><span class="n">f_error_fmt</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">filenames</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">+</span>
+                                <span class="p">(</span><span class="n">f_error_fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">filename</span><span class="p">)))</span>
+                    <span class="k">elif</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s2">&quot;The number of sub-signals per file does not &quot;</span>
+                            <span class="s2">&quot;match:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                            <span class="p">(</span><span class="n">f_error_fmt</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">filenames</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">+</span>
+                            <span class="p">(</span><span class="n">f_error_fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">filename</span><span class="p">)))</span>
+                <span class="c1"># Append loaded signals to 2D list:</span>
+                <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">signals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                        <span class="n">signals</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="c1"># Next, merge the signals in the `stack_axis` direction:</span>
+            <span class="c1"># When each file had N signals, we create N stacks!</span>
+            <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">signal</span> <span class="o">=</span> <span class="n">signals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>   <span class="c1"># Sublist, with len = len(filenames)</span>
+                <span class="n">signal</span> <span class="o">=</span> <span class="n">stack_method</span><span class="p">(</span>
+                    <span class="n">signal</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">stack_axis</span><span class="p">,</span> <span class="n">new_axis_name</span><span class="o">=</span><span class="n">new_axis_name</span><span class="p">,</span>
+                    <span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">)</span>
+                <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">General</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filenames</span><span class="p">[</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Individual files loaded correctly&#39;</span><span class="p">)</span>
+                <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">_summary</span><span class="p">())</span>
+                <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># No stack, so simply we load all signals in all files separately</span>
+            <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="n">load_single_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">,</span>
+                                        <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+                       <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">objects</span> <span class="o">=</span> <span class="n">objects</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">objects</span></div>
+
+
+<div class="viewcode-block" id="load_single_file"><a class="viewcode-back" href="../pyxem.html#pyxem.load_single_file">[docs]</a><span class="k">def</span> <span class="nf">load_single_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
+                     <span class="n">signal_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load any supported file into an HyperSpy structure</span>
+<span class="sd">    Supported formats: netCDF, msa, Gatan dm3, Ripple (rpl+raw),</span>
+<span class="sd">    Bruker bcf, FEI ser and emi, EDAX spc and spd, hspy (HDF5), and SEMPER unf.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    filename : string</span>
+<span class="sd">        File name (including the extension)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">extension</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">io_plugins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">file_extensions</span> <span class="ow">and</span> \
+            <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">io_plugins</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">io_plugins</span><span class="p">):</span>
+        <span class="c1"># Try to load it with the python imaging library</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">hyperspy.io_plugins</span> <span class="k">import</span> <span class="n">image</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">image</span>
+            <span class="k">return</span> <span class="n">load_with_reader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">reader</span><span class="p">,</span>
+                                    <span class="n">signal_type</span><span class="o">=</span><span class="n">signal_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;If the file format is supported&#39;</span>
+                          <span class="s1">&#39; please report this error&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">io_plugins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">load_with_reader</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
+                                <span class="n">reader</span><span class="o">=</span><span class="n">reader</span><span class="p">,</span>
+                                <span class="n">signal_type</span><span class="o">=</span><span class="n">signal_type</span><span class="p">,</span>
+                                <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_with_reader"><a class="viewcode-back" href="../pyxem.html#pyxem.load_with_reader">[docs]</a><span class="k">def</span> <span class="nf">load_with_reader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
+                     <span class="n">reader</span><span class="p">,</span>
+                     <span class="n">signal_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="n">lazy</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lazy&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">file_data_list</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">file_reader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
+                                        <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">signal_dict</span> <span class="ow">in</span> <span class="n">file_data_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;metadata&#39;</span> <span class="ow">in</span> <span class="n">signal_dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;Signal&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">signal_dict</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]:</span>
+                <span class="n">signal_dict</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;Signal&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">signal_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">signal_dict</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s2">&quot;Signal&quot;</span><span class="p">][</span><span class="s1">&#39;signal_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">signal_type</span>
+            <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict2signal</span><span class="p">(</span><span class="n">signal_dict</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">))</span>
+            <span class="n">folder</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="n">filename</span><span class="p">,</span> <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">objects</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tmp_parameters</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="n">folder</span>
+            <span class="n">objects</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tmp_parameters</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+            <span class="n">objects</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tmp_parameters</span><span class="o">.</span><span class="n">extension</span> <span class="o">=</span> <span class="n">extension</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># it&#39;s a standalone model</span>
+            <span class="k">continue</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">objects</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">objects</span></div>
+
+
+<div class="viewcode-block" id="assign_signal_subclass"><a class="viewcode-back" href="../pyxem.html#pyxem.assign_signal_subclass">[docs]</a><span class="k">def</span> <span class="nf">assign_signal_subclass</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span>
+                           <span class="n">signal_dimension</span><span class="p">,</span>
+                           <span class="n">signal_type</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                           <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given record_by and signal_type return the matching Signal subclass.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dtype : :class:`~.numpy.dtype`</span>
+<span class="sd">    signal_dimension: int</span>
+<span class="sd">    signal_type : {None, &quot;electron_diffraction&quot;, &quot;diffraction_profile&quot;,</span>
+<span class="sd">                   &quot;diffraction_vectors&quot;, &quot;crystallographic_map&quot;, str}</span>
+<span class="sd">    lazy: bool</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Signal or subclass</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: This method needs to be re-written for pyXem signals!</span>
+    <span class="kn">import</span> <span class="nn">hyperspy._lazy_signals</span>
+    <span class="kn">from</span> <span class="nn">hyperspy.signal</span> <span class="k">import</span> <span class="n">BaseSignal</span>
+    <span class="c1"># Check if parameter values are allowed:</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">complexfloating</span><span class="p">):</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;complex&#39;</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="s1">&#39;float&#39;</span> <span class="ow">in</span> <span class="n">dtype</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s1">&#39;int&#39;</span> <span class="ow">in</span> <span class="n">dtype</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span>
+          <span class="s1">&#39;void&#39;</span> <span class="ow">in</span> <span class="n">dtype</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s1">&#39;bool&#39;</span> <span class="ow">in</span> <span class="n">dtype</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span>
+          <span class="s1">&#39;object&#39;</span> <span class="ow">in</span> <span class="n">dtype</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;real&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Data type &quot;</span><span class="si">{}</span><span class="s1">&quot; not understood!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dtype</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">signal_dimension</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">signal_dimension</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;signal_dimension must be a positive interger&quot;</span><span class="p">)</span>
+    <span class="n">base_signals</span> <span class="o">=</span> <span class="n">find_subclasses</span><span class="p">(</span><span class="n">hyperspy</span><span class="o">.</span><span class="n">signals</span><span class="p">,</span> <span class="n">BaseSignal</span><span class="p">)</span>
+    <span class="n">lazy_signals</span> <span class="o">=</span> <span class="n">find_subclasses</span><span class="p">(</span><span class="n">hyperspy</span><span class="o">.</span><span class="n">_lazy_signals</span><span class="p">,</span>
+                                   <span class="n">hyperspy</span><span class="o">.</span><span class="n">_lazy_signals</span><span class="o">.</span><span class="n">LazySignal</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lazy</span><span class="p">:</span>
+        <span class="n">signals</span> <span class="o">=</span> <span class="n">lazy_signals</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">signals</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span>
+            <span class="n">v</span> <span class="ow">in</span> <span class="n">base_signals</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lazy_signals</span><span class="p">}</span>
+    <span class="n">dtype_matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">signals</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">s</span><span class="o">.</span><span class="n">_dtype</span><span class="p">]</span>
+    <span class="n">dtype_dim_matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">dtype_matches</span>
+                         <span class="k">if</span> <span class="n">signal_dimension</span> <span class="o">==</span> <span class="n">s</span><span class="o">.</span><span class="n">_signal_dimension</span><span class="p">]</span>
+    <span class="n">dtype_dim_type_matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">dtype_dim_matches</span> <span class="k">if</span> <span class="n">signal_type</span> <span class="o">==</span> <span class="n">s</span><span class="o">.</span><span class="n">_signal_type</span>
+                              <span class="ow">or</span> <span class="n">signal_type</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">_alias_signal_types</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">dtype_dim_type_matches</span><span class="p">:</span>
+        <span class="c1"># Perfect match found, return it.</span>
+        <span class="k">return</span> <span class="n">dtype_dim_type_matches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">dtype_dim_matches</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">_signal_type</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">]:</span>
+        <span class="c1"># just signal_dimension and dtype matches</span>
+        <span class="c1"># Return a general class for the given signal dimension.</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">dtype_dim_matches</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">_signal_type</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># no signal_dimension match either, hence return the general subclass for</span>
+        <span class="c1"># correct dtype</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">dtype_matches</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">_signal_dimension</span> <span class="o">==</span> <span class="o">-</span>
+                <span class="mi">1</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">_signal_type</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="dict2signal"><a class="viewcode-back" href="../pyxem.html#pyxem.dict2signal">[docs]</a><span class="k">def</span> <span class="nf">dict2signal</span><span class="p">(</span><span class="n">signal_dict</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a signal (or subclass) instance defined by a dictionary</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    signal_dict : dictionary</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    s : Signal or subclass</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">signal_dimension</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># undefined</span>
+    <span class="n">signal_type</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;metadata&quot;</span> <span class="ow">in</span> <span class="n">signal_dict</span><span class="p">:</span>
+        <span class="n">mp</span> <span class="o">=</span> <span class="n">signal_dict</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;Signal&quot;</span> <span class="ow">in</span> <span class="n">mp</span> <span class="ow">and</span> <span class="s2">&quot;record_by&quot;</span> <span class="ow">in</span> <span class="n">mp</span><span class="p">[</span><span class="s2">&quot;Signal&quot;</span><span class="p">]:</span>
+            <span class="n">record_by</span> <span class="o">=</span> <span class="n">mp</span><span class="p">[</span><span class="s2">&quot;Signal&quot;</span><span class="p">][</span><span class="s1">&#39;record_by&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">record_by</span> <span class="o">==</span> <span class="s2">&quot;spectrum&quot;</span><span class="p">:</span>
+                <span class="n">signal_dimension</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">record_by</span> <span class="o">==</span> <span class="s2">&quot;image&quot;</span><span class="p">:</span>
+                <span class="n">signal_dimension</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">del</span> <span class="n">mp</span><span class="p">[</span><span class="s2">&quot;Signal&quot;</span><span class="p">][</span><span class="s1">&#39;record_by&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;Signal&quot;</span> <span class="ow">in</span> <span class="n">mp</span> <span class="ow">and</span> <span class="s2">&quot;signal_type&quot;</span> <span class="ow">in</span> <span class="n">mp</span><span class="p">[</span><span class="s2">&quot;Signal&quot;</span><span class="p">]:</span>
+            <span class="n">signal_type</span> <span class="o">=</span> <span class="n">mp</span><span class="p">[</span><span class="s2">&quot;Signal&quot;</span><span class="p">][</span><span class="s1">&#39;signal_type&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;attributes&quot;</span> <span class="ow">in</span> <span class="n">signal_dict</span> <span class="ow">and</span> <span class="s2">&quot;_lazy&quot;</span> <span class="ow">in</span> <span class="n">signal_dict</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]:</span>
+        <span class="n">lazy</span> <span class="o">=</span> <span class="n">signal_dict</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;_lazy&quot;</span><span class="p">]</span>
+    <span class="c1"># &quot;Estimate&quot; signal_dimension from axes. It takes precedence over record_by</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;axes&quot;</span> <span class="ow">in</span> <span class="n">signal_dict</span> <span class="ow">and</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">signal_dict</span><span class="p">[</span><span class="s2">&quot;axes&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">axis</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">signal_dict</span><span class="p">[</span><span class="s2">&quot;axes&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;navigate&quot;</span> <span class="ow">in</span> <span class="n">axis</span><span class="p">])):</span>
+            <span class="c1"># If navigate is defined for all axes</span>
+        <span class="n">signal_dimension</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">axis</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">signal_dict</span><span class="p">[</span><span class="s2">&quot;axes&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">axis</span><span class="p">[</span><span class="s2">&quot;navigate&quot;</span><span class="p">]])</span>
+    <span class="k">elif</span> <span class="n">signal_dimension</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># If not defined, all dimension are categorised as signal</span>
+        <span class="n">signal_dimension</span> <span class="o">=</span> <span class="n">signal_dict</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">assign_signal_subclass</span><span class="p">(</span><span class="n">signal_dimension</span><span class="o">=</span><span class="n">signal_dimension</span><span class="p">,</span>
+                                    <span class="n">signal_type</span><span class="o">=</span><span class="n">signal_type</span><span class="p">,</span>
+                                    <span class="n">dtype</span><span class="o">=</span><span class="n">signal_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                                    <span class="n">lazy</span><span class="o">=</span><span class="n">lazy</span><span class="p">)(</span><span class="o">**</span><span class="n">signal_dict</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">_lazy</span><span class="p">:</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">_make_lazy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_dimension</span> <span class="o">!=</span> <span class="n">signal_dimension</span><span class="p">:</span>
+        <span class="c1"># This may happen when the signal dimension couldn&#39;t be matched with</span>
+        <span class="c1"># any specialised subclass</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">set_signal_dimension</span><span class="p">(</span><span class="n">signal_dimension</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;post_process&quot;</span> <span class="ow">in</span> <span class="n">signal_dict</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">signal_dict</span><span class="p">[</span><span class="s1">&#39;post_process&#39;</span><span class="p">]:</span>
+            <span class="n">signal</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;mapping&quot;</span> <span class="ow">in</span> <span class="n">signal_dict</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">opattr</span><span class="p">,</span> <span class="p">(</span><span class="n">mpattr</span><span class="p">,</span> <span class="n">function</span><span class="p">)</span> <span class="ow">in</span> <span class="n">signal_dict</span><span class="p">[</span><span class="s2">&quot;mapping&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">opattr</span> <span class="ow">in</span> <span class="n">signal</span><span class="o">.</span><span class="n">original_metadata</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">original_metadata</span><span class="o">.</span><span class="n">get_item</span><span class="p">(</span><span class="n">opattr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">function</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="n">mpattr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;metadata&quot;</span> <span class="ow">in</span> <span class="n">signal_dict</span> <span class="ow">and</span> <span class="s2">&quot;Markers&quot;</span> <span class="ow">in</span> <span class="n">mp</span><span class="p">:</span>
+        <span class="n">markers_dict</span> <span class="o">=</span> <span class="n">markers_metadata_dict_to_markers</span><span class="p">(</span>
+            <span class="n">mp</span><span class="p">[</span><span class="s1">&#39;Markers&#39;</span><span class="p">],</span>
+            <span class="n">axes_manager</span><span class="o">=</span><span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Markers</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Markers</span> <span class="o">=</span> <span class="n">markers_dict</span>
+    <span class="k">return</span> <span class="n">signal</span></div>
+
+
+<div class="viewcode-block" id="save"><a class="viewcode-back" href="../pyxem.html#pyxem.save">[docs]</a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">extension</span> <span class="o">=</span> <span class="s2">&quot;hspy&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">extension</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">io_plugins</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">extension</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">plugin</span><span class="o">.</span><span class="n">file_extensions</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">plugin</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">writer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="p">(</span><span class="s1">&#39;.</span><span class="si">%s</span><span class="s1"> does not correspond to any supported format. Supported &#39;</span> <span class="o">+</span>
+             <span class="s1">&#39;file extensions are: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">%</span>
+            <span class="p">(</span><span class="n">extension</span><span class="p">,</span> <span class="n">strlist2enumeration</span><span class="p">(</span><span class="n">default_write_ext</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Check if the writer can write</span>
+        <span class="n">sd</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_dimension</span>
+        <span class="n">nd</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_dimension</span>
+        <span class="k">if</span> <span class="n">writer</span><span class="o">.</span><span class="n">writes</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Writing to this format is not &#39;</span>
+                             <span class="s1">&#39;supported, supported file extensions are: </span><span class="si">%s</span><span class="s1"> &#39;</span> <span class="o">%</span>
+                             <span class="n">strlist2enumeration</span><span class="p">(</span><span class="n">default_write_ext</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">writer</span><span class="o">.</span><span class="n">writes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sd</span><span class="p">,</span> <span class="n">nd</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">writer</span><span class="o">.</span><span class="n">writes</span><span class="p">:</span>
+            <span class="n">yes_we_can</span> <span class="o">=</span> <span class="p">[</span><span class="n">plugin</span><span class="o">.</span><span class="n">format_name</span> <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">io_plugins</span>
+                          <span class="k">if</span> <span class="n">plugin</span><span class="o">.</span><span class="n">writes</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span>
+                          <span class="n">plugin</span><span class="o">.</span><span class="n">writes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span> <span class="ow">and</span>
+                          <span class="p">(</span><span class="n">sd</span><span class="p">,</span> <span class="n">nd</span><span class="p">)</span> <span class="ow">in</span> <span class="n">plugin</span><span class="o">.</span><span class="n">writes</span><span class="p">]</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;This file format cannot write this data. &#39;</span>
+                          <span class="s1">&#39;The following formats can: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
+                          <span class="n">strlist2enumeration</span><span class="p">(</span><span class="n">yes_we_can</span><span class="p">))</span>
+        <span class="n">ensure_directory</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">overwrite</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">overwrite</span> <span class="o">=</span> <span class="n">overwrite_method</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">overwrite</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">file_writer</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+            <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The </span><span class="si">%s</span><span class="s1"> file was created&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="n">folder</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">tmp_parameters</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;folder&#39;</span><span class="p">,</span> <span class="n">folder</span><span class="p">)</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">tmp_parameters</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span>
+                                           <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">tmp_parameters</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;extension&#39;</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_mib"><a class="viewcode-back" href="../pyxem.html#pyxem.load_mib">[docs]</a><span class="k">def</span> <span class="nf">load_mib</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">scan_size</span><span class="p">,</span> <span class="n">sum_length</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load a medipix hdr/mib file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : string</span>
+<span class="sd">        File path and name to .hdr file.</span>
+<span class="sd">    scan_size : int</span>
+<span class="sd">        Scan size in pixels, allows the function to reshape the array into</span>
+<span class="sd">        the right shape.</span>
+<span class="sd">    sum_length : int</span>
+<span class="sd">        Number of lines to sum over to determine scan fly back location.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dpt</span> <span class="o">=</span> <span class="n">load_with_reader</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">reader</span><span class="o">=</span><span class="n">mib_reader</span><span class="p">)</span>
+    <span class="n">dpt</span> <span class="o">=</span> <span class="n">ElectronDiffraction</span><span class="p">(</span><span class="n">dpt</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">scan_size</span><span class="p">,</span> <span class="n">scan_size</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)))</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">dpt</span><span class="o">.</span><span class="n">inav</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="n">sum_length</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">edge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">trace</span><span class="o">==</span><span class="nb">max</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">edge</span><span class="o">==</span><span class="n">scan_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">dp</span> <span class="o">=</span> <span class="n">ElectronDiffraction</span><span class="p">(</span><span class="n">dpt</span><span class="o">.</span><span class="n">inav</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">edge</span><span class="p">,</span> <span class="mi">1</span><span class="p">:])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dp</span> <span class="o">=</span> <span class="n">ElectronDiffraction</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">dpt</span><span class="o">.</span><span class="n">inav</span><span class="p">[</span><span class="n">edge</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:],</span>
+                                                 <span class="n">dpt</span><span class="o">.</span><span class="n">inav</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">edge</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">dp</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">dp</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dp</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyXem - Crystallographic Electron Microscopy in Python &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contents" href="contents.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">pyXem - Crystallographic Electron Microscopy in Python</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#questions">Questions</a></li>
+<li><a class="reference internal" href="#contributing-and-feature-requests">Contributing and Feature Requests</a></li>
+<li><a class="reference internal" href="#related-packages">Related Packages</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="contents.html" title="Next Chapter: Contents"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Contents &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="toctree-wrapper compound">
+</div>
+<div class="figure align-right">
+<a class="reference external image-reference" href="https://github.com/pyxem/pyxem"><img alt="_images/forkme_right_orange_ff7600.png" src="_images/forkme_right_orange_ff7600.png" /></a>
+</div>
+<div class="section" id="pyxem-crystallographic-electron-microscopy-in-python">
+<h1>pyXem - Crystallographic Electron Microscopy in Python<a class="headerlink" href="#pyxem-crystallographic-electron-microscopy-in-python" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://travis-ci.org/pyxem/pyxem"><img alt="https://travis-ci.org/pyxem/pyxem.svg?branch=master" src="https://travis-ci.org/pyxem/pyxem.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://ci.appveyor.com/project/dnjohnstone/pyxem/branch/master"><img alt="https://ci.appveyor.com/api/projects/status/github/pyxem/pyxem?svg=true&amp;branch=master" src="https://ci.appveyor.com/api/projects/status/github/pyxem/pyxem?svg=true&amp;branch=master" /></a>
+<a class="reference external image-reference" href="https://coveralls.io/github/pyxem/pyxem?branch=master"><img alt="https://coveralls.io/repos/github/pyxem/pyxem/badge.svg?branch=master" src="https://coveralls.io/repos/github/pyxem/pyxem/badge.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/pyxem"><img alt="http://img.shields.io/pypi/v/pyxem.svg?style=flat" src="http://img.shields.io/pypi/v/pyxem.svg?style=flat" /></a>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.2649351"><img alt="https://zenodo.org/badge/DOI/10.5281/zenodo.2649351.svg" src="https://zenodo.org/badge/DOI/10.5281/zenodo.2649351.svg" /></a>
+<p>pyXem is an open-source Python library for crystallographic electron microscopy.
+The code is primarily developed as a platform for hybrid diffraction-imaging
+microscopy based on scanning electron diffraction (SED) data.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/sped_scheme.png"><img alt="_images/sped_scheme.png" src="_images/sped_scheme.png" style="width: 600px;" /></a>
+</div>
+<p>pyXem is released under the GPL v3 license.</p>
+<p>If analysis using pyxem forms a part of published work please consider recognizing the
+code development by citing the DOI at the top of this page.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>pyXem requires python 3 and conda - we suggest using the python 3 version of <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a> and creating a new environment for pyxem using the following commands in the anaconda prompt::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create -n pyxem
+$ conda activate pyxem
+</pre></div>
+</div>
+<p>The recommended way to install pyXem is then from conda-forge using::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda install -c conda-forge pyxem
+</pre></div>
+</div>
+<p>Note that pyxem is also available via pip::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install pyxem
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>To get started using pyxem, especially if you are unfamiliar with python, we recommend using jupyter notebooks. Having installed pyxem as above, a jupyter notebook can be opened using the following commands entered into an anaconda prompt or terminal::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda activate pyxem
+$ jupyter notebook
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/pyxem/pyxem-demos">Tutorials and Example Workflows</a> have been curated as a series of jupyter notebooks that you can work through and modify to perform many common analyses.</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://pyxem.github.io/pyxem/pyxem">Documentation</a> is available for all pyxem modules at the following links:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://pyxem.github.io/pyxem/pyxem.signals">pyxem.signals</a> - for manipulating raw data and analysis results.</p></li>
+<li><p><a class="reference external" href="http://pyxem.github.io/pyxem/pyxem.generators">pyxem.generators</a> - for establishing simulation and analysis conditions.</p></li>
+<li><p><a class="reference external" href="http://pyxem.github.io/pyxem/pyxem.components">pyxem.components</a> - for fitting in model based analyses.</p></li>
+<li><p><a class="reference external" href="http://pyxem.github.io/pyxem/pyxem.libraries">pyxem.libraries</a> - that store simulation results needed for analysis.</p></li>
+</ul>
+</div>
+<div class="section" id="questions">
+<h2>Questions<a class="headerlink" href="#questions" title="Permalink to this headline">¶</a></h2>
+<p>If you have a question about pyxem, an issue using the code, or find a bug - we want to know!</p>
+<p>We prefer if you let us know by <a class="reference external" href="https://github.com/pyxem/pyxem/issues">raising an issue</a>
+on our Github page so that we can answer in “public” and potentially help someone else who has
+the same question. You can also e-mail the development team via: <a class="reference external" href="mailto:pyxem&#46;team&#37;&#52;&#48;gmail&#46;com">pyxem<span>&#46;</span>team<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<p>Answers may sometimes also be found in our <a class="reference external" href="http://pyxem.github.io/pyxem/pyxem">documentation</a>.</p>
+</div>
+<div class="section" id="contributing-and-feature-requests">
+<h2>Contributing and Feature Requests<a class="headerlink" href="#contributing-and-feature-requests" title="Permalink to this headline">¶</a></h2>
+<p>Developers are recommended to install pyXem by downloading the <a class="reference external" href="https://github.com/pyxem/pyxem">source code</a> and using the following commands entered into the anaconda promt (or terminal) when located in the pyxem directory::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda install -c conda-forge pyxem --only-deps
+$ pip install -e .
+</pre></div>
+</div>
+<p>Feature requests, if pyxem doesn’t do something you want it to, can be made by
+<a class="reference external" href="https://github.com/pyxem/pyxem/issues">raising an issue</a> or e-mailing the
+development team via <a class="reference external" href="mailto:pyxem&#46;team&#37;&#52;&#48;gmail&#46;com">pyxem<span>&#46;</span>team<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<p>Contributions from new developers are strongly encouraged. Many potential contributors
+may be scientists with little or no open-source development experience and we have written
+a <a class="reference external" href="http://pyxem.github.io/pyxem/contributing.html">contributing guide</a> particularly for
+this audience.</p>
+</div>
+<div class="section" id="related-packages">
+<h2>Related Packages<a class="headerlink" href="#related-packages" title="Permalink to this headline">¶</a></h2>
+<p>The following packages are developed by the pyXem team:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://pyxem.github.io/pyxem/texpy">texpy</a>- for quaternion, rotation, and orientation handling in Python.</p></li>
+</ul>
+<p>These packages are central to the scientific functionality of pyXem:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://hyperspy.org">HyperSpy</a> for multi-dimensional data handling.</p></li>
+<li><p><a class="reference external" href="http://diffpy.org">DiffPy</a> - for atomic structure manipulation.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The pyXem project is under continual development and there may be bugs. All methods must be used with care.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

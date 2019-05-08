@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.generators package &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyxem.io_plugins package" href="pyxem.io_plugins.html" />
+    <link rel="prev" title="pyxem.components package" href="pyxem.components.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Contents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">pyxem.generators package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyxem.generators.diffraction_generator">pyxem.generators.diffraction_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.generators.displacement_gradient_tensor_generator">pyxem.generators.displacement_gradient_tensor_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.generators.indexation_generator">pyxem.generators.indexation_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.generators.library_generator">pyxem.generators.library_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.generators.structure_library_generator">pyxem.generators.structure_library_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.generators.subpixelrefinement_generator">pyxem.generators.subpixelrefinement_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.generators.vdf_generator">pyxem.generators.vdf_generator module</a></li>
+<li><a class="reference internal" href="#module-pyxem.generators">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pyxem.components.html" title="Previous Chapter: pyxem.components package"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; pyxem.compone...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pyxem.io_plugins.html" title="Next Chapter: pyxem.io_plugins package"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">pyxem.io_plug... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="pyxem-generators-package">
+<h1>pyxem.generators package<a class="headerlink" href="#pyxem-generators-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyxem.generators.diffraction_generator">
+<span id="pyxem-generators-diffraction-generator-module"></span><h2>pyxem.generators.diffraction_generator module<a class="headerlink" href="#module-pyxem.generators.diffraction_generator" title="Permalink to this headline">¶</a></h2>
+<p>Electron diffraction pattern simulation.</p>
+<dl class="class">
+<dt id="pyxem.generators.diffraction_generator.DiffractionGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.generators.diffraction_generator.</code><code class="descname">DiffractionGenerator</code><span class="sig-paren">(</span><em>accelerating_voltage</em>, <em>max_excitation_error</em>, <em>debye_waller_factors=None</em>, <em>scattering_params='lobato'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/diffraction_generator.html#DiffractionGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.diffraction_generator.DiffractionGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Computes electron diffraction patterns for a crystal structure.</p>
+<ol class="arabic simple">
+<li><p>Calculate reciprocal lattice of structure. Find all reciprocal points
+within the limiting sphere given by <span class="math notranslate nohighlight">\(\frac{2}{\lambda}\)</span>.</p></li>
+<li><p>For each reciprocal point <span class="math notranslate nohighlight">\(\mathbf{g_{hkl}}\)</span> corresponding to
+lattice plane <span class="math notranslate nohighlight">\((hkl)\)</span>, compute the Bragg condition
+<span class="math notranslate nohighlight">\(\sin(\theta) = \frac{\lambda}{2d_{hkl}}\)</span></p></li>
+<li><p>The intensity of each reflection is then given in the kinematic
+approximation as the modulus square of the structure factor.
+<span class="math notranslate nohighlight">\(I_{hkl} = F_{hkl}F_{hkl}^*\)</span></p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>accelerating_voltage</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The accelerating voltage of the microscope in kV.</p></li>
+<li><p><strong>max_excitation_error</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum extent of the relrods in reciprocal angstroms. Typically
+equal to 1/{specimen thickness}.</p></li>
+<li><p><strong>debye_waller_factors</strong> (<em>dict of str : float</em>) – Maps element names to their temperature-dependent Debye-Waller factors.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pyxem.generators.diffraction_generator.DiffractionGenerator.calculate_ed_data">
+<code class="descname">calculate_ed_data</code><span class="sig-paren">(</span><em>structure</em>, <em>reciprocal_radius</em>, <em>with_direct_beam=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/diffraction_generator.html#DiffractionGenerator.calculate_ed_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.diffraction_generator.DiffractionGenerator.calculate_ed_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the Electron Diffraction data for a structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>structure</strong> (<em>Structure</em>) – The structure for which to derive the diffraction pattern. Note that
+the structure must be rotated to the appropriate orientation and
+that testing is conducted on unit cells (rather than supercells).</p></li>
+<li><p><strong>reciprocal_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum radius of the sphere of reciprocal space to sample, in
+reciprocal angstroms.</p></li>
+<li><p><strong>with_direct_beam</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If True, the direct beam is included in the simulated diffraction
+pattern. If False, it is not.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The data associated with this structure and diffraction setup.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pyxem.DiffractionSimulation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyxem.generators.diffraction_generator.DiffractionGenerator.calculate_profile_data">
+<code class="descname">calculate_profile_data</code><span class="sig-paren">(</span><em>structure</em>, <em>reciprocal_radius=1.0</em>, <em>magnitude_tolerance=1e-05</em>, <em>minimum_intensity=0.001</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/diffraction_generator.html#DiffractionGenerator.calculate_profile_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.diffraction_generator.DiffractionGenerator.calculate_profile_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a one dimensional diffraction profile for a structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>structure</strong> (<em>Structure</em>) – The structure for which to calculate the diffraction profile.</p></li>
+<li><p><strong>reciprocal_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum radius of the sphere of reciprocal space to sample, in
+reciprocal angstroms.</p></li>
+<li><p><strong>magnitude_tolerance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The minimum difference between diffraction magnitudes in reciprocal
+angstroms for two peaks to be consdiered different.</p></li>
+<li><p><strong>minimum_intensity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The minimum intensity required for a diffraction peak to be
+considered real. Deals with numerical precision issues.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The diffraction profile corresponding to this structure and
+experimental conditions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pyxem.ProfileSimulation</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.generators.displacement_gradient_tensor_generator">
+<span id="pyxem-generators-displacement-gradient-tensor-generator-module"></span><h2>pyxem.generators.displacement_gradient_tensor_generator module<a class="headerlink" href="#module-pyxem.generators.displacement_gradient_tensor_generator" title="Permalink to this headline">¶</a></h2>
+<p>Generating DisplacementGradientMaps from diffraction vectors</p>
+<dl class="function">
+<dt id="pyxem.generators.displacement_gradient_tensor_generator.get_DisplacementGradientMap">
+<code class="descclassname">pyxem.generators.displacement_gradient_tensor_generator.</code><code class="descname">get_DisplacementGradientMap</code><span class="sig-paren">(</span><em>strained_vectors</em>, <em>unstrained_vectors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/displacement_gradient_tensor_generator.html#get_DisplacementGradientMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.displacement_gradient_tensor_generator.get_DisplacementGradientMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the displacement gradient tensor at each navigation position
+in a map by comparing vectors to determine the 2 x 2 matrix,
+<span class="math notranslate nohighlight">\(\mathbf(L)\)</span>, that maps unstrained vectors, Vu, to strained vectors,
+Vs, using the np.lingalg.inv() function to find L that satisfies
+<span class="math notranslate nohighlight">\(Vs = \mathbf(L) Vu\)</span>.</p>
+<p>The transformation is returned as a 3 x 3 displacement gradient tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strained_vectors</strong> (<em>hyperspy.Signal2D</em>) – Signal2D with a 2 x 2 array at each navigation position containing the
+Cartesian components of two strained basis vectors, V and U, defined as
+row vectors.</p></li>
+<li><p><strong>unstrained_vectors</strong> (<em>numpy.array</em>) – A 2 x 2 array containing the Cartesian components of two unstrained
+basis vectors, V and U, defined as row vectors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>D</strong> – The 3 x 3 displacement gradient tensor (measured in reciprocal space) at
+every navigation position.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.signals.html#pyxem.signals.tensor_field.DisplacementGradientMap" title="pyxem.signals.tensor_field.DisplacementGradientMap">DisplacementGradientMap</a></p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#pyxem.generators.displacement_gradient_tensor_generator.get_single_DisplacementGradientTensor" title="pyxem.generators.displacement_gradient_tensor_generator.get_single_DisplacementGradientTensor"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_single_DisplacementGradientTensor()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyxem.generators.displacement_gradient_tensor_generator.get_single_DisplacementGradientTensor">
+<code class="descclassname">pyxem.generators.displacement_gradient_tensor_generator.</code><code class="descname">get_single_DisplacementGradientTensor</code><span class="sig-paren">(</span><em>Vs</em>, <em>Vu=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/displacement_gradient_tensor_generator.html#get_single_DisplacementGradientTensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.displacement_gradient_tensor_generator.get_single_DisplacementGradientTensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the displacement gradient tensor from a pairs of vectors by
+determining the 2 x 2 matrix, <span class="math notranslate nohighlight">\(\mathbf(L)\)</span>, that maps unstrained
+vectors, Vu, onto strained vectors, Vs, using the np.lingalg.inv() function
+to find <span class="math notranslate nohighlight">\(\mathbf(L)\)</span> that satisfies <span class="math notranslate nohighlight">\(Vs = \mathbf(L) Vu\)</span>.</p>
+<p>The transformation is returned as a 3 x 3 displacement gradient tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Vs</strong> (<em>numpy.array</em>) – A 2 x 2 array containing the Cartesian components of two strained basis
+vectors, V and U, defined as row vectors.</p></li>
+<li><p><strong>Vu</strong> (<em>numpy.array</em>) – A 2 x 2 array containing the Cartesian components of two unstrained
+basis vectors, V and U, defined as row vectors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>D</strong> – A 3 x 3 displacement gradient tensor (measured in reciprocal space).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.array</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#pyxem.generators.displacement_gradient_tensor_generator.get_DisplacementGradientMap" title="pyxem.generators.displacement_gradient_tensor_generator.get_DisplacementGradientMap"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_DisplacementGradientMap()</span></code></a></p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.generators.indexation_generator">
+<span id="pyxem-generators-indexation-generator-module"></span><h2>pyxem.generators.indexation_generator module<a class="headerlink" href="#module-pyxem.generators.indexation_generator" title="Permalink to this headline">¶</a></h2>
+<p>Indexation generator and associated tools.</p>
+<dl class="class">
+<dt id="pyxem.generators.indexation_generator.IndexationGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.generators.indexation_generator.</code><code class="descname">IndexationGenerator</code><span class="sig-paren">(</span><em>signal</em>, <em>diffraction_library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/indexation_generator.html#IndexationGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.indexation_generator.IndexationGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Generates an indexer for data using a number of methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal</strong> (<a class="reference internal" href="pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction" title="pyxem.signals.electron_diffraction.ElectronDiffraction"><em>ElectronDiffraction</em></a>) – The signal of electron diffraction patterns to be indexed.</p></li>
+<li><p><strong>diffraction_library</strong> (<a class="reference internal" href="pyxem.libraries.html#pyxem.libraries.diffraction_library.DiffractionLibrary" title="pyxem.libraries.diffraction_library.DiffractionLibrary"><em>DiffractionLibrary</em></a>) – The library of simulated diffraction patterns for indexation.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pyxem.generators.indexation_generator.IndexationGenerator.correlate">
+<code class="descname">correlate</code><span class="sig-paren">(</span><em>n_largest=5</em>, <em>mask=None</em>, <em>inplane_rotations=array([  0</em>, <em>1</em>, <em>2</em>, <em>3</em>, <em>4</em>, <em>5</em>, <em>6</em>, <em>7</em>, <em>8</em>, <em>9</em>, <em>10</em>, <em>11</em>, <em>12</em>, <em>13</em>, <em>14</em>, <em>15</em>, <em>16</em>, <em>17</em>, <em>18</em>, <em>19</em>, <em>20</em>, <em>21</em>, <em>22</em>, <em>23</em>, <em>24</em>, <em>25</em>, <em>26</em>, <em>27</em>, <em>28</em>, <em>29</em>, <em>30</em>, <em>31</em>, <em>32</em>, <em>33</em>, <em>34</em>, <em>35</em>, <em>36</em>, <em>37</em>, <em>38</em>, <em>39</em>, <em>40</em>, <em>41</em>, <em>42</em>, <em>43</em>, <em>44</em>, <em>45</em>, <em>46</em>, <em>47</em>, <em>48</em>, <em>49</em>, <em>50</em>, <em>51</em>, <em>52</em>, <em>53</em>, <em>54</em>, <em>55</em>, <em>56</em>, <em>57</em>, <em>58</em>, <em>59</em>, <em>60</em>, <em>61</em>, <em>62</em>, <em>63</em>, <em>64</em>, <em>65</em>, <em>66</em>, <em>67</em>, <em>68</em>, <em>69</em>, <em>70</em>, <em>71</em>, <em>72</em>, <em>73</em>, <em>74</em>, <em>75</em>, <em>76</em>, <em>77</em>, <em>78</em>, <em>79</em>, <em>80</em>, <em>81</em>, <em>82</em>, <em>83</em>, <em>84</em>, <em>85</em>, <em>86</em>, <em>87</em>, <em>88</em>, <em>89</em>, <em>90</em>, <em>91</em>, <em>92</em>, <em>93</em>, <em>94</em>, <em>95</em>, <em>96</em>, <em>97</em>, <em>98</em>, <em>99</em>, <em>100</em>, <em>101</em>, <em>102</em>, <em>103</em>, <em>104</em>, <em>105</em>, <em>106</em>, <em>107</em>, <em>108</em>, <em>109</em>, <em>110</em>, <em>111</em>, <em>112</em>, <em>113</em>, <em>114</em>, <em>115</em>, <em>116</em>, <em>117</em>, <em>118</em>, <em>119</em>, <em>120</em>, <em>121</em>, <em>122</em>, <em>123</em>, <em>124</em>, <em>125</em>, <em>126</em>, <em>127</em>, <em>128</em>, <em>129</em>, <em>130</em>, <em>131</em>, <em>132</em>, <em>133</em>, <em>134</em>, <em>135</em>, <em>136</em>, <em>137</em>, <em>138</em>, <em>139</em>, <em>140</em>, <em>141</em>, <em>142</em>, <em>143</em>, <em>144</em>, <em>145</em>, <em>146</em>, <em>147</em>, <em>148</em>, <em>149</em>, <em>150</em>, <em>151</em>, <em>152</em>, <em>153</em>, <em>154</em>, <em>155</em>, <em>156</em>, <em>157</em>, <em>158</em>, <em>159</em>, <em>160</em>, <em>161</em>, <em>162</em>, <em>163</em>, <em>164</em>, <em>165</em>, <em>166</em>, <em>167</em>, <em>168</em>, <em>169</em>, <em>170</em>, <em>171</em>, <em>172</em>, <em>173</em>, <em>174</em>, <em>175</em>, <em>176</em>, <em>177</em>, <em>178</em>, <em>179</em>, <em>180</em>, <em>181</em>, <em>182</em>, <em>183</em>, <em>184</em>, <em>185</em>, <em>186</em>, <em>187</em>, <em>188</em>, <em>189</em>, <em>190</em>, <em>191</em>, <em>192</em>, <em>193</em>, <em>194</em>, <em>195</em>, <em>196</em>, <em>197</em>, <em>198</em>, <em>199</em>, <em>200</em>, <em>201</em>, <em>202</em>, <em>203</em>, <em>204</em>, <em>205</em>, <em>206</em>, <em>207</em>, <em>208</em>, <em>209</em>, <em>210</em>, <em>211</em>, <em>212</em>, <em>213</em>, <em>214</em>, <em>215</em>, <em>216</em>, <em>217</em>, <em>218</em>, <em>219</em>, <em>220</em>, <em>221</em>, <em>222</em>, <em>223</em>, <em>224</em>, <em>225</em>, <em>226</em>, <em>227</em>, <em>228</em>, <em>229</em>, <em>230</em>, <em>231</em>, <em>232</em>, <em>233</em>, <em>234</em>, <em>235</em>, <em>236</em>, <em>237</em>, <em>238</em>, <em>239</em>, <em>240</em>, <em>241</em>, <em>242</em>, <em>243</em>, <em>244</em>, <em>245</em>, <em>246</em>, <em>247</em>, <em>248</em>, <em>249</em>, <em>250</em>, <em>251</em>, <em>252</em>, <em>253</em>, <em>254</em>, <em>255</em>, <em>256</em>, <em>257</em>, <em>258</em>, <em>259</em>, <em>260</em>, <em>261</em>, <em>262</em>, <em>263</em>, <em>264</em>, <em>265</em>, <em>266</em>, <em>267</em>, <em>268</em>, <em>269</em>, <em>270</em>, <em>271</em>, <em>272</em>, <em>273</em>, <em>274</em>, <em>275</em>, <em>276</em>, <em>277</em>, <em>278</em>, <em>279</em>, <em>280</em>, <em>281</em>, <em>282</em>, <em>283</em>, <em>284</em>, <em>285</em>, <em>286</em>, <em>287</em>, <em>288</em>, <em>289</em>, <em>290</em>, <em>291</em>, <em>292</em>, <em>293</em>, <em>294</em>, <em>295</em>, <em>296</em>, <em>297</em>, <em>298</em>, <em>299</em>, <em>300</em>, <em>301</em>, <em>302</em>, <em>303</em>, <em>304</em>, <em>305</em>, <em>306</em>, <em>307</em>, <em>308</em>, <em>309</em>, <em>310</em>, <em>311</em>, <em>312</em>, <em>313</em>, <em>314</em>, <em>315</em>, <em>316</em>, <em>317</em>, <em>318</em>, <em>319</em>, <em>320</em>, <em>321</em>, <em>322</em>, <em>323</em>, <em>324</em>, <em>325</em>, <em>326</em>, <em>327</em>, <em>328</em>, <em>329</em>, <em>330</em>, <em>331</em>, <em>332</em>, <em>333</em>, <em>334</em>, <em>335</em>, <em>336</em>, <em>337</em>, <em>338</em>, <em>339</em>, <em>340</em>, <em>341</em>, <em>342</em>, <em>343</em>, <em>344</em>, <em>345</em>, <em>346</em>, <em>347</em>, <em>348</em>, <em>349</em>, <em>350</em>, <em>351</em>, <em>352</em>, <em>353</em>, <em>354</em>, <em>355</em>, <em>356</em>, <em>357</em>, <em>358</em>, <em>359])</em>, <em>max_peaks=100</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/indexation_generator.html#IndexationGenerator.correlate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.indexation_generator.IndexationGenerator.correlate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Correlates the library of simulated diffraction patterns with the
+electron diffraction signal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_largest</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The n orientations with the highest correlation values are returned.</p></li>
+<li><p><strong>mask</strong> (<em>Array</em>) – Array with the same size as signal (in navigation) True False</p></li>
+<li><p><strong>inplane_rotations</strong> (<em>ndarray</em>) – Array of inplane rotation angles in degrees. Defaults to 0-360 degrees
+at 1 degree resolution.</p></li>
+<li><p><strong>max_peaks</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Maximum number of peaks to consider when comparing a template to
+the diffraction pattern. The strongest peaks are kept.</p></li>
+<li><p><strong>*args</strong> (<em>arguments</em>) – Arguments passed to map().</p></li>
+<li><p><strong>**kwargs</strong> (<em>arguments</em>) – Keyword arguments passed map().</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>matching_results</strong> – Navigation axes of the electron diffraction signal containing
+correlation results for each diffraction pattern, in the form
+[Library Number , [z, x, z], Correlation Score]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.signals.html#pyxem.signals.indexation_results.TemplateMatchingResults" title="pyxem.signals.indexation_results.TemplateMatchingResults">TemplateMatchingResults</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.generators.indexation_generator.ProfileIndexationGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.generators.indexation_generator.</code><code class="descname">ProfileIndexationGenerator</code><span class="sig-paren">(</span><em>magnitudes</em>, <em>simulation</em>, <em>mapping=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/indexation_generator.html#ProfileIndexationGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.indexation_generator.ProfileIndexationGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Generates an indexer for data using a number of methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>profile</strong> (<a class="reference internal" href="pyxem.signals.html#pyxem.signals.diffraction_profile.ElectronDiffractionProfile" title="pyxem.signals.diffraction_profile.ElectronDiffractionProfile"><em>ElectronDiffractionProfile</em></a>) – The signal of diffraction profiles to be indexed.</p></li>
+<li><p><strong>library</strong> (<a class="reference internal" href="pyxem.signals.html#pyxem.signals.diffraction_simulation.ProfileSimulation" title="pyxem.signals.diffraction_simulation.ProfileSimulation"><em>ProfileSimulation</em></a>) – The simulated profile data.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pyxem.generators.indexation_generator.ProfileIndexationGenerator.index_peaks">
+<code class="descname">index_peaks</code><span class="sig-paren">(</span><em>tolerance=0.1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/indexation_generator.html#ProfileIndexationGenerator.index_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.indexation_generator.ProfileIndexationGenerator.index_peaks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns hkl indices to peaks in the diffraction profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tolerance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The n orientations with the highest correlation values are returned.</p></li>
+<li><p><strong>keys</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – If more than one phase present in library it is recommended that
+these are submitted. This allows a mapping from the number to the
+phase.  For example, keys = [‘si’,’ga’] will have an output with 0
+for ‘si’ and 1 for ‘ga’.</p></li>
+<li><p><strong>*args</strong> (<em>arguments</em>) – Arguments passed to the map() function.</p></li>
+<li><p><strong>**kwargs</strong> (<em>arguments</em>) – Keyword arguments passed to the map() function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>matching_results</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ProfileIndexation</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.generators.indexation_generator.VectorIndexationGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.generators.indexation_generator.</code><code class="descname">VectorIndexationGenerator</code><span class="sig-paren">(</span><em>vectors</em>, <em>vector_library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/indexation_generator.html#VectorIndexationGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.indexation_generator.VectorIndexationGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Generates an indexer for DiffractionVectors using a number of methods.</p>
+<dl class="attribute">
+<dt id="pyxem.generators.indexation_generator.VectorIndexationGenerator.vectors">
+<code class="descname">vectors</code><a class="headerlink" href="#pyxem.generators.indexation_generator.VectorIndexationGenerator.vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>DiffractionVectors to be indexed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.signals.html#pyxem.signals.diffraction_vectors.DiffractionVectors" title="pyxem.signals.diffraction_vectors.DiffractionVectors">DiffractionVectors</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyxem.generators.indexation_generator.VectorIndexationGenerator.vector_library">
+<code class="descname">vector_library</code><a class="headerlink" href="#pyxem.generators.indexation_generator.VectorIndexationGenerator.vector_library" title="Permalink to this definition">¶</a></dt>
+<dd><p>Library of theoretical diffraction vector magnitudes and inter-vector
+angles for indexation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.libraries.html#pyxem.libraries.vector_library.DiffractionVectorLibrary" title="pyxem.libraries.vector_library.DiffractionVectorLibrary">DiffractionVectorLibrary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vectors</strong> (<a class="reference internal" href="pyxem.signals.html#pyxem.signals.diffraction_vectors.DiffractionVectors" title="pyxem.signals.diffraction_vectors.DiffractionVectors"><em>DiffractionVectors</em></a>) – DiffractionVectors to be indexed.</p></li>
+<li><p><strong>vector_library</strong> (<a class="reference internal" href="pyxem.libraries.html#pyxem.libraries.vector_library.DiffractionVectorLibrary" title="pyxem.libraries.vector_library.DiffractionVectorLibrary"><em>DiffractionVectorLibrary</em></a>) – Library of theoretical diffraction vector magnitudes and inter-vector
+angles for indexation.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pyxem.generators.indexation_generator.VectorIndexationGenerator.index_vectors">
+<code class="descname">index_vectors</code><span class="sig-paren">(</span><em>mag_tol</em>, <em>angle_tol</em>, <em>index_error_tol</em>, <em>n_peaks_to_index</em>, <em>n_best</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/indexation_generator.html#VectorIndexationGenerator.index_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.indexation_generator.VectorIndexationGenerator.index_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns hkl indices to diffraction vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mag_tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum absolute error in diffraction vector magnitude, in units
+of reciprocal Angstroms, allowed for indexation.</p></li>
+<li><p><strong>angle_tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum absolute error in inter-vector angle, in units of
+degrees, allowed for indexation.</p></li>
+<li><p><strong>index_error_tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Max allowed error in peak indexation for classifying it as indexed,
+calculated as <span class="math notranslate nohighlight">\(|hkl_calculated - round(hkl_calculated)|\)</span>.</p></li>
+<li><p><strong>n_peaks_to_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of peak to index.</p></li>
+<li><p><strong>n_best</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The maximum number of good solutions to be retained.</p></li>
+<li><p><strong>*args</strong> (<em>arguments</em>) – Arguments passed to the map() function.</p></li>
+<li><p><strong>**kwargs</strong> (<em>arguments</em>) – Keyword arguments passed to the map() function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>indexation_results</strong> – Navigation axes of the diffraction vectors signal containing vector
+indexation results for each probe position.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.signals.html#pyxem.signals.indexation_results.VectorMatchingResults" title="pyxem.signals.indexation_results.VectorMatchingResults">VectorMatchingResults</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.generators.library_generator">
+<span id="pyxem-generators-library-generator-module"></span><h2>pyxem.generators.library_generator module<a class="headerlink" href="#module-pyxem.generators.library_generator" title="Permalink to this headline">¶</a></h2>
+<p>Diffraction pattern library generator and associated tools.</p>
+<dl class="class">
+<dt id="pyxem.generators.library_generator.DiffractionLibraryGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.generators.library_generator.</code><code class="descname">DiffractionLibraryGenerator</code><span class="sig-paren">(</span><em>electron_diffraction_calculator</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/library_generator.html#DiffractionLibraryGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.library_generator.DiffractionLibraryGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Computes a library of electron diffraction patterns for specified atomic
+structures and orientations.</p>
+<dl class="method">
+<dt id="pyxem.generators.library_generator.DiffractionLibraryGenerator.get_diffraction_library">
+<code class="descname">get_diffraction_library</code><span class="sig-paren">(</span><em>structure_library</em>, <em>calibration</em>, <em>reciprocal_radius</em>, <em>half_shape</em>, <em>with_direct_beam=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/library_generator.html#DiffractionLibraryGenerator.get_diffraction_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.library_generator.DiffractionLibraryGenerator.get_diffraction_library" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a dictionary of diffraction data for a library of crystal
+structures and orientations.</p>
+<p>Each structure in the structure library is rotated to each associated
+orientation and the diffraction pattern is calculated each time.</p>
+<p>Angles must be in the Euler representation (Z,X,Z) and in degrees</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>structure_library</strong> (<em>pyxem:StructureLibrary Object</em>) – Dictionary of structures and associated orientations for which
+electron diffraction is to be simulated.</p></li>
+<li><p><strong>calibration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The calibration of experimental data to be correlated with the
+library, in reciprocal Angstroms per pixel.</p></li>
+<li><p><strong>reciprocal_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum g-vector magnitude to be included in the simulations.</p></li>
+<li><p><strong>half_shape</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – The half shape of the target patterns, for 144x144 use (72,72) etc</p></li>
+<li><p><strong>with_direct_beam</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Include the direct beam in the library.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>diffraction_library</strong> – Mapping of crystal structure and orientation to diffraction data
+objects.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DiffractionLibrary</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyxem.generators.library_generator.VectorLibraryGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.generators.library_generator.</code><code class="descname">VectorLibraryGenerator</code><span class="sig-paren">(</span><em>structure_library</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/library_generator.html#VectorLibraryGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.library_generator.VectorLibraryGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Computes a library of diffraction vectors and pairwise inter-vector
+angles for a specified StructureLibrary.</p>
+<dl class="method">
+<dt id="pyxem.generators.library_generator.VectorLibraryGenerator.get_vector_library">
+<code class="descname">get_vector_library</code><span class="sig-paren">(</span><em>reciprocal_radius</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/library_generator.html#VectorLibraryGenerator.get_vector_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.library_generator.VectorLibraryGenerator.get_vector_library" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a library of diffraction vectors and pairwise inter-vector
+angles for a library of crystal structures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reciprocal_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The maximum g-vector magnitude to be included in the library.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>vector_library</strong> – Mapping of phase identifier to phase information in dictionary
+format.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DiffractionVectorLibrary</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.generators.structure_library_generator">
+<span id="pyxem-generators-structure-library-generator-module"></span><h2>pyxem.generators.structure_library_generator module<a class="headerlink" href="#module-pyxem.generators.structure_library_generator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyxem.generators.structure_library_generator.StructureLibraryGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.generators.structure_library_generator.</code><code class="descname">StructureLibraryGenerator</code><span class="sig-paren">(</span><em>phases</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/structure_library_generator.html#StructureLibraryGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.structure_library_generator.StructureLibraryGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Generates a structure library for the given phases</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>phases</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Array of three-component phase descriptions, where the phase
+description is [&lt;phase name&gt; : string, &lt;structure&gt; :
+diffpy.structure.Structure, &lt;crystal system&gt; : string], and crystal
+system is one of ‘cubic’, ‘hexagonal’, ‘orthorombic’, ‘tetragonal’,
+‘trigonal’, ‘monoclinic’.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="pyxem.generators.structure_library_generator.StructureLibraryGenerator.phase_names">
+<code class="descname">phase_names</code><a class="headerlink" href="#pyxem.generators.structure_library_generator.StructureLibraryGenerator.phase_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of phase names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyxem.generators.structure_library_generator.StructureLibraryGenerator.structures">
+<code class="descname">structures</code><a class="headerlink" href="#pyxem.generators.structure_library_generator.StructureLibraryGenerator.structures" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of structures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of diffpy.structure.Structure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyxem.generators.structure_library_generator.StructureLibraryGenerator.systems">
+<code class="descname">systems</code><a class="headerlink" href="#pyxem.generators.structure_library_generator.StructureLibraryGenerator.systems" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of crystal systems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gen</span> <span class="o">=</span> <span class="n">StructureLibraryGenerator</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;ZB&#39;</span><span class="p">,</span> <span class="n">structure_zb</span><span class="p">,</span> <span class="s1">&#39;cubic&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;WZ&#39;</span><span class="p">,</span> <span class="n">structure_wz</span><span class="p">,</span> <span class="s1">&#39;hexagonal&#39;</span><span class="p">)])</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyxem.generators.structure_library_generator.StructureLibraryGenerator.get_orientations_from_list">
+<code class="descname">get_orientations_from_list</code><span class="sig-paren">(</span><em>orientations</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/structure_library_generator.html#StructureLibraryGenerator.get_orientations_from_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.structure_library_generator.StructureLibraryGenerator.get_orientations_from_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a structure library from a list of rotations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>orientations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – A list over identifiers of lists of euler angles (as tuples) in the rzxz
+convention and in degrees.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>structure_library</strong> – Structure library for the given phase names, structures and orientations.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.libraries.html#pyxem.libraries.structure_library.StructureLibrary" title="pyxem.libraries.structure_library.StructureLibrary">StructureLibrary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyxem.generators.structure_library_generator.StructureLibraryGenerator.get_orientations_from_stereographic_triangle">
+<code class="descname">get_orientations_from_stereographic_triangle</code><span class="sig-paren">(</span><em>inplane_rotations</em>, <em>resolution</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/structure_library_generator.html#StructureLibraryGenerator.get_orientations_from_stereographic_triangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.structure_library_generator.StructureLibraryGenerator.get_orientations_from_stereographic_triangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a structure library from the stereographic triangles of the
+given crystal systems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inplane_rotations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List over identifiers of lists of inplane rotations of the
+diffraction patterns, in degrees.</p></li>
+<li><p><strong>resolution</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Rotation list resolution in degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>structure_library</strong> – Structure library for the given phase names, structures and crystal system.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.libraries.html#pyxem.libraries.structure_library.StructureLibrary" title="pyxem.libraries.structure_library.StructureLibrary">StructureLibrary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.generators.subpixelrefinement_generator">
+<span id="pyxem-generators-subpixelrefinement-generator-module"></span><h2>pyxem.generators.subpixelrefinement_generator module<a class="headerlink" href="#module-pyxem.generators.subpixelrefinement_generator" title="Permalink to this headline">¶</a></h2>
+<p>Generating subpixel resolution on diffraction vectors.</p>
+<dl class="class">
+<dt id="pyxem.generators.subpixelrefinement_generator.SubpixelrefinementGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.generators.subpixelrefinement_generator.</code><code class="descname">SubpixelrefinementGenerator</code><span class="sig-paren">(</span><em>dp</em>, <em>vectors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/subpixelrefinement_generator.html#SubpixelrefinementGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.subpixelrefinement_generator.SubpixelrefinementGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Generates subpixel refinement of DiffractionVectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dp</strong> (<a class="reference internal" href="pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction" title="pyxem.signals.electron_diffraction.ElectronDiffraction"><em>ElectronDiffraction</em></a>) – The electron diffraction patterns to be refined</p></li>
+<li><p><strong>vectors</strong> (<em>DiffractionVectors | ndarray</em>) – Vectors (in calibrated units) to the locations of the spots to be
+refined. If given as DiffractionVectors, it must have the same
+navigation shape as the electron diffraction patterns. If an ndarray,
+the same set of vectors is mapped over all electron diffraction
+patterns.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>[1] Pekin et al. Ultramicroscopy 176 (2017) 170-176</p>
+<dl class="method">
+<dt id="pyxem.generators.subpixelrefinement_generator.SubpixelrefinementGenerator.center_of_mass_method">
+<code class="descname">center_of_mass_method</code><span class="sig-paren">(</span><em>square_size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/subpixelrefinement_generator.html#SubpixelrefinementGenerator.center_of_mass_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.subpixelrefinement_generator.SubpixelrefinementGenerator.center_of_mass_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the subpixel refinement of a peak by assuming it lies at the
+center of intensity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>square_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Length (in pixels) of one side of a square the contains the peak to
+be refined.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>vector_out</strong> – DiffractionVectors containing the refined vectors in calibrated
+units with the same navigation shape as the diffraction patterns.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.signals.html#pyxem.signals.diffraction_vectors.DiffractionVectors" title="pyxem.signals.diffraction_vectors.DiffractionVectors">DiffractionVectors</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyxem.generators.subpixelrefinement_generator.SubpixelrefinementGenerator.conventional_xc">
+<code class="descname">conventional_xc</code><span class="sig-paren">(</span><em>square_size</em>, <em>disc_radius</em>, <em>upsample_factor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/subpixelrefinement_generator.html#SubpixelrefinementGenerator.conventional_xc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.subpixelrefinement_generator.SubpixelrefinementGenerator.conventional_xc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refines the peaks using (phase) cross correlation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>square_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Length (in pixels) of one side of a square the contains the peak to
+be refined.</p></li>
+<li><p><strong>disc_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Radius (in pixels) of the discs that you seek to refine</p></li>
+<li><p><strong>upsample_factor</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Factor by which to upsample the patterns</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>vector_out</strong> – DiffractionVectors containing the refined vectors in calibrated
+units with the same navigation shape as the diffraction patterns.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.signals.html#pyxem.signals.diffraction_vectors.DiffractionVectors" title="pyxem.signals.diffraction_vectors.DiffractionVectors">DiffractionVectors</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyxem.generators.subpixelrefinement_generator.SubpixelrefinementGenerator.local_gaussian_method">
+<code class="descname">local_gaussian_method</code><span class="sig-paren">(</span><em>square_size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/subpixelrefinement_generator.html#SubpixelrefinementGenerator.local_gaussian_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.subpixelrefinement_generator.SubpixelrefinementGenerator.local_gaussian_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refinement based on the mathematics of a local maxima on a
+continious region, using the (discrete) maxima pixel as a starting point.
+See Notes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>square_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Length (in pixels) of one side of a square the contains the peak to
+be refined.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>vector_out</strong> – DiffractionVectors containing the refined vectors in calibrated
+units with the same navigation shape as the diffraction patterns.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.signals.html#pyxem.signals.diffraction_vectors.DiffractionVectors" title="pyxem.signals.diffraction_vectors.DiffractionVectors">DiffractionVectors</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method works by first locating the maximum intenisty value within teh square.
+The four adjacent pixels are then considered and used to form two independant
+quadratic equations. Solving these gives the x_center and y_center coordinates,
+which are then returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.generators.vdf_generator">
+<span id="pyxem-generators-vdf-generator-module"></span><h2>pyxem.generators.vdf_generator module<a class="headerlink" href="#module-pyxem.generators.vdf_generator" title="Permalink to this headline">¶</a></h2>
+<p>VDF generator and associated tools.</p>
+<dl class="class">
+<dt id="pyxem.generators.vdf_generator.VDFGenerator">
+<em class="property">class </em><code class="descclassname">pyxem.generators.vdf_generator.</code><code class="descname">VDFGenerator</code><span class="sig-paren">(</span><em>signal</em>, <em>vectors=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/vdf_generator.html#VDFGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.vdf_generator.VDFGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Generates a VDF images for a specified signal and set of aperture
+positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal</strong> (<a class="reference internal" href="pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction" title="pyxem.signals.electron_diffraction.ElectronDiffraction"><em>ElectronDiffraction</em></a>) – The signal of electron diffraction patterns to be indexed.</p></li>
+<li><p><strong>vectors</strong> (<a class="reference internal" href="pyxem.signals.html#pyxem.signals.diffraction_vectors.DiffractionVectors" title="pyxem.signals.diffraction_vectors.DiffractionVectors"><em>DiffractionVectors</em></a><em>(</em><em>optional</em><em>)</em>) – The vector positions, in calibrated units, at which to position
+integration windows for VDF formation.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pyxem.generators.vdf_generator.VDFGenerator.get_concentric_vdf_images">
+<code class="descname">get_concentric_vdf_images</code><span class="sig-paren">(</span><em>k_min</em>, <em>k_max</em>, <em>k_steps</em>, <em>normalize=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/vdf_generator.html#VDFGenerator.get_concentric_vdf_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.vdf_generator.VDFGenerator.get_concentric_vdf_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the intensity scattered at each navigation position in an
+ElectronDiffraction Signal by summation over a series of concentric
+in annuli between a specified inner and outer radius in a number of
+steps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Minimum radius of the annular integration window in reciprocal
+angstroms.</p></li>
+<li><p><strong>k_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Maximum radius of the annular integration window in reciprocal
+angstroms.</p></li>
+<li><p><strong>k_steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of steps within the annular integration window</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>vdfs</strong> – VDFImage object containing virtual dark field images for all steps
+within the annulus.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.signals.html#pyxem.signals.vdf_image.VDFImage" title="pyxem.signals.vdf_image.VDFImage">VDFImage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyxem.generators.vdf_generator.VDFGenerator.get_vector_vdf_images">
+<code class="descname">get_vector_vdf_images</code><span class="sig-paren">(</span><em>radius</em>, <em>normalize=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyxem/generators/vdf_generator.html#VDFGenerator.get_vector_vdf_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyxem.generators.vdf_generator.VDFGenerator.get_vector_vdf_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the intensity scattered to each diffraction vector at each
+navigation position in an ElectronDiffraction Signal by summation in a
+circular window of specified radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Radius of the integration window in reciprocal angstroms.</p></li>
+<li><p><strong>normalize</strong> (<em>boolean</em>) – If True each VDF image is normalized so that the maximum intensity
+in each VDF is 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>vdfs</strong> – VDFImage object containing virtual dark field images for all unique
+vectors.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyxem.signals.html#pyxem.signals.vdf_image.VDFImage" title="pyxem.signals.vdf_image.VDFImage">VDFImage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyxem.generators">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyxem.generators" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

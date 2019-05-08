@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.signals.electron_diffraction &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.signals.electron_diffraction</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;Signal class for Electron Diffraction data.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+
+<span class="kn">from</span> <span class="nn">hyperspy.api</span> <span class="k">import</span> <span class="n">interactive</span>
+<span class="kn">from</span> <span class="nn">hyperspy.signals</span> <span class="k">import</span> <span class="n">Signal1D</span><span class="p">,</span> <span class="n">Signal2D</span><span class="p">,</span> <span class="n">BaseSignal</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.diffraction_profile</span> <span class="k">import</span> <span class="n">ElectronDiffractionProfile</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.diffraction_vectors</span> <span class="k">import</span> <span class="n">DiffractionVectors</span>
+
+<span class="kn">from</span> <span class="nn">pyxem.utils.expt_utils</span> <span class="k">import</span> <span class="n">_index_coords</span><span class="p">,</span> <span class="n">_cart2polar</span><span class="p">,</span> <span class="n">_polar2cart</span><span class="p">,</span> \
+    <span class="n">radial_average</span><span class="p">,</span> <span class="n">gain_normalise</span><span class="p">,</span> <span class="n">remove_dead</span><span class="p">,</span> <span class="n">affine_transformation</span><span class="p">,</span> \
+    <span class="n">regional_filter</span><span class="p">,</span> <span class="n">subtract_background_dog</span><span class="p">,</span> <span class="n">subtract_background_median</span><span class="p">,</span> \
+    <span class="n">subtract_reference</span><span class="p">,</span> <span class="n">circular_mask</span><span class="p">,</span> <span class="n">find_beam_offset_cross_correlation</span><span class="p">,</span> \
+    <span class="n">peaks_as_gvectors</span>
+
+<span class="kn">from</span> <span class="nn">pyxem.utils.peakfinders2D</span> <span class="k">import</span> <span class="n">find_peaks_zaefferer</span><span class="p">,</span> <span class="n">find_peaks_stat</span><span class="p">,</span> \
+    <span class="n">find_peaks_dog</span><span class="p">,</span> <span class="n">find_peaks_log</span><span class="p">,</span> <span class="n">find_peaks_xc</span>
+
+<span class="kn">from</span> <span class="nn">pyxem.utils</span> <span class="k">import</span> <span class="n">peakfinder2D_gui</span>
+
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">filters</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">transform</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">square</span>
+
+
+<div class="viewcode-block" id="ElectronDiffraction"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction">[docs]</a><span class="k">class</span> <span class="nc">ElectronDiffraction</span><span class="p">(</span><span class="n">Signal2D</span><span class="p">):</span>
+    <span class="n">_signal_type</span> <span class="o">=</span> <span class="s2">&quot;electron_diffraction&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">Signal2D</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Set default attributes</span>
+        <span class="k">if</span> <span class="s1">&#39;Acquisition_instrument&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">as_dictionary</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s1">&#39;SEM&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">as_dictionary</span><span class="p">()[</span><span class="s1">&#39;Acquisition_instrument&#39;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span>
+                    <span class="s2">&quot;Acquisition_instrument.TEM&quot;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Acquisition_instrument</span><span class="o">.</span><span class="n">SEM</span><span class="p">)</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Acquisition_instrument</span><span class="o">.</span><span class="n">SEM</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition</span><span class="o">.</span><span class="vm">__func__</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">BaseSignal</span><span class="o">.</span><span class="n">decomposition</span><span class="o">.</span><span class="vm">__doc__</span>
+
+<div class="viewcode-block" id="ElectronDiffraction.set_experimental_parameters"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.set_experimental_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_experimental_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                    <span class="n">accelerating_voltage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">camera_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">scan_rotation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">convergence_angle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">rocking_angle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">rocking_frequency</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">exposure_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set experimental parameters in metadata.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        accelerating_voltage : float</span>
+<span class="sd">            Accelerating voltage in kV</span>
+<span class="sd">        camera_length: float</span>
+<span class="sd">            Camera length in cm</span>
+<span class="sd">        scan_rotation : float</span>
+<span class="sd">            Scan rotation in degrees</span>
+<span class="sd">        convergence_angle : float</span>
+<span class="sd">            Convergence angle in mrad</span>
+<span class="sd">        rocking_angle : float</span>
+<span class="sd">            Beam rocking angle in mrad</span>
+<span class="sd">        rocking_frequency : float</span>
+<span class="sd">            Beam rocking frequency in Hz</span>
+<span class="sd">        exposure_time : float</span>
+<span class="sd">            Exposure time in ms.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">md</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
+
+        <span class="k">if</span> <span class="n">accelerating_voltage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s2">&quot;Acquisition_instrument.TEM.accelerating_voltage&quot;</span><span class="p">,</span>
+                        <span class="n">accelerating_voltage</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">camera_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span>
+                <span class="s2">&quot;Acquisition_instrument.TEM.Detector.Diffraction.camera_length&quot;</span><span class="p">,</span>
+                <span class="n">camera_length</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">scan_rotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s2">&quot;Acquisition_instrument.TEM.scan_rotation&quot;</span><span class="p">,</span>
+                        <span class="n">scan_rotation</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">convergence_angle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s2">&quot;Acquisition_instrument.TEM.convergence_angle&quot;</span><span class="p">,</span>
+                        <span class="n">convergence_angle</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rocking_angle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s2">&quot;Acquisition_instrument.TEM.rocking_angle&quot;</span><span class="p">,</span>
+                        <span class="n">rocking_angle</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rocking_frequency</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s2">&quot;Acquisition_instrument.TEM.rocking_frequency&quot;</span><span class="p">,</span>
+                        <span class="n">rocking_frequency</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exposure_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span>
+                <span class="s2">&quot;Acquisition_instrument.TEM.Detector.Diffraction.exposure_time&quot;</span><span class="p">,</span>
+                <span class="n">exposure_time</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.set_diffraction_calibration"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.set_diffraction_calibration">[docs]</a>    <span class="k">def</span> <span class="nf">set_diffraction_calibration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calibration</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set diffraction pattern pixel size in reciprocal Angstroms and origin</span>
+<span class="sd">        location.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        calibration : float</span>
+<span class="sd">            Diffraction pattern calibration in reciprocal Angstroms per pixel.</span>
+<span class="sd">        center : tuple</span>
+<span class="sd">            Position of the direct beam center, in pixels. If None the center of</span>
+<span class="sd">            the data array is assumed to be the center of the pattern.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_shape</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">calibration</span>
+
+        <span class="n">dx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">dx</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;kx&#39;</span>
+        <span class="n">dx</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">calibration</span>
+        <span class="n">dx</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="o">-</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dx</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;$A^{-1}$&#39;</span>
+
+        <span class="n">dy</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;ky&#39;</span>
+        <span class="n">dy</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">calibration</span>
+        <span class="n">dy</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="o">-</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">dy</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;$A^{-1}$&#39;</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.set_scan_calibration"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.set_scan_calibration">[docs]</a>    <span class="k">def</span> <span class="nf">set_scan_calibration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calibration</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set scan pixel size in nanometres.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        calibration: float</span>
+<span class="sd">            Scan calibration in nanometres per pixel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">calibration</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+
+        <span class="n">y</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">calibration</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.plot_interactive_virtual_image"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.plot_interactive_virtual_image">[docs]</a>    <span class="k">def</span> <span class="nf">plot_interactive_virtual_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">roi</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plots an interactive virtual image formed with a specified and</span>
+<span class="sd">        adjustable roi.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        roi: :obj:`hyperspy.roi.BaseInteractiveROI`</span>
+<span class="sd">            Any interactive ROI detailed in HyperSpy.</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Keyword arguments to be passed to `ElectronDiffraction.plot`</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import hyperspy.api as hs</span>
+<span class="sd">            roi = hs.roi.CircleROI(0, 0, 0.2)</span>
+<span class="sd">            data.plot_interactive_virtual_image(roi)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">roi</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">)</span>
+        <span class="c1"># Add the ROI to the appropriate signal axes.</span>
+        <span class="n">dark_field</span> <span class="o">=</span> <span class="n">roi</span><span class="o">.</span><span class="n">interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">navigation_signal</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
+        <span class="n">dark_field_placeholder</span> <span class="o">=</span> \
+            <span class="n">BaseSignal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="c1"># Create an output signal for the virtual dark-field calculation.</span>
+        <span class="n">dark_field_sum</span> <span class="o">=</span> <span class="n">interactive</span><span class="p">(</span>
+            <span class="c1"># Create an interactive signal</span>
+            <span class="n">dark_field</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span>
+            <span class="c1"># Formed from the sum of the pixels in the dark-field signal</span>
+            <span class="n">event</span><span class="o">=</span><span class="n">dark_field</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">any_axis_changed</span><span class="p">,</span>
+            <span class="c1"># That updates whenever the widget is moved</span>
+            <span class="n">axis</span><span class="o">=</span><span class="n">dark_field</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">,</span>
+            <span class="n">out</span><span class="o">=</span><span class="n">dark_field_placeholder</span><span class="p">,</span>
+            <span class="c1"># And outputs into the prepared placeholder.</span>
+        <span class="p">)</span>
+        <span class="n">dark_field_sum</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">update_axes_attributes_from</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">,</span>
+            <span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="s1">&#39;offset&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+        <span class="n">dark_field_sum</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">General</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Virtual Dark Field&quot;</span>
+        <span class="c1"># Set the parameters</span>
+        <span class="n">dark_field_sum</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>  <span class="c1"># Plot the result</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.get_virtual_image"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.get_virtual_image">[docs]</a>    <span class="k">def</span> <span class="nf">get_virtual_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">roi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Obtains a virtual image associated with a specified ROI.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        roi: :obj:`hyperspy.roi.BaseInteractiveROI`</span>
+<span class="sd">            Any interactive ROI detailed in HyperSpy.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dark_field_sum : :obj:`hyperspy.signals.BaseSignal`</span>
+<span class="sd">            The virtual image signal associated with the specified roi.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import hyperspy.api as hs</span>
+<span class="sd">            roi = hs.roi.CircleROI(0, 0, 0.2)</span>
+<span class="sd">            data.get_virtual_image(roi)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dark_field</span> <span class="o">=</span> <span class="n">roi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">)</span>
+        <span class="n">dark_field_sum</span> <span class="o">=</span> <span class="n">dark_field</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+            <span class="n">axis</span><span class="o">=</span><span class="n">dark_field</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span>
+        <span class="p">)</span>
+        <span class="n">dark_field_sum</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">General</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Virtual Dark Field&quot;</span>
+        <span class="n">vdfim</span> <span class="o">=</span> <span class="n">dark_field_sum</span><span class="o">.</span><span class="n">as_signal2D</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">vdfim</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.get_direct_beam_mask"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.get_direct_beam_mask">[docs]</a>    <span class="k">def</span> <span class="nf">get_direct_beam_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a signal mask for the direct beam.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        radius : float</span>
+<span class="sd">            Radius for the circular mask in pixel units.</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        ------</span>
+<span class="sd">        signal-mask : ndarray</span>
+<span class="sd">            The mask of the direct beam</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_shape</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="n">signal_mask</span> <span class="o">=</span> <span class="n">Signal2D</span><span class="p">(</span><span class="n">circular_mask</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
+                                             <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
+                                             <span class="n">center</span><span class="o">=</span><span class="n">center</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">signal_mask</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.apply_affine_transformation"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.apply_affine_transformation">[docs]</a>    <span class="k">def</span> <span class="nf">apply_affine_transformation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                    <span class="n">D</span><span class="p">,</span>
+                                    <span class="n">order</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                                    <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                    <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Correct geometric distortion by applying an affine transformation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        D : array</span>
+<span class="sd">            3x3 np.array specifying the affine transform to be applied.</span>
+<span class="sd">        inplace : bool</span>
+<span class="sd">            If True (default), this signal is overwritten. Otherwise, returns a</span>
+<span class="sd">            new signal.</span>
+<span class="sd">        *args:</span>
+<span class="sd">            Arguments to be passed to map().</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Keyword arguments to be passed to map().</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            ElectronDiffraction Signal containing the affine Transformed</span>
+<span class="sd">            diffraction patterns.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Account for the transformation center not being (0,0)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_shape</span>
+        <span class="n">shift_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">shift_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="n">tf_shift</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">SimilarityTransform</span><span class="p">(</span><span class="n">translation</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">shift_x</span><span class="p">,</span> <span class="o">-</span><span class="n">shift_y</span><span class="p">])</span>
+        <span class="n">tf_shift_inv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">SimilarityTransform</span><span class="p">(</span><span class="n">translation</span><span class="o">=</span><span class="p">[</span><span class="n">shift_x</span><span class="p">,</span> <span class="n">shift_y</span><span class="p">])</span>
+
+        <span class="c1"># This defines the transform you want to perform</span>
+        <span class="n">distortion</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">AffineTransform</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">D</span><span class="p">)</span>
+
+        <span class="c1"># skimage transforms can be added like this, does matrix multiplication,</span>
+        <span class="c1"># hence the need for the brackets. (Note tf.warp takes the inverse)</span>
+        <span class="n">transformation</span> <span class="o">=</span> <span class="p">(</span><span class="n">tf_shift</span> <span class="o">+</span> <span class="p">(</span><span class="n">distortion</span> <span class="o">+</span> <span class="n">tf_shift_inv</span><span class="p">))</span><span class="o">.</span><span class="n">inverse</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">affine_transformation</span><span class="p">,</span>
+                        <span class="n">transformation</span><span class="o">=</span><span class="n">transformation</span><span class="p">,</span>
+                        <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span>
+                        <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+                        <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.apply_gain_normalisation"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.apply_gain_normalisation">[docs]</a>    <span class="k">def</span> <span class="nf">apply_gain_normalisation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                 <span class="n">dark_reference</span><span class="p">,</span>
+                                 <span class="n">bright_reference</span><span class="p">,</span>
+                                 <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                 <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply gain normalization to experimentally acquired electron</span>
+<span class="sd">        diffraction patterns.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dark_reference : ElectronDiffraction</span>
+<span class="sd">            Dark reference image.</span>
+<span class="sd">        bright_reference : DiffractionSignal</span>
+<span class="sd">            Bright reference image.</span>
+<span class="sd">        inplace : bool</span>
+<span class="sd">            If True (default), this signal is overwritten. Otherwise, returns a</span>
+<span class="sd">            new signal.</span>
+<span class="sd">        *args:</span>
+<span class="sd">            Arguments to be passed to map().</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Keyword arguments to be passed to map().</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">gain_normalise</span><span class="p">,</span>
+                        <span class="n">dref</span><span class="o">=</span><span class="n">dark_reference</span><span class="p">,</span>
+                        <span class="n">bref</span><span class="o">=</span><span class="n">bright_reference</span><span class="p">,</span>
+                        <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+                        <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.remove_deadpixels"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.remove_deadpixels">[docs]</a>    <span class="k">def</span> <span class="nf">remove_deadpixels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                          <span class="n">deadpixels</span><span class="p">,</span>
+                          <span class="n">deadvalue</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">,</span>
+                          <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove deadpixels from experimentally acquired diffraction patterns.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        deadpixels : ElectronDiffraction</span>
+<span class="sd">            List</span>
+<span class="sd">        deadvalue : string</span>
+<span class="sd">            Specify how deadpixels should be treated. &#39;average&#39; sets the dead</span>
+<span class="sd">            pixel value to the average of adjacent pixels. &#39;nan&#39; sets the dead</span>
+<span class="sd">            pixel to nan</span>
+<span class="sd">        inplace : bool</span>
+<span class="sd">            If True (default), this signal is overwritten. Otherwise, returns a</span>
+<span class="sd">            new signal.</span>
+<span class="sd">        *args:</span>
+<span class="sd">            Arguments to be passed to map().</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Keyword arguments to be passed to map().</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">remove_dead</span><span class="p">,</span>
+                        <span class="n">deadpixels</span><span class="o">=</span><span class="n">deadpixels</span><span class="p">,</span>
+                        <span class="n">deadvalue</span><span class="o">=</span><span class="n">deadvalue</span><span class="p">,</span>
+                        <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+                        <span class="n">show_progressbar</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">,</span>
+                        <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.get_radial_profile"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.get_radial_profile">[docs]</a>    <span class="k">def</span> <span class="nf">get_radial_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the radial profile of the diffraction pattern.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mask_array : numpy.array</span>
+<span class="sd">            Optional array with the same dimensions as the signal axes.</span>
+<span class="sd">            Consists of 0s for excluded pixels and 1s for non-excluded</span>
+<span class="sd">            pixels. The 0-pixels are excluded from the radial average.</span>
+<span class="sd">        inplace : bool</span>
+<span class="sd">            If True (default), this signal is overwritten. Otherwise, returns a</span>
+<span class="sd">            new signal.</span>
+<span class="sd">        *args:</span>
+<span class="sd">            Arguments to be passed to map().</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Keyword arguments to be passed to map().</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        radial_profile: :obj:`hyperspy.signals.Signal1D`</span>
+<span class="sd">            The radial average profile of each diffraction pattern in the</span>
+<span class="sd">            ElectronDiffraction signal as a Signal1D.</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :func:`pyxem.utils.expt_utils.radial_average`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">radial_profiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">radial_average</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask_array</span><span class="p">,</span>
+                                   <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+                                   <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">radial_profiles</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">signal_axis</span> <span class="o">=</span> <span class="n">radial_profiles</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">rp</span> <span class="o">=</span> <span class="n">ElectronDiffractionProfile</span><span class="p">(</span><span class="n">radial_profiles</span><span class="o">.</span><span class="n">as_signal1D</span><span class="p">(</span><span class="n">signal_axis</span><span class="p">))</span>
+        <span class="n">ax_old</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span>
+        <span class="n">rp</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">ax_old</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">rp</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">ax_old</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">units</span>
+        <span class="n">rp</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">ax_old</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ax_old</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">rp</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">ax_old</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span>
+            <span class="n">rp</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">ax_old</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span>
+            <span class="n">rp</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">ax_old</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">rp_axis</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">rp_axis</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span>
+        <span class="n">rp_axis</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">rp_axis</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;$A^{-1}$&#39;</span>
+
+        <span class="k">return</span> <span class="n">rp</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.get_direct_beam_position"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.get_direct_beam_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_direct_beam_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius_start</span><span class="p">,</span>
+                                 <span class="n">radius_finish</span><span class="p">,</span>
+                                 <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Estimate the direct beam position in each experimentally acquired</span>
+<span class="sd">        electron diffraction pattern.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        radius_start : int</span>
+<span class="sd">            The lower bound for the radius of the central disc to be used in the</span>
+<span class="sd">            alignment.</span>
+<span class="sd">        radius_finish : int</span>
+<span class="sd">            The upper bounds for the radius of the central disc to be used in</span>
+<span class="sd">            the alignment.</span>
+<span class="sd">        *args:</span>
+<span class="sd">            Arguments to be passed to map().</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Keyword arguments to be passed to map().</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        centers : ndarray</span>
+<span class="sd">            Array containing the centers for each SED pattern.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shifts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">find_beam_offset_cross_correlation</span><span class="p">,</span>
+                          <span class="n">radius_start</span><span class="o">=</span><span class="n">radius_start</span><span class="p">,</span>
+                          <span class="n">radius_finish</span><span class="o">=</span><span class="n">radius_finish</span><span class="p">,</span>
+                          <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">shifts</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.center_direct_beam"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.center_direct_beam">[docs]</a>    <span class="k">def</span> <span class="nf">center_direct_beam</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">radius_start</span><span class="p">,</span> <span class="n">radius_finish</span><span class="p">,</span>
+                           <span class="n">square_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Estimate the direct beam position in each experimentally acquired</span>
+<span class="sd">        electron diffraction pattern and translate it to the center of the</span>
+<span class="sd">        image square.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        radius_start : int</span>
+<span class="sd">            The lower bound for the radius of the central disc to be used in the</span>
+<span class="sd">            alignment.</span>
+<span class="sd">        radius_finish : int</span>
+<span class="sd">            The upper bounds for the radius of the central disc to be used in</span>
+<span class="sd">            the alignment.</span>
+<span class="sd">        square_width  : int</span>
+<span class="sd">            Half the side length of square that captures the direct beam in all</span>
+<span class="sd">            scans. Means that the centering algorithm is stable against</span>
+<span class="sd">            diffracted spots brighter than the direct beam.</span>
+<span class="sd">        *args:</span>
+<span class="sd">            Arguments to be passed to align2D().</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Keyword arguments to be passed to align2D().</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        centered : ElectronDiffraction</span>
+<span class="sd">            The centered diffraction data.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nav_shape_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">nav_shape_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">origin_coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">square_width</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">min_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">origin_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">square_width</span><span class="p">))</span>
+            <span class="c1"># fails if non-square dp</span>
+            <span class="n">max_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">origin_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.5</span> <span class="o">+</span> <span class="n">square_width</span><span class="p">))</span>
+            <span class="n">shifts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="n">min_index</span><span class="p">:</span><span class="n">max_index</span><span class="p">,</span> <span class="n">min_index</span><span class="p">:</span><span class="n">max_index</span><span class="p">]</span><span class="o">.</span><span class="n">get_direct_beam_position</span><span class="p">(</span>
+                <span class="n">radius_start</span><span class="p">,</span> <span class="n">radius_finish</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shifts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_direct_beam_position</span><span class="p">(</span><span class="n">radius_start</span><span class="p">,</span> <span class="n">radius_finish</span><span class="p">,</span>
+                                                   <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">shifts</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">shifts</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">shifts</span> <span class="o">=</span> <span class="n">shifts</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nav_shape_x</span> <span class="o">*</span> <span class="n">nav_shape_y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">align2D</span><span class="p">(</span><span class="n">shifts</span><span class="o">=</span><span class="n">shifts</span><span class="p">,</span> <span class="n">crop</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                            <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.remove_background"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.remove_background">[docs]</a>    <span class="k">def</span> <span class="nf">remove_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
+                          <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform background subtraction via multiple methods.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        method : string</span>
+<span class="sd">            Specify the method used to determine the direct beam position.</span>
+
+<span class="sd">            * &#39;h-dome&#39; -</span>
+<span class="sd">            * &#39;gaussian_difference&#39; - Uses a difference between two gaussian</span>
+<span class="sd">                                convolutions to determine where the peaks are,</span>
+<span class="sd">                                and sets all other pixels to 0.</span>
+<span class="sd">            * &#39;median&#39; - Use a median filter for background removal</span>
+<span class="sd">            * &#39;reference_pattern&#39; - Subtract a user-defined reference patterns</span>
+<span class="sd">                from every diffraction pattern.</span>
+
+<span class="sd">        sigma_min : int, float</span>
+<span class="sd">            Standard deviation for the minimum gaussian convolution</span>
+<span class="sd">            (gaussian_difference only)</span>
+<span class="sd">        sigma_max : int, float</span>
+<span class="sd">            Standard deviation for the maximum gaussian convolution</span>
+<span class="sd">            (gaussian_difference only)</span>
+<span class="sd">        footprint : int</span>
+<span class="sd">            Size of the window that is convoluted with the array to determine</span>
+<span class="sd">            the median. Should be large enough that it is about 3x as big as the</span>
+<span class="sd">            size of the peaks (median only).</span>
+<span class="sd">        implementation : &#39;scipy&#39; or &#39;skimage&#39;</span>
+<span class="sd">            (median only) see expt_utils.subtract_background_median</span>
+<span class="sd">            for details, if not selected &#39;scipy&#39; is used</span>
+<span class="sd">        bg : array</span>
+<span class="sd">            Background array extracted from vacuum. (subtract_reference only)</span>
+<span class="sd">        *args:</span>
+<span class="sd">            Arguments to be passed to map().</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Keyword arguments to be passed to map().</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bg_subtracted : :obj:`ElectronDiffraction`</span>
+<span class="sd">            A copy of the data with the background subtracted. Be aware that</span>
+<span class="sd">            this function will only return inplace.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;h-dome&#39;</span><span class="p">:</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">/</span> <span class="n">scale</span>
+            <span class="n">bg_subtracted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">regional_filter</span><span class="p">,</span>
+                                     <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">bg_subtracted</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">filters</span><span class="o">.</span><span class="n">rank</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">selem</span><span class="o">=</span><span class="n">square</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+            <span class="n">bg_subtracted</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">bg_subtracted</span><span class="o">.</span><span class="n">data</span> <span class="o">/</span> <span class="n">bg_subtracted</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;gaussian_difference&#39;</span><span class="p">:</span>
+            <span class="n">bg_subtracted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">subtract_background_dog</span><span class="p">,</span>
+                                     <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;median&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;implementation&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;implementation&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;scipy&#39;</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;implementation&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;skimage&#39;</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                        <span class="s2">&quot;Unknown implementation `</span><span class="si">{}</span><span class="s2">`&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;implementation&#39;</span><span class="p">]))</span>
+
+            <span class="n">bg_subtracted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">subtract_background_median</span><span class="p">,</span>
+                                     <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;reference_pattern&#39;</span><span class="p">:</span>
+            <span class="n">bg_subtracted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">subtract_reference</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                     <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;The method specified, &#39;</span><span class="si">{}</span><span class="s2">&#39;, is not implemented. See&quot;</span>
+                <span class="s2">&quot;documentation for available implementations.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">bg_subtracted</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.decomposition"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.decomposition">[docs]</a>    <span class="k">def</span> <span class="nf">decomposition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decomposition with a choice of algorithms.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        *args :</span>
+<span class="sd">            Arguments to be passed to decomposition().</span>
+<span class="sd">        **kwargs :</span>
+<span class="sd">            Keyword arguments to be passed to decomposition().</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        The results are stored in self.learning_results. For a full description</span>
+<span class="sd">        of parameters see :meth:`hyperspy.learn.mva.MVA.decomposition`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Signal2D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">decomposition</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_results</span><span class="o">.</span><span class="n">loadings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">learning_results</span><span class="o">.</span><span class="n">loadings</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.find_peaks"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.find_peaks">[docs]</a>    <span class="k">def</span> <span class="nf">find_peaks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Find the position of diffraction peaks.</span>
+
+<span class="sd">        Function to locate the positive peaks in an image using various, user</span>
+<span class="sd">        specified, methods. Returns a structured array containing the peak</span>
+<span class="sd">        positions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ---------</span>
+<span class="sd">        method : str</span>
+<span class="sd">            Select peak finding algorithm to implement. Available methods are</span>
+<span class="sd">            {&#39;zaefferer&#39;, &#39;stat&#39;, &#39;laplacian_of_gaussians&#39;,</span>
+<span class="sd">            &#39;difference_of_gaussians&#39;, &#39;xc&#39;}</span>
+<span class="sd">        *args : arguments</span>
+<span class="sd">            Arguments to be passed to the peak finders.</span>
+<span class="sd">        **kwargs : arguments</span>
+<span class="sd">            Keyword arguments to be passed to the peak finders.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        peaks : DiffractionVectors</span>
+<span class="sd">            A DiffractionVectors object with navigation dimensions identical to</span>
+<span class="sd">            the original ElectronDiffraction object. Each signal is a BaseSignal</span>
+<span class="sd">            object contiaining the diffraction vectors found at each navigation</span>
+<span class="sd">            position, in calibrated units.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Peak finding methods are detailed as:</span>
+
+<span class="sd">            * &#39;zaefferer&#39; - based on gradient thresholding and refinement</span>
+<span class="sd">              by local region of interest optimisation</span>
+<span class="sd">            * &#39;stat&#39; - statistical approach requiring no free params.</span>
+<span class="sd">            * &#39;laplacian_of_gaussians&#39; - a blob finder implemented in</span>
+<span class="sd">              `scikit-image` which uses the laplacian of Gaussian matrices</span>
+<span class="sd">              approach.</span>
+<span class="sd">            * &#39;difference_of_gaussians&#39; - a blob finder implemented in</span>
+<span class="sd">              `scikit-image` which uses the difference of Gaussian matrices</span>
+<span class="sd">              approach.</span>
+<span class="sd">            * &#39;xc&#39; - A cross correlation peakfinder</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">method_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;zaefferer&#39;</span><span class="p">:</span> <span class="n">find_peaks_zaefferer</span><span class="p">,</span>
+            <span class="s1">&#39;stat&#39;</span><span class="p">:</span> <span class="n">find_peaks_stat</span><span class="p">,</span>
+            <span class="s1">&#39;laplacian_of_gaussians&#39;</span><span class="p">:</span> <span class="n">find_peaks_log</span><span class="p">,</span>
+            <span class="s1">&#39;difference_of_gaussians&#39;</span><span class="p">:</span> <span class="n">find_peaks_dog</span><span class="p">,</span>
+            <span class="s1">&#39;xc&#39;</span><span class="p">:</span> <span class="n">find_peaks_xc</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">method_dict</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">method_dict</span><span class="p">[</span><span class="n">method</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;The method `</span><span class="si">{}</span><span class="s2">` is not implemented. &quot;</span>
+                                      <span class="s2">&quot;See documentation for available &quot;</span>
+                                      <span class="s2">&quot;implementations.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
+
+        <span class="n">peaks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ragged</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">peaks</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">peaks_as_gvectors</span><span class="p">,</span>
+                  <span class="n">center</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_shape</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span>
+                  <span class="n">calibration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+        <span class="n">peaks</span> <span class="o">=</span> <span class="n">DiffractionVectors</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span>
+        <span class="n">peaks</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">set_signal_dimension</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Set calibration to same as signal</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">peaks</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">peaks</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+
+        <span class="n">y</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+
+        <span class="k">return</span> <span class="n">peaks</span></div>
+
+<div class="viewcode-block" id="ElectronDiffraction.find_peaks_interactive"><a class="viewcode-back" href="../../../pyxem.signals.html#pyxem.signals.electron_diffraction.ElectronDiffraction.find_peaks_interactive">[docs]</a>    <span class="k">def</span> <span class="nf">find_peaks_interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">disc_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">imshow_kwargs</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;Find peaks using an interactive tool.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        disc_image : numpy.array</span>
+<span class="sd">            See .utils.peakfinders2D.peak_finder_xc for details. If not</span>
+<span class="sd">            given a warning will be raised.</span>
+<span class="sd">        imshow_kwargs : arguments</span>
+<span class="sd">            kwargs to be passed to internal imshow statements</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Requires `ipywidgets` and `traitlets` to be installed.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">disc_image</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;You have not specified a disc image, as such you will not &quot;</span>
+                 <span class="s2">&quot;be able to use the xc method in this session&quot;</span><span class="p">)</span>
+
+        <span class="n">peakfinder</span> <span class="o">=</span> <span class="n">peakfinder2D_gui</span><span class="o">.</span><span class="n">PeakFinderUIIPYW</span><span class="p">(</span>
+            <span class="n">disc_image</span><span class="o">=</span><span class="n">disc_image</span><span class="p">,</span> <span class="n">imshow_kwargs</span><span class="o">=</span><span class="n">imshow_kwargs</span><span class="p">)</span>
+        <span class="n">peakfinder</span><span class="o">.</span><span class="n">interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

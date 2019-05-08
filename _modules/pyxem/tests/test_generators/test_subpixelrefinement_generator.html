@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.tests.test_generators.test_subpixelrefinement_generator &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.tests.test_generators.test_subpixelrefinement_generator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">pyxem.generators.subpixelrefinement_generator</span> <span class="k">import</span> <span class="n">SubpixelrefinementGenerator</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.diffraction_vectors</span> <span class="k">import</span> <span class="n">DiffractionVectors</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.electron_diffraction</span> <span class="k">import</span> <span class="n">ElectronDiffraction</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">draw</span>
+
+
+<div class="viewcode-block" id="create_spot"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_subpixelrefinement_generator.create_spot">[docs]</a><span class="k">def</span> <span class="nf">create_spot</span><span class="p">():</span>
+    <span class="n">z1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">r</span>
+        <span class="n">rr</span><span class="p">,</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">z1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1">#30 is y!</span>
+        <span class="n">z1</span><span class="p">[</span><span class="n">rr</span><span class="p">,</span> <span class="n">cc</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="n">z2</span><span class="p">[</span><span class="n">rr</span><span class="p">,</span> <span class="n">cc</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="n">rr2</span><span class="p">,</span> <span class="n">cc2</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">z2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">z2</span><span class="p">[</span><span class="n">rr2</span><span class="p">,</span> <span class="n">cc2</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+
+    <span class="n">dp</span> <span class="o">=</span> <span class="n">ElectronDiffraction</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="n">z1</span><span class="p">,</span> <span class="n">z1</span><span class="p">],</span> <span class="p">[</span><span class="n">z2</span><span class="p">,</span> <span class="n">z2</span><span class="p">]]))</span>  <span class="c1"># this needs to be in 2x2</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">dp</span><span class="o">.</span><span class="n">axes_manager</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dp</span></div>
+
+
+<div class="viewcode-block" id="create_vectors"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_subpixelrefinement_generator.create_vectors">[docs]</a><span class="k">def</span> <span class="nf">create_vectors</span><span class="p">():</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">90</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">30</span> <span class="o">-</span> <span class="mi">64</span><span class="p">]])</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">90</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">30</span> <span class="o">-</span> <span class="mi">64</span><span class="p">],</span> <span class="p">[</span><span class="mi">100</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">60</span> <span class="o">-</span> <span class="mi">64</span><span class="p">]])</span>
+    <span class="n">vectors</span> <span class="o">=</span> <span class="n">DiffractionVectors</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">v1</span><span class="p">,</span> <span class="n">v1</span><span class="p">],</span> <span class="p">[</span><span class="n">v2</span><span class="p">,</span> <span class="n">v2</span><span class="p">]]))</span>
+    <span class="n">vectors</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">set_signal_dimension</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vectors</span></div>
+
+<div class="viewcode-block" id="test_bad_vectors_numpy"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_bad_vectors_numpy">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_bad_vectors_numpy</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; tests that putting bad vectors in causes an error to be thrown when</span>
+<span class="sd">    you initiate the geneartor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">100</span><span class="p">]])</span>
+    <span class="n">dp</span> <span class="o">=</span> <span class="n">ElectronDiffraction</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)))</span>
+    <span class="n">sprg</span> <span class="o">=</span> <span class="n">SubpixelrefinementGenerator</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">v</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="test_bad_vectors_DiffractionVectors"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_bad_vectors_DiffractionVectors">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_bad_vectors_DiffractionVectors</span><span class="p">():</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">100</span><span class="p">]])</span>
+    <span class="n">dv</span> <span class="o">=</span> <span class="n">DiffractionVectors</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">dp</span> <span class="o">=</span> <span class="n">ElectronDiffraction</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)))</span>
+    <span class="n">sprg</span> <span class="o">=</span> <span class="n">SubpixelrefinementGenerator</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dv</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_conventional_xc"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_conventional_xc">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore::UserWarning&#39;</span><span class="p">)</span>  <span class="c1"># various skimage warnings</span>
+<span class="k">def</span> <span class="nf">test_conventional_xc</span><span class="p">(</span><span class="n">diffraction_pattern</span><span class="p">):</span>
+    <span class="n">SPR_generator</span> <span class="o">=</span> <span class="n">SubpixelrefinementGenerator</span><span class="p">(</span><span class="n">diffraction_pattern</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]))</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">SPR_generator</span><span class="o">.</span><span class="n">calibration</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">SPR_generator</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">diff_vect</span> <span class="o">=</span> <span class="n">SPR_generator</span><span class="o">.</span><span class="n">conventional_xc</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_wrong_navigation_dimensions"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_wrong_navigation_dimensions">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_wrong_navigation_dimensions</span><span class="p">():</span>
+    <span class="n">dp</span> <span class="o">=</span> <span class="n">ElectronDiffraction</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)))</span>
+    <span class="n">dp</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">set_signal_dimension</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">vectors</span> <span class="o">=</span> <span class="n">DiffractionVectors</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="n">vectors</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">set_signal_dimension</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">SPR_generator</span> <span class="o">=</span> <span class="n">SubpixelrefinementGenerator</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">vectors</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_assertioned_xc"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_assertioned_xc">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;dp, diffraction_vectors&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">create_spot</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">90</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">30</span> <span class="o">-</span> <span class="mi">64</span><span class="p">]])),</span>
+    <span class="p">(</span><span class="n">create_spot</span><span class="p">(),</span> <span class="n">create_vectors</span><span class="p">())</span>
+<span class="p">])</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore::UserWarning&#39;</span><span class="p">)</span>  <span class="c1"># various skimage warnings</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore::RuntimeWarning&#39;</span><span class="p">)</span>  <span class="c1"># various skimage warnings</span>
+<span class="k">def</span> <span class="nf">test_assertioned_xc</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">diffraction_vectors</span><span class="p">):</span>
+    <span class="n">spr</span> <span class="o">=</span> <span class="n">SubpixelrefinementGenerator</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">diffraction_vectors</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">spr</span><span class="o">.</span><span class="n">conventional_xc</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">90</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">30</span> <span class="o">-</span> <span class="mi">64</span><span class="p">]])</span>
+    <span class="n">rms_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">error</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">rms_error</span> <span class="o">&lt;</span> <span class="mf">0.2</span>  <span class="c1"># 1/5th a pixel</span></div>
+
+
+<div class="viewcode-block" id="test_assertioned_com"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_assertioned_com">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;dp, diffraction_vectors&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">create_spot</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">90</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">30</span> <span class="o">-</span> <span class="mi">64</span><span class="p">]])),</span>
+    <span class="p">(</span><span class="n">create_spot</span><span class="p">(),</span> <span class="n">create_vectors</span><span class="p">())</span>
+<span class="p">])</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore::RuntimeWarning&#39;</span><span class="p">)</span>  <span class="c1"># various skimage warnings</span>
+<span class="k">def</span> <span class="nf">test_assertioned_com</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">diffraction_vectors</span><span class="p">):</span>
+    <span class="n">spr</span> <span class="o">=</span> <span class="n">SubpixelrefinementGenerator</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">diffraction_vectors</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">spr</span><span class="o">.</span><span class="n">center_of_mass_method</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">90</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">30</span> <span class="o">-</span> <span class="mi">64</span><span class="p">]])</span>
+    <span class="n">rms_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">error</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">rms_error</span> <span class="o">&lt;</span> <span class="mf">1e-5</span>  <span class="c1"># perfect detection for this trivial case</span></div>
+
+<div class="viewcode-block" id="test_local_gaussian_method_dull"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_local_gaussian_method_dull">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;dp, diffraction_vectors&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">create_spot</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">90</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">30</span> <span class="o">-</span> <span class="mi">64</span><span class="p">]])),</span>
+<span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_local_gaussian_method_dull</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">diffraction_vectors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This aims to test that our x/y convention is correct. The peak shape for</span>
+<span class="sd">    these tests is unsuitable for this method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">spr</span> <span class="o">=</span> <span class="n">SubpixelrefinementGenerator</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">diffraction_vectors</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">spr</span><span class="o">.</span><span class="n">local_gaussian_method</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">90</span> <span class="o">-</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">30</span> <span class="o">-</span> <span class="mi">64</span><span class="p">]])</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">error</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="test_local_gaussian_method_exciting"><a class="viewcode-back" href="../../../../pyxem.tests.test_generators.html#pyxem.tests.test_generators.test_subpixelrefinement_generator.test_local_gaussian_method_exciting">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;dp, diffraction_vectors&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">create_spot</span><span class="p">(),</span> <span class="n">create_vectors</span><span class="p">())</span>
+<span class="p">])</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_local_gaussian_method_exciting</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">diffraction_vectors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This aims to test that our x/y convention is correct. The peak shape for</span>
+<span class="sd">    these tests is unsuitable for this method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">spr</span> <span class="o">=</span> <span class="n">SubpixelrefinementGenerator</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">diffraction_vectors</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">spr</span><span class="o">.</span><span class="n">local_gaussian_method</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

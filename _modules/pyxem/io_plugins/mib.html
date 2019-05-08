@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.io_plugins.mib &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.io_plugins.mib</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">codecs</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">hyperspy.misc.io.utils_readfile</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">hyperspy</span> <span class="k">import</span> <span class="n">Release</span>
+<span class="kn">from</span> <span class="nn">hyperspy.misc.utils</span> <span class="k">import</span> <span class="n">DictionaryTreeBrowser</span>
+
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1"># Plugin characteristics</span>
+<span class="c1"># ----------------------</span>
+<span class="n">format_name</span> <span class="o">=</span> <span class="s1">&#39;hdr&#39;</span>
+<span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;hdr file contains the information on how to read</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="n">description</span> <span class="o">+=</span> <span class="s1">&#39;the mib file with the same name.&#39;</span>
+<span class="n">description</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">This format does not provide information on the calibration.&#39;</span>
+<span class="n">description</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> You should add this after loading the file.&#39;</span>
+<span class="n">full_support</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># but maybe True</span>
+<span class="c1"># Recognised file extension</span>
+<span class="n">file_extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hdr&#39;</span><span class="p">]</span>
+<span class="n">default_extension</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># Writing capabilities</span>
+<span class="n">writes</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">]</span>
+<span class="c1"># ----------------------</span>
+
+<span class="c1"># The format only support the followng data types</span>
+<span class="n">newline</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span>
+<span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span>
+
+<span class="n">dtype2keys</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;float64&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="s1">&#39;float32&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="s1">&#39;uint8&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unsigned&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s1">&#39;uint16&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unsigned&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="s1">&#39;int32&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;signed&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="s1">&#39;int64&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;signed&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">}</span>
+
+<span class="n">endianess2hdr</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;=&#39;</span><span class="p">:</span> <span class="s1">&#39;dont-care&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;&lt;&#39;</span><span class="p">:</span> <span class="s1">&#39;little-endian&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;&gt;&#39;</span><span class="p">:</span> <span class="s1">&#39;big-endian&#39;</span><span class="p">}</span>
+
+<span class="c1"># Warning: for selection lists use tuples not lists.</span>
+<span class="c1">#keys extracted fromt the hdr file</span>
+<span class="n">hdr_keys</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="s1">&#39;data-length&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;8&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;data-type&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;signed&#39;</span><span class="p">,</span> <span class="s1">&#39;unsigned&#39;</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;byte-order&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;little-endian&#39;</span><span class="p">,</span> <span class="s1">&#39;big-endian&#39;</span><span class="p">,</span> <span class="s1">&#39;dont-care&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;record-by&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;vector&#39;</span><span class="p">,</span> <span class="s1">&#39;dont-care&#39;</span><span class="p">),</span>
+    <span class="c1"># HyperSpy-specific keys</span>
+    <span class="s1">&#39;depth-origin&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="s1">&#39;depth-scale&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="s1">&#39;depth-units&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="s1">&#39;width-origin&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="s1">&#39;width-scale&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="s1">&#39;width-units&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="s1">&#39;height-origin&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="s1">&#39;height-scale&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="s1">&#39;height-units&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="s1">&#39;signal&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="c1"># TEM HyperSpy keys</span>
+    <span class="s1">&#39;convergence-angle&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="s1">&#39;beam-energy&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="parse_hdr"><a class="viewcode-back" href="../../../pyxem.io_plugins.html#pyxem.io_plugins.mib.parse_hdr">[docs]</a><span class="k">def</span> <span class="nf">parse_hdr</span><span class="p">(</span><span class="n">fp</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse information from hdr (.hdr) file.</span>
+<span class="sd">    Accepts file object &#39;fp. Returns dictionary hdr_info.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hdr_info</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+        <span class="c1">#skip blank entries</span>
+        <span class="k">if</span> <span class="nb">any</span> <span class="p">(</span><span class="n">skip_line</span> <span class="ow">in</span> <span class="n">line</span> <span class="k">for</span> <span class="n">skip_line</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;HDR&#39;</span><span class="p">,</span> <span class="s1">&#39;End&#39;</span><span class="p">)):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">newline</span> <span class="ow">and</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">comment</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">comment</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">comment</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="n">sep</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">err</span> <span class="o">=</span> <span class="s1">&#39;Separator in line &quot;</span><span class="si">%s</span><span class="s1">&quot; is wrong, &#39;</span> <span class="o">%</span> <span class="n">line</span>
+                <span class="n">err</span> <span class="o">+=</span> <span class="s1">&#39;it should be a &lt;TAB&gt; (&quot;</span><span class="se">\\</span><span class="s1">t&quot;)&#39;</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="p">[</span><span class="n">seg</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)]</span>  <span class="c1"># now it&#39;s a list</span>
+            <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span> <span class="c1">#remove &#39;:&#39; from keys</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1">#assign values to mandatory keys</span>
+    <span class="c1">#set the array size of the chip</span>
+    <span class="c1">#Adding the try argument to accommodate the new hdr formatting as of April 2018</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Assembly Size (1X1, 2X2)&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1x1&#39;</span><span class="p">:</span>
+            <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">256</span>
+            <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">256</span>
+        <span class="k">elif</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Assembly Size (1X1, 2X2)&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;2x2&#39;</span><span class="p">:</span>
+            <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">512</span>
+            <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">512</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Assembly Size (NX1, 2X2)&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1x1&#39;</span><span class="p">:</span>
+            <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">256</span>
+            <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">256</span>
+        <span class="k">elif</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Assembly Size (NX1, 2X2)&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;2x2&#39;</span><span class="p">:</span>
+            <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">512</span>
+            <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">512</span>
+
+    <span class="c1">#convert frames to depth</span>
+    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Frames in Acquisition (Number)&#39;</span><span class="p">])</span>
+    <span class="c1">#set mib offset</span>
+    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;offset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#set data-type</span>
+    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;data-type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;unsigned&#39;</span>
+    <span class="c1">#set data-length</span>
+    <span class="k">if</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Counter Depth (number)&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;6&#39;</span> <span class="ow">or</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Counter Depth (number)&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;12&#39;</span><span class="p">:</span>
+        <span class="n">cd_int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Counter Depth (number)&#39;</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;data-length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="n">cd_int</span> <span class="o">+</span> <span class="n">cd_int</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;data-length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Counter Depth (number)&#39;</span><span class="p">]</span>
+    <span class="c1">#set byte order</span>
+    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;byte-order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dont-care&#39;</span>
+    <span class="c1">#set record by to stack of images</span>
+    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;record-by&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;image&#39;</span>
+
+    <span class="c1">#set title to file name</span>
+    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1">#set time and date</span>
+    <span class="c1">#Adding the try argument to accommodate the new hdr formatting as of April 2018</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year_time</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Time and Date Stamp (day, mnth, yr, hr, min, s)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">year</span> <span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">year_time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">year</span> <span class="o">+</span> <span class="n">month</span> <span class="o">+</span> <span class="n">day</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year_time</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;Time and Date Stamp (yr, mnth, day, hr, min, s)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">year</span> <span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">year_time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">year</span> <span class="o">+</span> <span class="n">month</span> <span class="o">+</span> <span class="n">day</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span>
+    <span class="k">return</span> <span class="n">hdr_info</span></div>
+
+
+<div class="viewcode-block" id="read_mib"><a class="viewcode-back" href="../../../pyxem.io_plugins.html#pyxem.io_plugins.mib.read_mib">[docs]</a><span class="k">def</span> <span class="nf">read_mib</span><span class="p">(</span><span class="n">hdr_info</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">mmap_mode</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read the raw file object &#39;fp&#39; based on the information given in the</span>
+<span class="sd">    &#39;hdr_info&#39; dictionary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hdr_info: dict</span>
+<span class="sd">        A dictionary containing the keywords as parsed by read_hdr</span>
+<span class="sd">    fp:</span>
+<span class="sd">    mmap_mode: {None, &#39;r+&#39;, &#39;r&#39;, &#39;w+&#39;, &#39;c&#39;}, optional</span>
+<span class="sd">    If not None, then memory-map the file, using the given mode</span>
+<span class="sd">    (see `numpy.memmap`).  The mode has no effect for pickled or</span>
+<span class="sd">    zipped files.</span>
+<span class="sd">    A memory-mapped array is stored on disk, and not directly loaded</span>
+<span class="sd">    into memory.  However, it can be accessed and sliced like any</span>
+<span class="sd">    ndarray.  Memory mapping is especially useful for accessing</span>
+<span class="sd">    small fragments of large files without reading the entire file</span>
+<span class="sd">    into memory.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;offset&#39;</span><span class="p">]</span>
+    <span class="n">data_length</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;data-length&#39;</span><span class="p">]</span>
+    <span class="n">data_type</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;data-type&#39;</span><span class="p">]</span>
+    <span class="n">endian</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;byte-order&#39;</span><span class="p">]</span>
+    <span class="n">record_by</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;record-by&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;signed&#39;</span><span class="p">:</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="s1">&#39;int&#39;</span>
+    <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;unsigned&#39;</span><span class="p">:</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="s1">&#39;uint&#39;</span>
+    <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;float&#39;</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Unknown &quot;data-type&quot; string.&#39;</span><span class="p">)</span>
+
+    <span class="n">endian</span> <span class="o">=</span> <span class="s1">&#39;&gt;&#39;</span>
+
+    <span class="n">data_type</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data_length</span><span class="p">))</span>
+    <span class="n">data_type</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">data_type</span><span class="p">)</span>
+    <span class="n">data_type</span> <span class="o">=</span> <span class="n">data_type</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="n">endian</span><span class="p">)</span>
+
+    <span class="c1">#set header number of bits</span>
+    <span class="n">hdr_multiplier</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data_length</span><span class="p">)</span><span class="o">/</span><span class="mi">8</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span>
+    <span class="n">hdr_bits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">384</span> <span class="o">*</span> <span class="n">hdr_multiplier</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">memmap</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span>
+                     <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
+                     <span class="n">dtype</span><span class="o">=</span><span class="n">data_type</span><span class="p">,</span>
+                     <span class="n">mode</span><span class="o">=</span><span class="n">mmap_mode</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">record_by</span> <span class="o">==</span> <span class="s1">&#39;vector&#39;</span><span class="p">:</span>   <span class="c1"># spectral image</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">record_by</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>  <span class="c1"># stack of images</span>
+        <span class="n">width_height</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span>
+        <span class="c1">#a_width, a_height = round(np.sqrt(depth)), depth/ (round(np.sqrt(depth)))</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="c1">#remove headers at the beginning of each frame and reshape</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">width_height</span> <span class="o">+</span> <span class="n">hdr_bits</span><span class="p">)[:,</span><span class="o">-</span><span class="n">width_height</span><span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">record_by</span> <span class="o">==</span> <span class="s1">&#39;dont-care&#39;</span><span class="p">:</span>  <span class="c1"># stack of images</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="file_reader"><a class="viewcode-back" href="../../../pyxem.io_plugins.html#pyxem.io_plugins.mib.file_reader">[docs]</a><span class="k">def</span> <span class="nf">file_reader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">hdr_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;latin-1&quot;</span><span class="p">,</span>
+                <span class="n">mmap_mode</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parses a Medipix hdr (.hdr) file and reads the data from the</span>
+<span class="sd">    corresponding raw (.mib) file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span> <span class="ow">in</span> <span class="n">file_extensions</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span>
+                             <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">hdr_info</span> <span class="o">=</span> <span class="n">parse_hdr</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;File has wrong extension: &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:])</span>
+    <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;mib&#39;</span><span class="p">,</span> <span class="s1">&#39;MIB&#39;</span><span class="p">]:</span>
+        <span class="n">rawfname</span> <span class="o">=</span> <span class="n">filename</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">ext</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">rawfname</span><span class="p">):</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rawfname</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rawfname</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;mib file &quot;</span><span class="si">%s</span><span class="s1">&quot; does not exists&#39;</span> <span class="o">%</span> <span class="n">rawfname</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lazy</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;lazy&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lazy</span><span class="p">:</span>
+            <span class="n">mmap_mode</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">read_mib</span><span class="p">(</span><span class="n">hdr_info</span><span class="p">,</span> <span class="n">rawfname</span><span class="p">,</span> <span class="n">mmap_mode</span><span class="o">=</span><span class="n">mmap_mode</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;record-by&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;vector&#39;</span><span class="p">:</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading as Signal1D&#39;</span><span class="p">)</span>
+        <span class="n">record_by</span> <span class="o">=</span> <span class="s1">&#39;spectrum&#39;</span>
+    <span class="k">elif</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;record-by&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading as Signal2D&#39;</span><span class="p">)</span>
+        <span class="n">record_by</span> <span class="o">=</span> <span class="s1">&#39;image&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading as Signal1D&#39;</span><span class="p">)</span>
+            <span class="n">record_by</span> <span class="o">=</span> <span class="s1">&#39;spectrum&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading as Signal2D&#39;</span><span class="p">)</span>
+            <span class="n">record_by</span> <span class="o">=</span> <span class="s1">&#39;image&#39;</span>
+
+    <span class="k">if</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;record-by&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;vector&#39;</span><span class="p">:</span>
+        <span class="n">idepth</span><span class="p">,</span> <span class="n">iheight</span><span class="p">,</span> <span class="n">iwidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">idepth</span><span class="p">,</span> <span class="n">iheight</span><span class="p">,</span> <span class="n">iwidth</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">]</span>
+
+    <span class="n">scales</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">origins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]</span>
+    <span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">hdr_info</span><span class="p">[</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;date&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;time&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;signal&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;signal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;title&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s1">&#39;depth-scale&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">scales</span><span class="p">[</span><span class="n">idepth</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;depth-scale&#39;</span><span class="p">]</span>
+    <span class="c1"># ev-per-chan is the only calibration supported by the original hdr</span>
+    <span class="c1"># format</span>
+    <span class="k">elif</span> <span class="s1">&#39;ev-per-chan&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">scales</span><span class="p">[</span><span class="n">idepth</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;ev-per-chan&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;depth-origin&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">origins</span><span class="p">[</span><span class="n">idepth</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;depth-origin&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;depth-units&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">units</span><span class="p">[</span><span class="n">idepth</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;depth-units&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;depth-name&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">names</span><span class="p">[</span><span class="n">idepth</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;depth-name&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;width-origin&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">origins</span><span class="p">[</span><span class="n">iwidth</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;width-origin&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;width-scale&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">scales</span><span class="p">[</span><span class="n">iwidth</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;width-scale&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;width-units&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">units</span><span class="p">[</span><span class="n">iwidth</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;width-units&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;width-name&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">names</span><span class="p">[</span><span class="n">iwidth</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;width-name&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;height-origin&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">origins</span><span class="p">[</span><span class="n">iheight</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;height-origin&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;height-scale&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">scales</span><span class="p">[</span><span class="n">iheight</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;height-scale&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;height-units&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">units</span><span class="p">[</span><span class="n">iheight</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;height-units&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;height-name&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">names</span><span class="p">[</span><span class="n">iheight</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;height-name&#39;</span><span class="p">]</span>
+
+    <span class="n">mp</span> <span class="o">=</span> <span class="n">DictionaryTreeBrowser</span><span class="p">({</span>
+        <span class="s1">&#39;General&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;original_filename&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+                    <span class="p">},</span>
+        <span class="s2">&quot;Signal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;signal_type&#39;</span><span class="p">:</span> <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;signal&#39;</span><span class="p">],</span>
+                   <span class="s1">&#39;record_by&#39;</span><span class="p">:</span> <span class="n">record_by</span><span class="p">},</span>
+    <span class="p">})</span>
+    <span class="k">if</span> <span class="s1">&#39;convergence-angle&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;Acquisition_instrument.TEM.convergence_angle&#39;</span><span class="p">,</span>
+                    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;convergence-angle&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">&#39;tilt-stage&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;Acquisition_instrument.TEM.Stage.tilt_alpha&#39;</span><span class="p">,</span>
+                    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;tilt-stage&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">&#39;collection-angle&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;Acquisition_instrument.TEM.Detector.EELS.&#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39;collection_angle&#39;</span><span class="p">,</span>
+                    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;collection-angle&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">&#39;beam-energy&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;Acquisition_instrument.TEM.beam_energy&#39;</span><span class="p">,</span>
+                    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;beam-energy&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">&#39;elevation-angle&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;Acquisition_instrument.TEM.Detector.EDS.elevation_angle&#39;</span><span class="p">,</span>
+                    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;elevation-angle&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">&#39;azimuth-angle&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;Acquisition_instrument.TEM.Detector.EDS.azimuth_angle&#39;</span><span class="p">,</span>
+                    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;azimuth-angle&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">&#39;energy-resolution&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;Acquisition_instrument.TEM.Detector.EDS.&#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39;energy_resolution_MnKa&#39;</span><span class="p">,</span>
+                    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;energy-resolution&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">&#39;detector-peak-width-ev&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;Acquisition_instrument.TEM.Detector.EDS.&#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39;energy_resolution_MnKa&#39;</span><span class="p">,</span>
+                    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;detector-peak-width-ev&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">&#39;live-time&#39;</span> <span class="ow">in</span> <span class="n">hdr_info</span><span class="p">:</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">set_item</span><span class="p">(</span><span class="s1">&#39;Acquisition_instrument.TEM.Detector.EDS.live_time&#39;</span><span class="p">,</span>
+                    <span class="n">hdr_info</span><span class="p">[</span><span class="s1">&#39;live-time&#39;</span><span class="p">])</span>
+
+    <span class="n">axes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">index_in_array</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">sizes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="s1">&#39;index_in_array&#39;</span><span class="p">:</span> <span class="n">index_in_array</span><span class="p">,</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="n">scales</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="n">origins</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">units</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="p">})</span>
+            <span class="n">index_in_array</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span>
+        <span class="s1">&#39;axes&#39;</span><span class="p">:</span> <span class="n">axes</span><span class="p">,</span>
+        <span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="n">mp</span><span class="o">.</span><span class="n">as_dictionary</span><span class="p">(),</span>
+        <span class="s1">&#39;original_metadata&#39;</span><span class="p">:</span> <span class="n">hdr_info</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">dictionary</span><span class="p">,</span> <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="file_writer"><a class="viewcode-back" href="../../../pyxem.io_plugins.html#pyxem.io_plugins.mib.file_writer">[docs]</a><span class="k">def</span> <span class="nf">file_writer</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;latin-1&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+
+    <span class="c1"># Set the optional keys to None</span>
+    <span class="n">ev_per_chan</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Check if the dtype is supported</span>
+    <span class="n">dc</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">dtype_name</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">if</span> <span class="n">dtype_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dtype2keys</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="s1">&#39;The hdr format does not support writting data of </span><span class="si">%s</span><span class="s1"> type&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">dtype_name</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+    <span class="c1"># Check if the dimensions are supported</span>
+    <span class="n">dimension</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dimension</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="s1">&#39;This file format does not support </span><span class="si">%i</span><span class="s1"> dimension data&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">dimension</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+
+    <span class="c1"># Gather the information to write the hdr</span>
+    <span class="n">data_type</span><span class="p">,</span> <span class="n">data_length</span> <span class="o">=</span> <span class="n">dtype2keys</span><span class="p">[</span><span class="n">dc</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+    <span class="n">byte_order</span> <span class="o">=</span> <span class="n">endianess2hdr</span><span class="p">[</span><span class="n">dc</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">byteorder</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">)]</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s2">&quot;Signal.signal_type&quot;</span><span class="p">):</span>
+        <span class="n">signal_type</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">signal_type</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">signal_type</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s2">&quot;General.date&quot;</span><span class="p">):</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">General</span><span class="o">.</span><span class="n">date</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s2">&quot;General.time&quot;</span><span class="p">):</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">General</span><span class="o">.</span><span class="n">time</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s2">&quot;General.title&quot;</span><span class="p">):</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">General</span><span class="o">.</span><span class="n">title</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_dimension</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">record_by</span> <span class="o">=</span> <span class="s1">&#39;vector&#39;</span>
+        <span class="n">depth_axis</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ev_per_chan</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">depth_axis</span><span class="o">.</span><span class="n">scale</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">width_axis</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">height_axis</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">depth</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> \
+                <span class="n">depth_axis</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">width_axis</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">height_axis</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">elif</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">width_axis</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">depth</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">depth_axis</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">width_axis</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">record_by</span> <span class="o">==</span> <span class="s1">&#39;dont-care&#39;</span>
+            <span class="n">depth</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">depth_axis</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+
+    <span class="k">elif</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">width_axis</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">height_axis</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">depth_axis</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">record_by</span> <span class="o">=</span> <span class="s1">&#39;image&#39;</span>
+            <span class="n">depth</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span>  \
+                <span class="n">depth_axis</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">width_axis</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">height_axis</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">elif</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">record_by</span> <span class="o">=</span> <span class="s1">&#39;dont-care&#39;</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span> <span class="o">=</span> <span class="n">width_axis</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">height_axis</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">record_by</span> <span class="o">=</span> <span class="s1">&#39;dont-care&#39;</span>
+            <span class="n">depth</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">width_axis</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Only Signal1D and Signal2D objects can be saved&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Fill the keys dictionary</span>
+    <span class="n">keys_dictionary</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="n">width</span><span class="p">,</span>
+        <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="n">height</span><span class="p">,</span>
+        <span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="n">depth</span><span class="p">,</span>
+        <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="n">offset</span><span class="p">,</span>
+        <span class="s1">&#39;data-type&#39;</span><span class="p">:</span> <span class="n">data_type</span><span class="p">,</span>
+        <span class="s1">&#39;data-length&#39;</span><span class="p">:</span> <span class="n">data_length</span><span class="p">,</span>
+        <span class="s1">&#39;byte-order&#39;</span><span class="p">:</span> <span class="n">byte_order</span><span class="p">,</span>
+        <span class="s1">&#39;record-by&#39;</span><span class="p">:</span> <span class="n">record_by</span><span class="p">,</span>
+        <span class="s1">&#39;signal&#39;</span><span class="p">:</span> <span class="n">signal_type</span><span class="p">,</span>
+        <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+        <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">ev_per_chan</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;ev-per-chan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ev_per_chan</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">eval</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">-scale&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_axis.scale&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+            <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">-origin&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_axis.offset&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+            <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">-units&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_axis.units&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+            <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">-name&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_axis.name&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">signal_type</span> <span class="o">==</span> <span class="s2">&quot;EELS&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;Acquisition_instrument.TEM&quot;</span> <span class="ow">in</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
+            <span class="n">mp</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Acquisition_instrument</span><span class="o">.</span><span class="n">TEM</span>
+            <span class="k">if</span> <span class="n">mp</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s1">&#39;beam_energy&#39;</span><span class="p">):</span>
+                <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;beam-energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">beam_energy</span>
+            <span class="k">if</span> <span class="n">mp</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s1">&#39;convergence_angle&#39;</span><span class="p">):</span>
+                <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;convergence-angle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">convergence_angle</span>
+            <span class="k">if</span> <span class="n">mp</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s1">&#39;Detector.EELS.collection_angle&#39;</span><span class="p">):</span>
+                <span class="n">keys_dictionary</span><span class="p">[</span>
+                    <span class="s1">&#39;collection-angle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">EELS</span><span class="o">.</span><span class="n">collection_angle</span>
+    <span class="k">if</span> <span class="s2">&quot;EDS&quot;</span> <span class="ow">in</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">signal_type</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">signal_type</span> <span class="o">==</span> <span class="s2">&quot;EDS_SEM&quot;</span><span class="p">:</span>
+            <span class="n">mp</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Acquisition_instrument</span><span class="o">.</span><span class="n">SEM</span>
+        <span class="k">elif</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">signal_type</span> <span class="o">==</span> <span class="s2">&quot;EDS_TEM&quot;</span><span class="p">:</span>
+            <span class="n">mp</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">Acquisition_instrument</span><span class="o">.</span><span class="n">TEM</span>
+        <span class="k">if</span> <span class="n">mp</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s1">&#39;beam_energy&#39;</span><span class="p">):</span>
+            <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;beam-energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">beam_energy</span>
+        <span class="k">if</span> <span class="n">mp</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s1">&#39;Detector.EDS.elevation_angle&#39;</span><span class="p">):</span>
+            <span class="n">keys_dictionary</span><span class="p">[</span>
+                <span class="s1">&#39;elevation-angle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">EDS</span><span class="o">.</span><span class="n">elevation_angle</span>
+        <span class="k">if</span> <span class="n">mp</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s1">&#39;Stage.tilt_alpha&#39;</span><span class="p">):</span>
+            <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;tilt-stage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Stage</span><span class="o">.</span><span class="n">tilt_alpha</span>
+        <span class="k">if</span> <span class="n">mp</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s1">&#39;Detector.EDS.azimuth_angle&#39;</span><span class="p">):</span>
+            <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;azimuth-angle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">EDS</span><span class="o">.</span><span class="n">azimuth_angle</span>
+        <span class="k">if</span> <span class="n">mp</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s1">&#39;Detector.EDS.live_time&#39;</span><span class="p">):</span>
+            <span class="n">keys_dictionary</span><span class="p">[</span><span class="s1">&#39;live-time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">EDS</span><span class="o">.</span><span class="n">live_time</span>
+        <span class="k">if</span> <span class="n">mp</span><span class="o">.</span><span class="n">has_item</span><span class="p">(</span><span class="s1">&#39;Detector.EDS.energy_resolution_MnKa&#39;</span><span class="p">):</span>
+            <span class="n">keys_dictionary</span><span class="p">[</span>
+                <span class="s1">&#39;detector-peak-width-ev&#39;</span><span class="p">]</span> <span class="o">=</span> \
+                <span class="n">mp</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">EDS</span><span class="o">.</span><span class="n">energy_resolution_MnKa</span>
+
+    <span class="n">write_hdr</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">keys_dictionary</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+    <span class="n">write_raw</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">record_by</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="write_hdr"><a class="viewcode-back" href="../../../pyxem.io_plugins.html#pyxem.io_plugins.mib.write_hdr">[docs]</a><span class="k">def</span> <span class="nf">write_hdr</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">keys_dictionary</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">):</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span>
+                    <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;;File created by HyperSpy version </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">Release</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;key</span><span class="se">\t</span><span class="s1">value</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1"># Even if it is not necessary, we sort the keywords when writing</span>
+    <span class="c1"># to make the hdr file more human friendly</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">keys_dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">value</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="write_mib"><a class="viewcode-back" href="../../../pyxem.io_plugins.html#pyxem.io_plugins.mib.write_mib">[docs]</a><span class="k">def</span> <span class="nf">write_mib</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">record_by</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Writes the raw file object</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : string</span>
+<span class="sd">        the filename, either with the extension or without it</span>
+<span class="sd">    record_by : string</span>
+<span class="sd">     &#39;vector&#39; or &#39;image&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.mib&#39;</span>
+    <span class="n">dshape</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dshape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">record_by</span> <span class="o">==</span> <span class="s1">&#39;vector&#39;</span><span class="p">:</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index_in_array</span><span class="p">,</span> <span class="mi">3</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">record_by</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">navigation_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index_in_array</span><span class="p">,</span> <span class="mi">0</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">dshape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">record_by</span> <span class="o">==</span> <span class="s1">&#39;vector&#39;</span><span class="p">:</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">axes_manager</span><span class="o">.</span><span class="n">signal_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index_in_array</span><span class="p">,</span> <span class="mi">2</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">record_by</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;dont-care&#39;</span><span class="p">):</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">dshape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

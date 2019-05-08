@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.tests.test_signals.test_diffraction_simulation &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.tests.test_signals.test_diffraction_simulation</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2018 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.diffraction_simulation</span> <span class="k">import</span> <span class="n">DiffractionSimulation</span>
+<span class="kn">from</span> <span class="nn">pyxem.signals.diffraction_simulation</span> <span class="k">import</span> <span class="n">ProfileSimulation</span>
+<span class="kn">from</span> <span class="nn">pyxem.generators.diffraction_generator</span> <span class="k">import</span> <span class="n">DiffractionGenerator</span>
+<span class="kn">from</span> <span class="nn">pyxem</span> <span class="k">import</span> <span class="n">ElectronDiffraction</span>
+
+
+<div class="viewcode-block" id="coords_intensity_simulation"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.coords_intensity_simulation">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">coords_intensity_simulation</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">DiffractionSimulation</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+                                 <span class="n">intensities</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="test_wrong_calibration_setting"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.test_wrong_calibration_setting">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_wrong_calibration_setting</span><span class="p">():</span>
+    <span class="n">DiffractionSimulation</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+                          <span class="n">intensities</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+                          <span class="n">calibration</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="get_signal"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.get_signal">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">get_signal</span><span class="p">(</span><span class="n">coords_intensity_simulation</span><span class="p">):</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="mi">144</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.03</span>
+    <span class="n">max_r</span> <span class="o">=</span> <span class="mf">1.5</span>
+    <span class="k">return</span> <span class="n">coords_intensity_simulation</span><span class="o">.</span><span class="n">as_signal</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">max_r</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_typing"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.test_typing">[docs]</a><span class="k">def</span> <span class="nf">test_typing</span><span class="p">(</span><span class="n">get_signal</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">get_signal</span><span class="p">,</span> <span class="n">ElectronDiffraction</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_correct_quadrant_np"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.test_correct_quadrant_np">[docs]</a><span class="k">def</span> <span class="nf">test_correct_quadrant_np</span><span class="p">(</span><span class="n">get_signal</span><span class="p">):</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">get_signal</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">[:</span><span class="mi">72</span><span class="p">,</span> <span class="p">:</span><span class="mi">72</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">72</span><span class="p">:,</span> <span class="p">:</span><span class="mi">72</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">[:</span><span class="mi">72</span><span class="p">,</span> <span class="mi">72</span><span class="p">:])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">72</span><span class="p">:,</span> <span class="mi">72</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_correct_quadrant_hs"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.test_correct_quadrant_hs">[docs]</a><span class="k">def</span> <span class="nf">test_correct_quadrant_hs</span><span class="p">(</span><span class="n">get_signal</span><span class="p">):</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">get_signal</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">isig</span><span class="p">[:</span><span class="mi">72</span><span class="p">,</span> <span class="p">:</span><span class="mi">72</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">72</span><span class="p">:,</span> <span class="p">:</span><span class="mi">72</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">isig</span><span class="p">[:</span><span class="mi">72</span><span class="p">,</span> <span class="mi">72</span><span class="p">:]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">isig</span><span class="p">[</span><span class="mi">72</span><span class="p">:,</span> <span class="mi">72</span><span class="p">:]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="profile_simulation"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.profile_simulation">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">profile_simulation</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">ProfileSimulation</span><span class="p">(</span><span class="n">magnitudes</span><span class="o">=</span><span class="p">[</span><span class="mf">0.31891931643691351</span><span class="p">,</span>
+                                         <span class="mf">0.52079306292509475</span><span class="p">,</span>
+                                         <span class="mf">0.6106839974876449</span><span class="p">,</span>
+                                         <span class="mf">0.73651261277849378</span><span class="p">,</span>
+                                         <span class="mf">0.80259601243613932</span><span class="p">,</span>
+                                         <span class="mf">0.9020400452156796</span><span class="p">,</span>
+                                         <span class="mf">0.95675794931074043</span><span class="p">,</span>
+                                         <span class="mf">1.0415861258501895</span><span class="p">,</span>
+                                         <span class="mf">1.0893168446141808</span><span class="p">,</span>
+                                         <span class="mf">1.1645286909108374</span><span class="p">,</span>
+                                         <span class="mf">1.2074090451670043</span><span class="p">,</span>
+                                         <span class="mf">1.2756772657476541</span><span class="p">],</span>
+                             <span class="n">intensities</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">100.</span><span class="p">,</span>
+                                                   <span class="mf">99.34619104</span><span class="p">,</span>
+                                                   <span class="mf">64.1846346</span><span class="p">,</span>
+                                                   <span class="mf">18.57137199</span><span class="p">,</span>
+                                                   <span class="mf">28.84307971</span><span class="p">,</span>
+                                                   <span class="mf">41.31084268</span><span class="p">,</span>
+                                                   <span class="mf">23.42104951</span><span class="p">,</span>
+                                                   <span class="mf">13.996264</span><span class="p">,</span>
+                                                   <span class="mf">24.87559364</span><span class="p">,</span>
+                                                   <span class="mf">20.85636003</span><span class="p">,</span>
+                                                   <span class="mf">9.46737774</span><span class="p">,</span>
+                                                   <span class="mf">5.43222307</span><span class="p">]),</span>
+                             <span class="n">hkls</span><span class="o">=</span><span class="p">[{(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">8</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">12</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">24</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">6</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">24</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="mi">24</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">24</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">12</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">48</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">24</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="mi">24</span><span class="p">},</span>
+                                   <span class="p">{(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span> <span class="mi">8</span><span class="p">}])</span></div>
+
+
+<div class="viewcode-block" id="test_plot_profile_simulation"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.test_plot_profile_simulation">[docs]</a><span class="k">def</span> <span class="nf">test_plot_profile_simulation</span><span class="p">(</span><span class="n">profile_simulation</span><span class="p">):</span>
+    <span class="n">profile_simulation</span><span class="o">.</span><span class="n">get_plot</span><span class="p">(</span><span class="n">g_max</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TestDiffractionSimulation"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation">[docs]</a><span class="k">class</span> <span class="nc">TestDiffractionSimulation</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TestDiffractionSimulation.diffraction_simulation"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.diffraction_simulation">[docs]</a>    <span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+    <span class="k">def</span> <span class="nf">diffraction_simulation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DiffractionSimulation</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestDiffractionSimulation.test_init"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_init">[docs]</a>    <span class="k">def</span> <span class="nf">test_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diffraction_simulation</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">coordinates</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">indices</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">intensities</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">calibration</span> <span class="o">==</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestDiffractionSimulation.test_calibration"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_calibration">[docs]</a>    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;calibration, expected&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="p">(</span><span class="mf">5.</span><span class="p">,</span> <span class="p">(</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">)),</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">marks</span><span class="o">=</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">)),</span>
+        <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">marks</span><span class="o">=</span><span class="n">pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="ne">ValueError</span><span class="p">)),</span>
+        <span class="p">((</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)),</span>
+        <span class="p">((</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
+    <span class="p">])</span>
+    <span class="k">def</span> <span class="nf">test_calibration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diffraction_simulation</span><span class="p">,</span>
+                         <span class="n">calibration</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+        <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">calibration</span> <span class="o">=</span> <span class="n">calibration</span>
+        <span class="k">assert</span> <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">calibration</span> <span class="o">==</span> <span class="n">expected</span></div>
+
+<div class="viewcode-block" id="TestDiffractionSimulation.test_direct_beam_mask"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_direct_beam_mask">[docs]</a>    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;coordinates, with_direct_beam, expected&#39;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+            <span class="kc">False</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+            <span class="kc">True</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+            <span class="kc">False</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
+        <span class="p">),</span>
+    <span class="p">])</span>
+    <span class="k">def</span> <span class="nf">test_direct_beam_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diffraction_simulation</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span>
+                              <span class="n">with_direct_beam</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+        <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>
+        <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">with_direct_beam</span> <span class="o">=</span> <span class="n">with_direct_beam</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">direct_beam_mask</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">mask</span> <span class="o">==</span> <span class="n">expected</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestDiffractionSimulation.test_calibrated_coordinates"><a class="viewcode-back" href="../../../../pyxem.tests.test_signals.html#pyxem.tests.test_signals.test_diffraction_simulation.TestDiffractionSimulation.test_calibrated_coordinates">[docs]</a>    <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;coordinates, calibration, offset, expected&#39;</span><span class="p">,</span> <span class="p">[(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]),</span>
+        <span class="mf">1.</span><span class="p">,</span>
+        <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]))])</span>
+    <span class="k">def</span> <span class="nf">test_calibrated_coordinates</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">diffraction_simulation</span><span class="p">:</span> <span class="n">DiffractionSimulation</span><span class="p">,</span>
+            <span class="n">coordinates</span><span class="p">,</span> <span class="n">calibration</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">expected</span>
+    <span class="p">):</span>
+        <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>
+        <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">calibration</span> <span class="o">=</span> <span class="n">calibration</span>
+        <span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">diffraction_simulation</span><span class="o">.</span><span class="n">calibrated_coordinates</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

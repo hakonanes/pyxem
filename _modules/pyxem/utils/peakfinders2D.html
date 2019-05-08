@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyxem.utils.peakfinders2D &#8212; pyXem 0.7.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          pyXem</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.7.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyXem - Crystallographic Electron Microscopy in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyxem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../literature.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for pyxem.utils.peakfinders2D</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Copyright 2017-2019 The pyXem developers</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of pyXem.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># pyXem is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with pyXem.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="k">as</span> <span class="nn">ndi</span>
+<span class="kn">from</span> <span class="nn">skimage.feature</span> <span class="k">import</span> <span class="n">match_template</span><span class="p">,</span> <span class="n">corner_peaks</span>
+
+<span class="n">NO_PEAKS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]])</span>
+
+
+<div class="viewcode-block" id="clean_peaks"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.peakfinders2D.clean_peaks">[docs]</a><span class="k">def</span> <span class="nf">clean_peaks</span><span class="p">(</span><span class="n">peaks</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility function to deal with no peaks being found.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    peaks : numpy.ndarray</span>
+<span class="sd">        Result of peak finding</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    peaks : numpy.ndarray</span>
+<span class="sd">        Result of peak finding</span>
+
+<span class="sd">    NO_PEAKS : string</span>
+<span class="sd">        Flag indicating no peaks found.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">NO_PEAKS</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">peaks</span></div>
+
+
+<div class="viewcode-block" id="find_peaks_zaefferer"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.peakfinders2D.find_peaks_zaefferer">[docs]</a><span class="k">def</span> <span class="nf">find_peaks_zaefferer</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">grad_threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                         <span class="n">distance_cutoff</span><span class="o">=</span><span class="mf">50.</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Method to locate positive peaks in an image based on gradient</span>
+<span class="sd">    thresholding and subsequent refinement within masked regions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : numpy.ndarray</span>
+<span class="sd">        Matrix of image intensities.</span>
+<span class="sd">    grad_threshold : float</span>
+<span class="sd">        The minimum gradient required to begin a peak search.</span>
+<span class="sd">    window_size : int</span>
+<span class="sd">        The size of the square window within which a peak search is</span>
+<span class="sd">        conducted. If odd, will round down to even.</span>
+<span class="sd">    distance_cutoff : float</span>
+<span class="sd">        The maximum distance a peak may be from the initial</span>
+<span class="sd">        high-gradient point.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    peaks : numpy.ndarray</span>
+<span class="sd">        (n_peaks, 2)</span>
+<span class="sd">        Peak pixel coordinates.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Implemented as described in Zaefferer &quot;New developments of computer-aided</span>
+<span class="sd">    crystallographic analysis in transmission electron microscopy&quot; J. Ap. Cryst.</span>
+<span class="sd">    This version by Ben Martineau (2016)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">box</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Produces a list of coordinates in the box about (x, y).&quot;&quot;&quot;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">window_size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">x_min</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span>
+        <span class="n">x_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x_max</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">a</span><span class="p">)</span>
+        <span class="n">y_min</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span>
+        <span class="n">y_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y_max</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">def</span> <span class="nf">get_max</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Finds the coordinates of the maximum of &#39;image&#39; in &#39;box&#39;.&quot;&quot;&quot;</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">box</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">box</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]]</span>
+        <span class="n">max_position</span> <span class="o">=</span> <span class="n">box</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">vals</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">max_position</span>
+
+    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the distance between two points.&quot;&quot;&quot;</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the square of the 2-d partial gradient.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        image : numpy.ndarray</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gradient_of_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">gradient_of_image</span> <span class="o">=</span> <span class="n">gradient_of_image</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">gradient_of_image</span><span class="p">[</span>
+            <span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">gradient_of_image</span>
+
+    <span class="c1"># Generate an ordered list of matrix coordinates.</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="c1"># Calculate the gradient at every point.</span>
+    <span class="n">image_gradient</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="c1"># Boolean matrix of high-gradient points.</span>
+    <span class="n">gradient_is_above_threshold</span> <span class="o">=</span> <span class="n">image_gradient</span> <span class="o">&gt;=</span> <span class="n">grad_threshold</span>
+    <span class="n">peaks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">coordinate</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">gradient_is_above_threshold</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]:</span>
+        <span class="c1"># Iterate over coordinates where the gradient is high enough.</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">box</span><span class="p">(</span><span class="n">coordinate</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coordinate</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">p_old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">p_new</span> <span class="o">=</span> <span class="n">get_max</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">p_old</span> <span class="o">!=</span> <span class="n">p_new</span><span class="p">):</span>
+            <span class="n">p_old</span> <span class="o">=</span> <span class="n">p_new</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">box</span><span class="p">(</span><span class="n">p_old</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p_old</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">p_new</span> <span class="o">=</span> <span class="n">get_max</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">distance</span><span class="p">(</span><span class="n">coordinate</span><span class="p">,</span> <span class="n">p_new</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">distance_cutoff</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">peaks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">p_new</span><span class="p">))</span>
+    <span class="n">peaks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">peaks</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">clean_peaks</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="find_peaks_stat"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.peakfinders2D.find_peaks_stat">[docs]</a><span class="k">def</span> <span class="nf">find_peaks_stat</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">window_radius</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">convergence_ratio</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Locate positive peaks in an image based on statistical refinement and</span>
+<span class="sd">    difference with respect to mean intensity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : numpy.ndarray</span>
+<span class="sd">        Array of image intensities.</span>
+<span class="sd">    alpha : float</span>
+<span class="sd">        Only maxima above `alpha * sigma` are found, where `sigma` is the</span>
+<span class="sd">        local, rolling standard deviation of the image.</span>
+<span class="sd">    window_radius : int</span>
+<span class="sd">        The pixel radius of the circular window for the calculation of the</span>
+<span class="sd">        rolling mean and standard deviation.</span>
+<span class="sd">    convergence_ratio : float</span>
+<span class="sd">        The algorithm will stop finding peaks when the proportion of new peaks</span>
+<span class="sd">        being found is less than `convergence_ratio`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        (n_peaks, 2)</span>
+<span class="sd">        Array of peak coordinates.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Implemented as described in the PhD thesis of Thomas White (2009) the</span>
+<span class="sd">    algorithm was developed by Gordon Ball during a summer project in</span>
+<span class="sd">    Cambridge.</span>
+<span class="sd">    This version by Ben Martineau (2016), with minor modifications to the</span>
+<span class="sd">    original where methods were ambiguous or unclear.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">generic_filter</span>
+    <span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">uniform_filter</span>
+    <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">DBSCAN</span>
+
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scales the image to intensities between 0 and 1.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">image</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_local_stat</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates rolling method &#39;func&#39; over a circular kernel.&quot;&quot;&quot;</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ogrid</span><span class="p">[</span><span class="o">-</span><span class="n">radius</span><span class="p">:</span><span class="n">radius</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">radius</span><span class="p">:</span><span class="n">radius</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">radius</span>
+        <span class="n">stat</span> <span class="o">=</span> <span class="n">generic_filter</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">footprint</span><span class="o">=</span><span class="n">kernel</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">stat</span>
+
+    <span class="k">def</span> <span class="nf">local_mean</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates rolling mean over a circular kernel.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_local_stat</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">local_std</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates rolling standard deviation over a circular kernel.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_local_stat</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">single_pixel_desensitize</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reduces single-pixel anomalies by nearest-neighbor smoothing.&quot;&quot;&quot;</span>
+        <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]])</span>
+        <span class="n">smoothed_image</span> <span class="o">=</span> <span class="n">generic_filter</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">footprint</span><span class="o">=</span><span class="n">kernel</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">smoothed_image</span>
+
+    <span class="k">def</span> <span class="nf">stat_binarise</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Peaks more than one standard deviation from the mean set to one.&quot;&quot;&quot;</span>
+        <span class="n">image_rolling_mean</span> <span class="o">=</span> <span class="n">local_mean</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">window_radius</span><span class="p">)</span>
+        <span class="n">image_rolling_std</span> <span class="o">=</span> <span class="n">local_std</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">window_radius</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">single_pixel_desensitize</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">binarised_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">stat_mask</span> <span class="o">=</span> <span class="n">image</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">image_rolling_mean</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">image_rolling_std</span><span class="p">)</span>
+        <span class="n">binarised_image</span><span class="p">[</span><span class="n">stat_mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">binarised_image</span>
+
+    <span class="k">def</span> <span class="nf">smooth</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Image convolved twice using a uniform 3x3 kernel.&quot;&quot;&quot;</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">uniform_filter</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">uniform_filter</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">image</span>
+
+    <span class="k">def</span> <span class="nf">half_binarise</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Image binarised about values of one-half intensity.&quot;&quot;&quot;</span>
+        <span class="n">binarised_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">image</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">binarised_image</span>
+
+    <span class="k">def</span> <span class="nf">separate_peaks</span><span class="p">(</span><span class="n">binarised_image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Identify adjacent &#39;on&#39; coordinates via DBSCAN.&quot;&quot;&quot;</span>
+        <span class="n">bi</span> <span class="o">=</span> <span class="n">binarised_image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;bool&#39;</span><span class="p">)</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">bi</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">[</span>
+            <span class="n">bi</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">peaks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">labeled_points</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">peak_label</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">labeled_points</span><span class="p">)):</span>
+            <span class="n">peaks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="n">labeled_points</span> <span class="o">==</span> <span class="n">peak_label</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">peaks</span>
+
+    <span class="k">def</span> <span class="nf">_peak_find_once</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Smooth, binarise, and find peaks according to main algorithm.&quot;&quot;&quot;</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">smooth</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">half_binarise</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">peaks</span> <span class="o">=</span> <span class="n">separate_peaks</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">image</span><span class="p">,</span> <span class="n">peaks</span>
+
+    <span class="k">def</span> <span class="nf">stat_peak_finder</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Find peaks in image. Algorithm stages in comments.&quot;&quot;&quot;</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>  <span class="c1"># 1</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">stat_binarise</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>  <span class="c1"># 2, 3</span>
+        <span class="n">n_peaks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>  <span class="c1"># Initial number of peaks</span>
+        <span class="n">image</span><span class="p">,</span> <span class="n">peaks</span> <span class="o">=</span> <span class="n">_peak_find_once</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>  <span class="c1"># 4-6</span>
+        <span class="n">m_peaks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span>  <span class="c1"># Actual number of peaks</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        #XXX</span>
+<span class="sd">        while (n_peaks - m_peaks) / n_peaks &gt; convergence_ratio:  # 8</span>
+<span class="sd">            n_peaks = m_peaks</span>
+<span class="sd">            image, peaks = _peak_find_once(image)</span>
+<span class="sd">            m_peaks = len(peaks)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">peak_centers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">peak</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">peaks</span><span class="p">])</span>  <span class="c1"># 7</span>
+        <span class="k">return</span> <span class="n">peak_centers</span>
+
+    <span class="k">return</span> <span class="n">clean_peaks</span><span class="p">(</span><span class="n">stat_peak_finder</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="find_peaks_dog"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.peakfinders2D.find_peaks_dog">[docs]</a><span class="k">def</span> <span class="nf">find_peaks_dog</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">min_sigma</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">max_sigma</span><span class="o">=</span><span class="mf">50.</span><span class="p">,</span> <span class="n">sigma_ratio</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span>
+                   <span class="n">threshold</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds peaks via the difference of Gaussian Matrices method from</span>
+<span class="sd">    `scikit-image`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : numpy.ndarray</span>
+<span class="sd">        2-d array of intensities</span>
+<span class="sd">    float min_sigma, max_sigma, sigma_ratio, threshold, overlap</span>
+<span class="sd">        Additional parameters to be passed to the algorithm. See `blob_dog`</span>
+<span class="sd">        documentation for details:</span>
+<span class="sd">        http://scikit-image.org/docs/dev/api/skimage.feature.html#blob-dog</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Array of peak coordinates of shape `(n_peaks, 2)`</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    While highly effective at finding even very faint peaks, this method is</span>
+<span class="sd">    sensitive to fluctuations in intensity near the edges of the image.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">skimage.feature</span> <span class="k">import</span> <span class="n">blob_dog</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">blobs</span> <span class="o">=</span> <span class="n">blob_dog</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">min_sigma</span><span class="o">=</span><span class="n">min_sigma</span><span class="p">,</span> <span class="n">max_sigma</span><span class="o">=</span><span class="n">max_sigma</span><span class="p">,</span>
+                     <span class="n">sigma_ratio</span><span class="o">=</span><span class="n">sigma_ratio</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span>
+                     <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">)</span>
+
+    <span class="n">centers</span> <span class="o">=</span> <span class="n">blobs</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">centers</span></div>
+
+
+<div class="viewcode-block" id="find_peaks_log"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.peakfinders2D.find_peaks_log">[docs]</a><span class="k">def</span> <span class="nf">find_peaks_log</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">min_sigma</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">max_sigma</span><span class="o">=</span><span class="mf">50.</span><span class="p">,</span> <span class="n">num_sigma</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span>
+                   <span class="n">threshold</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">log_scale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds peaks via the Laplacian of Gaussian Matrices method from</span>
+<span class="sd">    `scikit-image`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    z : numpy.ndarray</span>
+<span class="sd">        Array of image intensities.</span>
+<span class="sd">    float min_sigma, max_sigma, num_sigma, threshold, overlap, log_scale</span>
+<span class="sd">        Additional parameters to be passed to the algorithm. See</span>
+<span class="sd">        `blob_log` documentation for details:</span>
+<span class="sd">        http://scikit-image.org/docs/dev/api/skimage.feature.html#blob-log</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        (n_peaks, 2)</span>
+<span class="sd">        Array of peak coordinates.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">skimage.feature</span> <span class="k">import</span> <span class="n">blob_log</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">blobs</span> <span class="o">=</span> <span class="n">blob_log</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">min_sigma</span><span class="o">=</span><span class="n">min_sigma</span><span class="p">,</span> <span class="n">max_sigma</span><span class="o">=</span><span class="n">max_sigma</span><span class="p">,</span>
+                     <span class="n">num_sigma</span><span class="o">=</span><span class="n">num_sigma</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span>
+                     <span class="n">log_scale</span><span class="o">=</span><span class="n">log_scale</span><span class="p">)</span>
+
+    <span class="n">centers</span> <span class="o">=</span> <span class="n">blobs</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">centers</span></div>
+
+
+<div class="viewcode-block" id="find_peaks_xc"><a class="viewcode-back" href="../../../pyxem.utils.html#pyxem.utils.peakfinders2D.find_peaks_xc">[docs]</a><span class="k">def</span> <span class="nf">find_peaks_xc</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">disc_image</span><span class="p">,</span> <span class="n">min_distance</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">peak_threshold</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find peaks using the the correlation between the image and a reference peaks</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    z: numpy.ndarray</span>
+<span class="sd">        Array of image intensities.</span>
+<span class="sd">    disc_image: numpy.ndarray (square)</span>
+<span class="sd">        Array containing a single bright disc, similar to those to detect.</span>
+<span class="sd">    min_distance: int</span>
+<span class="sd">        The minimum expected distance between peaks (in pixels)</span>
+<span class="sd">    peak_threshold: float between 0 and 1</span>
+<span class="sd">        Larger values will lead to fewer peaks in the output.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        (n_peaks, 2)</span>
+<span class="sd">        Array of peak coordinates.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response_image</span> <span class="o">=</span> <span class="n">match_template</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">disc_image</span><span class="p">,</span> <span class="n">pad_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">peaks</span> <span class="o">=</span> <span class="n">corner_peaks</span><span class="p">(</span><span class="n">response_image</span><span class="p">,</span>
+                         <span class="n">min_distance</span><span class="o">=</span><span class="n">min_distance</span><span class="p">,</span>
+                         <span class="n">threshold_rel</span><span class="o">=</span><span class="n">peak_threshold</span><span class="p">)</span>
+    <span class="c1"># make return format the same as the other peak finders</span>
+    <span class="n">peaks</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">clean_peaks</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright Copyright 2017-2019, Python Crystallographic Electron Microscopy.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
